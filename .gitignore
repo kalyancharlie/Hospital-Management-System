@@ -102,3 +102,18 @@ dist
 
 # TernJS port file
 .tern-port
+
+# Eclipse
+*.class
+.classpath
+*.MF
+.project
+.settings
+.jsdtscope
+org.eclipse.jdt.core.prefs
+org.eclipse.wst.common.component
+org.eclipse.wst.common.project.facet.core.xml
+org.eclipse.wst.jsdt.ui.superType.container
+org.eclipse.wst.jsdt.ui.superType.name
+
+/build/
