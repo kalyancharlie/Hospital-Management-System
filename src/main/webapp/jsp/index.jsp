@@ -12,7 +12,7 @@
         <h1>ABC Hospital Management System</h1>
     </div>
     <div class="login-form">
-        <form action="/" method="POST">
+        <form action="/Controller" method="POST">
             <div class="form">
                 <div class="form-labels">
                     <label for="username">Username</label>
@@ -21,6 +21,7 @@
                 <div class="form-inputs">
                     <input type="text" placeholder="Enter username" id="username" name="username" required><br/>
                     <input type="password" placeholder="******" id="password" name="password" required>
+                    <input type="text" name="option" value="login" hidden="true">
                 </div>
                 <div class="form-controls">
                     <input type="submit" value="Login">
