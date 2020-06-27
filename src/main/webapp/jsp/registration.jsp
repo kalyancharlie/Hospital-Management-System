@@ -12,7 +12,7 @@
         <h1>ABC Hospital Management System</h1>
     </div>
     <div class="registration-form">
-    	<h2 align="center">Create Patient</h2>
+    	<h2 class="center">Patient Registration</h2>
         <form action="/" method="POST">
             <div class="form">
             	<div class="form-labels">

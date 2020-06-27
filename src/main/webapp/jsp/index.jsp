@@ -12,7 +12,7 @@
         <h1>ABC Hospital Management System</h1>
     </div>
     <div class="login-form">
-        <form action="/Controller" method="POST">
+        <form action="../Controller" method="POST">
             <div class="form">
                 <div class="form-labels">
                     <label for="username">Username</label>

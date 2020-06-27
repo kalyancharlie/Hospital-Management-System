@@ -16,7 +16,9 @@ public class PatientDaoImpl extends PatientDao{
 		ResultSet rs = null;
 		try {
 			con = DbConnection.getConnection();
-			ps = con.prepareStatement("SELECT username, password from users where username=?, password=?");
+			ps = con.prepareStatement("SELECT username, password from users where username=? AND password=?");
+			ps.setString(1, username);
+			ps.setString(2, password);
 			rs = ps.executeQuery();
 			while(rs.next()) {
 				String usr = rs.getString("username");
@@ -37,5 +39,4 @@ public class PatientDaoImpl extends PatientDao{
 		}
 		return false;
 	}
-	
 }
