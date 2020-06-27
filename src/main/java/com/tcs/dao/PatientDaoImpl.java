@@ -5,6 +5,9 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+import com.tcs.model.Diagnostic;
+import com.tcs.model.Medicine;
+import com.tcs.model.Patient;
 import com.tcs.util.DbConnection;
 
 public class PatientDaoImpl extends PatientDao{
@@ -38,5 +41,53 @@ public class PatientDaoImpl extends PatientDao{
 			System.out.println("Login Attempted");
 		}
 		return false;
+	}
+
+	@Override
+	public boolean patientRegistration(Patient patient) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean updatePatient(Patient patient) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean deletePatient(int id) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public Patient searchPatient(int id) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Patient[] viewAllPatients() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Medicine[] viewMedcines(int id) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Diagnostic[] viewDiagnostics(int id) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public double generateBill(int id) {
+		// TODO Auto-generated method stub
+		return 0;
 	}
 }
