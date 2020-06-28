@@ -1,22 +1,94 @@
 body {
 	padding: 0px;
 	margin: 0px;
+	background-color: #269bf4;
 }
+
 /****************************/
-/* 		  LOGIN PAGE       */
+/*     	    HEADER          */
 /****************************/
+
+.heading, .header{
+	background-color: #9acff8;
+	width: 100%;
+}
 
 .heading h1 {
 	text-align: center;
 	font-size: 30px;
-	background-color: #9acff8;
-	height: 100px;
 	margin-top: 0px;
-	padding-top: 40px;
+	padding-top: 20px;
+	padding-bottom: 20px;
+	margin-bottom: 20px;
 }
-body {
-	background-color: #269bf4
+
+.heading  button {
+	width: 160px;
+	background-color: #269bf4;
+	padding-top: 4px;
+	padding-bottom: 4px;
+	border: 2px solid black;
+	cursor: pointer;
 }
+
+.ad-functions {
+	float: left;
+	width: 25%;
+	margin-left: 19%;
+}
+
+.ph-functions {
+	width: 25%;
+	float: left;
+}
+
+.di-functions {
+	width: 25%;
+	float: left;
+}
+.dropbtn {
+  background-color: #9bbbf7;
+  font-size: 16px;
+  border: none;
+  cursor: pointer;
+}
+
+.dropdown {
+  position: relative;
+  display: inline-block;
+}
+
+.dropdown-content {
+  display: none;
+  position: absolute;
+  background-color: #f1f1f1;
+  min-width: 160px;
+  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+  z-index: 1;
+}
+
+.dropdown-content a {
+  color: black;
+   padding: 12px 16px;
+  text-decoration: none;
+  display: block;
+  margin-bottom: -19px;
+}
+
+.dropdown-content a:hover {background-color: #9bbbf7} 
+
+.dropdown:hover .dropdown-content {
+  display: block;
+}
+
+.dropdown:hover .dropbtn {
+  background-color: #9bbbf7;
+}
+
+
+/****************************/
+/* 		  LOGIN PAGE       */
+/****************************/
 
 .login-form {
 	width: 300px;
@@ -59,18 +131,68 @@ body {
 /****************************/
 
 .registration-form {
+	clear: both;
 	width: 500px;
-	max-width: 700px;
+	max-width: 800px;
 	margin: 0px auto;
 	margin-top: 12vh;
-	border: 2px solid black;
-}
-
-.form-inputs input,select {
-	margin-bottom: 10px;
-	margin-right: 10px;
+	background-color: #269bf4;
 }
 
 .center {
 	text-align: center;
+}
+
+
+.form-inputs input, .form-inputs > textarea, .form-inputs > select{
+	margin-left: 15%;
+	width: 150px;
+	margin-bottom: 17px;
+}
+
+.form-labels label{
+	font-weight: bold;
+	width: 100%;
+	margin-left: 24%;
+	margin-right: 0px;
+	margin-bottom: 20px;
+}
+
+#address {
+	height: 60px;
+}
+
+.form-inputs {
+	width: 50%;
+	margin-right: 0%;
+}
+
+.form-inputs > select {
+	height: 21px;
+}
+
+.form-controls > button {
+	background-color: black;
+	color: white;
+	border-radius: 20px;
+	padding: 10px;
+	width: 90px;
+	margin-right: 5%;
+	cursor: pointer;
+}
+
+.form-controls {
+	left: 50%;
+	transform: translateX(28%);
+}
+
+.form-controls, .note {
+	clear:both;
+}
+
+.note > p {
+	padding: 0px;
+	color: #990000;
+	text-align: left;
+	transform: translateX(18%);
 }
