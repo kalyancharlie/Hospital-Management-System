@@ -2,12 +2,15 @@ package com.tcs.controller;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.sql.Date;
+
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.tcs.model.Patient;
 import com.tcs.service.Service;
 
 @WebServlet("/Controller")
@@ -37,6 +40,23 @@ public class Controller extends HttpServlet {
 			} else {
 				request.setAttribute("msg", "Error! Login Failed");
 				request.getRequestDispatcher("/jsp/index.jsp").include(request, response);
+			}
+		}
+		else if(option.equalsIgnoreCase(option)) {
+			Patient pt = new Patient();
+			pt.setSsnId(Integer.parseInt(request.getParameter("ssnId")));
+			pt.setName(request.getParameter("patientName"));
+			pt.setAge(Integer.parseInt(request.getParameter("patientAge")));
+			pt.setAddress(request.getParameter("address"));
+			pt.setDoj(Date.valueOf(request.getParameter("dateOfAdmission")));
+			pt.setCity(request.getParameter("city"));
+			pt.setState(request.getParameter("state"));
+			if(service.register(pt)) {
+				PrintWriter out = response.getWriter();
+				out.print("Patient creation initiated successfully");
+			} else {
+				request.setAttribute("msg", "Patient not Registered");
+				request.getRequestDispatcher("/jsp/registration.jsp").include(request, response);
 			}
 		}
 	}

@@ -1,6 +1,7 @@
 package com.tcs.dao;
 
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -19,7 +20,7 @@ public class PatientDaoImpl extends PatientDao{
 		ResultSet rs = null;
 		try {
 			con = DbConnection.getConnection();
-			ps = con.prepareStatement("SELECT username, password from users where username=? AND password=?");
+			ps = con.prepareStatement("SELECT Username, Password from userstore where Username=? AND Password=?");
 			ps.setString(1, username);
 			ps.setString(2, password);
 			rs = ps.executeQuery();
@@ -46,6 +47,29 @@ public class PatientDaoImpl extends PatientDao{
 	@Override
 	public boolean patientRegistration(Patient patient) {
 		// TODO Auto-generated method stub
+		Connection con = null;
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		try {
+			con = DbConnection.getConnection();
+			ps = con.prepareStatement("insert into patient(ssn_id,name,age,doj,bed,address,city,state,status) values(?,?,?,?,?,?,?,?,?)");
+			ps.setLong(1, patient.getSsnId());
+			ps.setString(2, patient.getName());
+			ps.setInt(3, patient.getAge());
+			ps.setDate(4, patient.getDoj());
+			ps.setString(5, patient.getTypeOfBed());
+			ps.setString(6, patient.getAddress());
+			ps.setString(7, patient.getCity());
+			ps.setString(8, patient.getState());
+			ps.setString(9, "active");
+			int i=ps.executeUpdate();
+			if(i==1) {
+				return true;
+			}
+			
+		}catch(SQLException e) {
+			System.out.println(e.getErrorCode()+" "+e.getMessage());
+		}
 		return false;
 	}
 

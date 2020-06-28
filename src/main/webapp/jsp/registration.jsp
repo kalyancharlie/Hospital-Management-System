@@ -38,7 +38,8 @@
     </div>
     <div class="registration-form">
     	<h2 class="center">Patient Registration</h2>
-        <form action="/" method="POST">
+        <form action="../Controller" method="POST">
+        	<input type="hidden" name="option" value="register"/>
             <div class="form">
             	<div class="form-labels">
                     <label for="ssnId">Patient SSN ID *</label>
@@ -46,7 +47,7 @@
                     <label for="patientAge">Patient Age *</label>
                     <label for="dateOfAdmission">Date of Admission *</label>
                     <label for="typeOfBed">Type of bed *</label>
-                    <label for="address" id="address">Address *</label>
+                    <label for="address">Address *</label>
                     <label for="state">State *</label>
                     <label for="city">City *</label>                
                 </div>
@@ -61,7 +62,7 @@
   						  <option value="Semi Sharing">Semi sharing</option>
   						  <option value="Single Room">Single room</option>
                     </select><br/>
-                    <textarea type="text" placeholder="" id="addresas" name="address" rows="3" required></textarea><br/>
+                    <textarea type="text" placeholder="" id="address" name="address" rows="3" required></textarea><br/>
                     <select name="state" id="state">
                         <option value="none" selected disabled hidden></option>
                  		<option value="Andhra Pradesh">Andhra Pradesh</option>
@@ -72,6 +73,9 @@
                         <option value="none" selected disabled hidden></option>
                     	<option value="Visakhapatnam">Visakhapatnam</option>
                     	<option value="Vijayawada">Vijayawada</option>
+                    	<option value="Hyderabad">Hyderabad</option>
+                    	<option value="Warangal">warangal</option>
+                    	<option value="Bhubaneswar">Bhubaneswar</option>
                     </select><br/>
                 </div>
                 <div class="note">
