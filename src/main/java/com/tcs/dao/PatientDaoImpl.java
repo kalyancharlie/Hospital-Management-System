@@ -14,34 +14,25 @@ import com.tcs.util.DbConnection;
 public class PatientDaoImpl extends PatientDao{
 
 	@Override
-	public boolean validateLogin(String username, String password) {
+	public String validateLogin(String username, String password) {
 		Connection con = null;
 		PreparedStatement ps = null;
 		ResultSet rs = null;
+		String role = null;
 		try {
 			con = DbConnection.getConnection();
-			ps = con.prepareStatement("SELECT Username, Password from userstore where Username=? AND Password=?");
+			ps = con.prepareStatement("SELECT role from userstore where username=? AND password=?");
 			ps.setString(1, username);
 			ps.setString(2, password);
 			rs = ps.executeQuery();
 			while(rs.next()) {
-				String usr = rs.getString("username");
-				String pwd = rs.getString("password");
-				if(username != null && password != null) {
-					if(username.equals(usr) && password.equals(pwd)) {
-						return true;
-					} else {
-						return false;
-					}
+				role = rs.getString("role");
 				}
-				return false;
-			}
+				return role;
 		} catch(SQLException e) {
 			System.out.println(e.getErrorCode()+" "+e.getMessage());
-		} finally {
-			System.out.println("Login Attempted");
+			return role;
 		}
-		return false;
 	}
 
 	@Override
@@ -65,12 +56,13 @@ public class PatientDaoImpl extends PatientDao{
 			int i=ps.executeUpdate();
 			if(i==1) {
 				return true;
+			} else {
+				return false;
 			}
-			
-		}catch(SQLException e) {
+		} catch(SQLException e) {
 			System.out.println(e.getErrorCode()+" "+e.getMessage());
+			return false;
 		}
-		return false;
 	}
 
 	@Override

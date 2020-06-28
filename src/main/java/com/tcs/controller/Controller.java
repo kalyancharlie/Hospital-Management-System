@@ -29,20 +29,29 @@ public class Controller extends HttpServlet {
 		Service service = new Service();
 		String option = request.getParameter("option");
 		
-		// LOGIN CHECK
+		// LOGIN ROLE CHECK
 		if(option.equalsIgnoreCase("LOGIN")) {
 			String username = request.getParameter("username");
 			String password = request.getParameter("password");
-			
-			if(service.validate(username, password)) {
-				PrintWriter out = response.getWriter();
-				out.print("Success");
+			String role = service.validate(username, password);
+			if(role.equalsIgnoreCase("A")) {
+				System.out.println("Admission Executive Loggged In. Role:"+role);
+				request.getRequestDispatcher("/jsp/registration.jsp").forward(request, response);
+			} else if(role.equalsIgnoreCase("P")) {
+				System.out.println("Pharmacist Logged In. Role:"+role);
+				request.getRequestDispatcher("/jsp/patientMedicineIssue.jsp");
+			} else if(role.equalsIgnoreCase("D")) {
+				System.out.println("Diagnostic Executive Logged In. Role:"+role);
+				request.getRequestDispatcher("/jsp/patientDiagnosticIssue.jsp");
 			} else {
 				request.setAttribute("msg", "Error! Login Failed");
+				System.out.println("Login Failed");
 				request.getRequestDispatcher("/jsp/index.jsp").include(request, response);
 			}
 		}
-		else if(option.equalsIgnoreCase(option)) {
+		
+		// PATIENT REGISTRATION
+		else if(option.equalsIgnoreCase("REGISTRATION")) {
 			Patient pt = new Patient();
 			pt.setSsnId(Integer.parseInt(request.getParameter("ssnId")));
 			pt.setName(request.getParameter("patientName"));

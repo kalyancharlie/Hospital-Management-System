@@ -6,7 +6,7 @@ import com.tcs.model.Patient;
 public class Service {
 	PatientDaoImpl obj = new PatientDaoImpl();
 	
-	public boolean validate(String username, String password) {
+	public String validate(String username, String password) {
 		return obj.validateLogin(username, password);
 	}
 	public boolean register(Patient pt) {

@@ -4,7 +4,7 @@
 <html>
 <head>
 	<meta charset="utf-8">
-    <link rel="stylesheet" href="../css/style.css" type="text/css">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/style.css" type="text/css">
 <title>Login</title>
 </head>
 <body>
@@ -12,7 +12,7 @@
         <h1>ABC Hospital Management System</h1>
     </div>
     <div class="login-form">
-        <form action="../Controller" method="POST">
+        <form action="${pageContext.request.contextPath}/Controller" method="POST">
             <div class="form">
                 <div class="form-labels">
                     <label for="username">Username</label>

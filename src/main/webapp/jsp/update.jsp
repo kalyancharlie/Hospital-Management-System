@@ -4,7 +4,7 @@
 <html>
 <head>
 	<meta charset="ISO-8859-1">
-	<link rel="stylesheet" href="../css/style.css" type="text/css">
+	<link rel="stylesheet" href="${pageContext.request.contextPath}/css/style.css" type="text/css">
 	<title>Update Patient</title>
 </head>
 <body>
@@ -13,26 +13,26 @@
         <div class="ad-functions dropdown">
             <button class="admission dropbtn"><span>Patient</span></button>
             <div class="admission-functions dropdown-content">
-                <a id="link" href="#">Register Patient</a><br/>
-                <a id="link" href="#">Update Patient</a><br/>
-                <a id="link" href="#">Delete Patient</a><br/>
-                <a id="link" href="#">Search Patient</a><br/>
-                <a id="link" href="#">View All Patients</a><br/>
-                <a id="link" href="#">Patient Billing</a><br/>
+                <a id="link" href="${pageContext.request.contextPath}/jsp/registration.jsp">Register Patient</a><br/>
+                <a id="link" href="${pageContext.request.contextPath}/jsp/update.jsp">Update Patient</a><br/>
+                <a id="link" href="${pageContext.request.contextPath}/jsp/delete.jsp">Delete Patient</a><br/>
+                <a id="link" href="${pageContext.request.contextPath}/jsp/viewPatient.jsp">Search Patient</a><br/>
+                <a id="link" href="${pageContext.request.contextPath}/jsp/viewAllPatients.jsp">View All Patients</a><br/>
+                <a id="link" href="${pageContext.request.contextPath}/jsp/patientBillingIssue.jsp">Patient Billing</a><br/>
             </div>
         </div>
         <div class="ph-functions dropdown">
             <button class="pharmacist dropbtn"><span>Pharmacy</span></button>
             <div class="pharmacist-functions dropdown-content">
-                <a id="link" href="#">Search Patient</a><br/>
-                <a id="link" href="#">Issue Medicines</a><br/>
+                <a id="link" href="${pageContext.request.contextPath}/jsp/viewPatient.jsp">Search Patient</a><br/>
+                <a id="link" href="${pageContext.request.contextPath}/jsp/patientMedicineIssue.jsp">Issue Medicines</a><br/>
             </div>
         </div>
         <div class="di-functions dropdown">
             <button class="diagnostic dropbtn"><span>Diagnostics</span></button>
             <div class="diagnostic-functions dropdown-content">
-                <a id="link" href="#">Search Patient</a><br/>
-                <a id="link" href="#">Add Diagnostics</a><br/>
+                <a id="link" href="${pageContext.request.contextPath}/jsp/viewPatient.jsp">Search Patient</a><br/>
+                <a id="link" href="${pageContext.request.contextPath}/jsp/patientDiagnosticIssue.jsp">Add Diagnostics</a><br/>
             </div>
         </div>
     </div>
