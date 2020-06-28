@@ -38,7 +38,6 @@
     </div>
     <div class="registration-form">
     	<h2 class="center">View Patient</h2>
-        <form action="/" method="POST">
             <div class="form">
             	<div class="form-labels">
                     <label for="ssnId">Patient SSN ID *</label>
@@ -51,8 +50,9 @@
                     <label for="city">City *</label>                
                 </div>
                 <div class="form-inputs">
-                <form action="/">
-                    <input type="text" placeholder="" id="ssnId" name="ssnId" required><button type="submit">Get</button><br/>
+                <form action="${pageContext.request.contextPath}/Controller" method="POST">
+                	<input type="text" name="option" value="getPatient" hidden>
+                    <input type="text" placeholder="" id="ssnId" name="ssnId" autofocus required><button type="submit">Get</button><br/>
                 </form>
                     <input type="text" placeholder="" id="patientName" name="patientName"/><br/>
                     <input type="text" placeholder="" id="patientAge" name="patientAge"/><br/>
@@ -80,7 +80,6 @@
                     <p>* Fields are mandatory</p>
                 </div>
             </div>
-        </form>
     </div>
 </body>
 </html>

@@ -19,9 +19,9 @@
                     <label for="password">Password</label>                    
                 </div>
                 <div class="form-all-inputs">
-                    <input type="text" placeholder="Enter username" id="username" name="username" required><br/>
+                	<input type="text" name="option" value="login" hidden="true">
+                    <input type="text" placeholder="Enter username" id="username" name="username" autofocus required><br/>
                     <input type="password" placeholder="******" id="password" name="password" required>
-                    <input type="text" name="option" value="login" hidden="true">
                 </div>
                 <div class="form-controls">
                     <input type="submit" value="Login">

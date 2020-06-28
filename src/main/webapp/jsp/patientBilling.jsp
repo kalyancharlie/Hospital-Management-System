@@ -119,7 +119,11 @@
         
     </div>
     <div class="form-controls-action update-medicines">
-        <button type="submit">Confirm</button><p id="text">Grand Total<span id="text">Rs.71000</span></p>
+    	<form>
+    		<input type="text" name="option" value="dischargePatient" hidden>
+    		<input type="text" name="id" value="" hidden>
+    		<button id="billingButton" type="submit">Confirm</button><p id="text">Grand Total<span id="text">Rs.71000</span></p>
+    	</form>
     </div>
 </body>
 </html>

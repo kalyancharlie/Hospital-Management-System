@@ -38,8 +38,8 @@
     </div>
     <div class="registration-form">
     	<h2 class="center">Patient Registration</h2>
-        <form action="../Controller" method="POST">
-        	<input type="hidden" name="option" value="register"/>
+        <form action="${pageContext.request.contextPath}/Controller" method="POST">
+        	<input type="hidden" name="option" value="registration"/>
             <div class="form">
             	<div class="form-labels">
                     <label for="ssnId">Patient SSN ID *</label>
@@ -52,7 +52,7 @@
                     <label for="city">City *</label>                
                 </div>
                 <div class="form-inputs">
-                    <input type="text" placeholder="" id="ssnId" name="ssnId" required><br/>
+                    <input type="text" placeholder="" id="ssnId" name="ssnId" autofocus required><br/>
                     <input type="text" placeholder="" id="patientName" name="patientName" required><br/>
                     <input type="text" placeholder="" id="patientAge" name="patientAge" required/><br/>
                     <input type="date" placeholder=" " id="dateOfAdmission" name="dateOfAdmission" required/><br/>

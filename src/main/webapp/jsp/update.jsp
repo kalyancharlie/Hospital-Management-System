@@ -38,7 +38,8 @@
     </div>
     <div class="registration-form">
     	<h2 class="center">Update Patient</h2>
-        <form action="/" method="POST">
+        <form action="${pageContext.request.contextPath}/Controller" method="POST">
+        	<input type="text" name="option" value="updatePatient" hidden>
             <div class="form">
             	<div class="form-labels">
                     <label for="ssnId">Patient SSN ID *</label>
@@ -52,7 +53,8 @@
                 </div>
                 <div class="form-inputs">
                 <form action="/">
-                    <input type="text" placeholder="" id="ssnId" name="ssnId" required><button type="submit">Get</button><br/>
+                	<input type="text" name="option" value="getPatient" hidden>
+                    <input type="text" placeholder="" id="ssnId" name="ssnId" autofocus required><button type="submit">Get</button><br/>
                 </form>
                     <input type="text" placeholder="" id="patientName" name="patientName"/><br/>
                     <input type="text" placeholder="" id="patientAge" name="patientAge"/><br/>

@@ -5,7 +5,7 @@
 <head>
 	<meta charset="ISO-8859-1">
 	<link rel="stylesheet" href="${pageContext.request.contextPath}/css/style.css" type="text/css">
-	<title>Issue Medicines</title>
+	<title>Search & Generate Bill</title>
 </head>
 <body>
 	<div class="heading">
@@ -35,9 +35,15 @@
                 <a id="link" href="${pageContext.request.contextPath}/jsp/patientDiagnosticIssue.jsp">Add Diagnostics</a><br/>
             </div>
         </div>
+    </div><br/><br/><br/>
+    <div class="form-search-action">
+    	<form action="${pageContext.request.contextPath}/Controller" method="POST">
+    		<input type="text" name="option" value="getPatient" hidden>
+    		<input type="text" name="id" placeholder="Enter patient id" autofocus required>
+        	<button type="submit">Search</button>
+    	</form>
     </div>
-    <div class="view-patients-form">
-        <h2 class="center">Pharmacy</h2>
+    <div class="view-patients-form-new">
         <table>
             <thead>
                 <tr>
@@ -61,56 +67,12 @@
             </tbody>
         </table>
     </div>
-    <div class="view-issued-medicines">
-        <h2 class="center">Medicines Issued</h2>
-        <table>
-            <thead>
-                <tr>
-                    <th>Medicine</th>
-                    <th>Quantity</th>
-                    <th>Rate</th>
-                    <th>Amount</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td>Acebutolol</td>
-                    <td>10</td>
-                    <td>Rs.55</td>
-                    <td>Rs.550</td>
-                </tr>
-            </tbody>
-        </table>
-    </div>
-    <form action="${pageContext.request.contextPath}/Controller" method="POST">
-    	<input type="text" name="option" value="createMedicineObject" hidden>
-    	<div>
-    		<p id="btn"><button type="submit">Issue Medicines</button></p>
-        	<p id="btn"><button>Add</button></p>
-    	</div>
-	    <div class="view-add-medicines">
-	        <table>
-	            <thead>
-	                <tr>
-	                    <th>Medicine</th>
-	                    <th>Quantity</th>
-	                    <th>Rate</th>
-	                    <th>Amount</th>
-	                </tr>
-	            </thead>
-	            <tbody>
-	                <tr>
-	                    <td><input type="text" required></td>
-	                    <td><input type="text" required></td>
-	                    <td><input type="text" required></td>
-	                    <td><input type="text" required></td>
-	                </tr>
-	            </tbody>
-	        </table>
-        </div>
-    </form>
-    <div class="form-controls-action update-medicines">
-        <button type="submit">Update</button>
+    <div class="form-controls-action">
+    	<form action="${pageContext.request.contextPath}/Controller" method="POST">
+    		<input type="text" name="option" value="routeToBilling" hidden>
+    		<input type="text" name="id" value="" hidden>
+    		<button id="search" type="submit">Generate Bill</button>
+    	</form>
     </div>
 </body>
 </html>
