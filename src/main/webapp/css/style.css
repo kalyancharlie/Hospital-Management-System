@@ -102,7 +102,7 @@ body {
 	width: 30%;
 	float: left;
 	padding: 0px;
-	margin-left: 30px;
+	margin-left: 20px;
 	margin-top: 20px;
 }
 
@@ -110,6 +110,13 @@ body {
 	width: 60%;
 	float: right;
 	margin-top:20px;
+}
+
+.form-all-inputs input {
+	width: 130px;
+	margin-left: 10%;
+	margin-top: 15px;
+	margin-bottom: 10px;
 }
 
 .form-controls {
@@ -123,7 +130,7 @@ body {
 }
 
 .form-controls input {
-	margin-left: 22%;
+	margin-left: 4%;
 }
 
 /****************************/
@@ -143,11 +150,12 @@ body {
 	text-align: center;
 }
 
-
 .form-inputs input, .form-inputs > textarea, .form-inputs > select{
-	margin-left: 15%;
+	margin-left: 8%;
 	width: 150px;
 	margin-bottom: 17px;
+	box-sizing: border-box;
+	border: 1px solid black;
 }
 
 .form-labels label{
@@ -163,7 +171,7 @@ body {
 }
 
 .form-inputs {
-	width: 50%;
+	width: 52%;
 	margin-right: 0%;
 }
 
@@ -171,7 +179,7 @@ body {
 	height: 21px;
 }
 
-.form-controls > button {
+.form-controls > button, .form-controls-action > button {
 	background-color: black;
 	color: white;
 	border-radius: 20px;
@@ -195,4 +203,142 @@ body {
 	color: #990000;
 	text-align: left;
 	transform: translateX(18%);
+}
+
+/****************************/
+/*  UPDATE/VIEW/DELETE PAGE */
+/****************************/
+
+.form-inputs button {
+	background-color: black;
+	color: white;
+	border-radius: 18px;
+	padding-top: 5px;
+	padding-bottom: 5px;
+	width: 40px;
+	cursor: pointer;
+	margin-right: 0px;
+	margin-left: 0px;
+}
+
+.form-controls-action button {
+	margin-right:0px;
+	margin-left: 43%;
+}
+
+/****************************/
+/*  VIEW ALL PATIENTS PAGE  */
+/****************************/
+
+.view-patients-form {
+	clear: both;
+	width: 98%;
+	max-width: 1300px;
+	margin: 0px auto;
+	margin-top: 12vh;
+}
+
+table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+  padding: 8px;
+  text-align: center;
+}
+
+table {
+	width: 100%;
+}
+
+table thead {
+	background-color: #424242;
+	color: #fafafa;
+}
+
+table tbody {
+	background-color: #fafafa;
+	color: black;
+}
+
+/****************************/
+/*   ISSUE MEDICINES PAGE   */
+/****************************/
+
+.view-issued-medicines, .view-add-medicines {
+	clear: both;
+	width: 70%;
+	max-width: 600px;
+	margin: 0 auto;
+}
+
+form p > button, .add-medicines button {
+	background-color: black;
+	color: white;
+	border-radius: 20px;
+	padding: 10px;
+	width: 130px;
+	margin-right: 5%;
+	cursor: pointer;
+	text-align: center;
+}
+
+form div > p {
+	display: inline;
+	margin-left: 8%;
+	margin-right: 4%;
+}
+
+form div {
+	width: 100%;
+	max-width: 400px;
+	margin: 0 auto;
+	margin-top: 1%;
+	margin-bottom: 1%;
+}
+.view-medicines-add-form {
+	width: 70%;
+}
+
+.view-add-medicines table tr {
+	width: 600px;
+	margin:0px;
+}
+
+.view-add-medicines table input {
+	width: 100%;
+	padding-right: 0px;
+	padding-left: 0px;
+}
+
+.update-medicines {
+	width:500px;
+	margin: 0 auto;
+	margin-top: 2%;
+}
+
+
+/****************************/
+/*     PATIENT BILLING      */
+/****************************/
+
+.billing-text {
+	clear:both;
+	display: flex;
+	flex-direction: row;
+    justify-content: flex-end;
+	width: 100%;
+	max-width: 1100px;
+	margin: 0 auto;
+}
+
+#text{
+	display: inline;
+	margin-left: 5%;
+}
+
+#text-column, .column td {
+	background-color: #269bf4;
+	text-decoration: none;
+	border: none;
+	border-collapse: collapse;
+	border-bottom: none;
 }

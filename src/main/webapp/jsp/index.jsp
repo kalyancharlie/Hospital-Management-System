@@ -18,7 +18,7 @@
                     <label for="username">Username</label>
                     <label for="password">Password</label>                    
                 </div>
-                <div class="form-inputs">
+                <div class="form-all-inputs">
                     <input type="text" placeholder="Enter username" id="username" name="username" required><br/>
                     <input type="password" placeholder="******" id="password" name="password" required>
                     <input type="text" name="option" value="login" hidden="true">
