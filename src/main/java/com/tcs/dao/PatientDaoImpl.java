@@ -8,12 +8,13 @@ import java.sql.SQLException;
 import com.tcs.model.Diagnostic;
 import com.tcs.model.Medicine;
 import com.tcs.model.Patient;
+import com.tcs.model.User;
 import com.tcs.util.DbConnection;
 
 public class PatientDaoImpl implements PatientDao{
 
 	@Override
-	public String validateLogin(String username, String password) {
+	public String validateLogin(User user) {
 		Connection con = null;
 		PreparedStatement ps = null;
 		ResultSet rs = null;
@@ -21,12 +22,12 @@ public class PatientDaoImpl implements PatientDao{
 		try {
 			con = DbConnection.getConnection();
 			ps = con.prepareStatement("SELECT role FROM userstore WHERE username = ? AND password = ?");
-			ps.setString(1, username);
-			ps.setString(2, password);
+			ps.setString(1, user.getUsername());
+			ps.setString(2, user.getPassword());
 			rs = ps.executeQuery();
 			while(rs.next()) {
 				role = rs.getString("role");
-				}
+			}
 				return role;
 		} catch(SQLException e) {
 			System.out.println(e.getErrorCode()+" "+e.getMessage());
@@ -56,26 +57,25 @@ public class PatientDaoImpl implements PatientDao{
 
 	@Override
 	public boolean patientRegistration(Patient patient) {
-		// TODO Auto-generated method stub
 		Connection con = null;
 		PreparedStatement ps = null;
-		ResultSet rs = null;
 		boolean flag = false;
 		try {
 			con = DbConnection.getConnection();
-			ps = con.prepareStatement("insert into patient(ssn_id,name,age,doj,bed,address,city,state,status) values(?,?,?,?,?,?,?,?,?)");
+			ps = con.prepareStatement("INSERT INTO PATIENT (ssn_id, id, name, age, doj, bed, address, city, state, status) values (?,?,?,?,?,?,?,?,?,?)");
 			ps.setLong(1, patient.getSsnId());
-			ps.setString(2, patient.getName());
-			ps.setInt(3, patient.getAge());
-			ps.setDate(4, patient.getDoj());
-			ps.setString(5, patient.getTypeOfBed());
-			ps.setString(6, patient.getAddress());
-			ps.setString(7, patient.getCity());
-			ps.setString(8, patient.getState());
-			ps.setString(9, "active");
+			ps.setLong(2, patient.getId());
+			ps.setString(3, patient.getName());
+			ps.setInt(4, patient.getAge());
+			ps.setDate(5, patient.getDoj());
+			ps.setString(6, patient.getTypeOfBed());
+			ps.setString(7, patient.getAddress());
+			ps.setString(8, patient.getCity());
+			ps.setString(9, patient.getState());
+			ps.setString(10, "active");
 			int i = ps.executeUpdate();
 			if(i==1) {
-				System.out.println("Patient Registered Successfully with Id: ");
+				System.out.println("Patient Registered Successfully with Id: "+patient.getId());
 				flag = true;
 			}
 			return flag;
@@ -87,7 +87,6 @@ public class PatientDaoImpl implements PatientDao{
 
 	@Override
 	public boolean updatePatient(Patient patient) {
-		// TODO Auto-generated method stub
 		return false;
 	}
 
@@ -142,25 +141,21 @@ public class PatientDaoImpl implements PatientDao{
 
 	@Override
 	public Patient[] viewAllPatients() {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public Medicine[] viewMedcines(int id) {
-		// TODO Auto-generated method stub
+	public Medicine[] viewMedcines(long id) {
 		return null;
 	}
 
 	@Override
-	public Diagnostic[] viewDiagnostics(int id) {
-		// TODO Auto-generated method stub
+	public Diagnostic[] viewDiagnostics(long id) {
 		return null;
 	}
 
 	@Override
-	public double generateBill(int id) {
-		// TODO Auto-generated method stub
+	public double generateBill(long id) {
 		return 0;
 	}
 }
