@@ -1,7 +1,6 @@
 package com.tcs.dao;
 
 import java.sql.Connection;
-import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -11,7 +10,7 @@ import com.tcs.model.Medicine;
 import com.tcs.model.Patient;
 import com.tcs.util.DbConnection;
 
-public class PatientDaoImpl extends PatientDao{
+public class PatientDaoImpl implements PatientDao{
 
 	@Override
 	public String validateLogin(String username, String password) {
@@ -21,7 +20,7 @@ public class PatientDaoImpl extends PatientDao{
 		String role = null;
 		try {
 			con = DbConnection.getConnection();
-			ps = con.prepareStatement("SELECT role from userstore where username=? AND password=?");
+			ps = con.prepareStatement("SELECT role FROM userstore WHERE username = ? AND password = ?");
 			ps.setString(1, username);
 			ps.setString(2, password);
 			rs = ps.executeQuery();
@@ -34,6 +33,26 @@ public class PatientDaoImpl extends PatientDao{
 			return role;
 		}
 	}
+	
+	@Override
+	public long patientCount() {
+		long count = 0;
+		Connection con = null;
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		try {
+			con = DbConnection.getConnection();
+			ps = con.prepareStatement("SELECT COUNT(*) FROM patient");
+			rs = ps.executeQuery();
+			while(rs.next()) {
+				count = rs.getLong(1);
+			}
+			return count;
+		} catch(SQLException e) {
+			System.out.println(e.getErrorCode()+" "+e.getMessage());
+			return count;
+		}
+	}
 
 	@Override
 	public boolean patientRegistration(Patient patient) {
@@ -41,6 +60,7 @@ public class PatientDaoImpl extends PatientDao{
 		Connection con = null;
 		PreparedStatement ps = null;
 		ResultSet rs = null;
+		boolean flag = false;
 		try {
 			con = DbConnection.getConnection();
 			ps = con.prepareStatement("insert into patient(ssn_id,name,age,doj,bed,address,city,state,status) values(?,?,?,?,?,?,?,?,?)");
@@ -53,15 +73,15 @@ public class PatientDaoImpl extends PatientDao{
 			ps.setString(7, patient.getCity());
 			ps.setString(8, patient.getState());
 			ps.setString(9, "active");
-			int i=ps.executeUpdate();
+			int i = ps.executeUpdate();
 			if(i==1) {
-				return true;
-			} else {
-				return false;
+				System.out.println("Patient Registered Successfully with Id: ");
+				flag = true;
 			}
+			return flag;
 		} catch(SQLException e) {
 			System.out.println(e.getErrorCode()+" "+e.getMessage());
-			return false;
+			return flag;
 		}
 	}
 

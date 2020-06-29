@@ -4,8 +4,9 @@ import com.tcs.model.Diagnostic;
 import com.tcs.model.Medicine;
 import com.tcs.model.Patient;
 
-public abstract class PatientDao {
-	public abstract String validateLogin(String username, String password);
+public interface PatientDao {
+	String validateLogin(String username, String password);
+	public abstract long patientCount();
 	public abstract boolean patientRegistration(Patient patient);
 	public abstract boolean updatePatient(Patient patient);
 	public abstract boolean deletePatient(int id);
