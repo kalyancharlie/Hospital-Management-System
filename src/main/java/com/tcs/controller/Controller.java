@@ -67,6 +67,22 @@ public class Controller extends HttpServlet {
 				request.setAttribute("msg", "Patient not Registered");
 				request.getRequestDispatcher("/jsp/registration.jsp").include(request, response);
 			}
-		}
+		}else if(option.equalsIgnoreCase("getPatientObject")) {
+			long id= Long.parseLong(request.getParameter("ssnId"));
+			Patient pt=service.get(id); 
+			if(pt!=null) {
+				request.setAttribute("pt", pt);
+				request.getRequestDispatcher("/jsp/delete.jsp").include(request, response);
+			}else {
+				request.setAttribute("msg", "Invalid SSN ID");
+				request.getRequestDispatcher("/jsp/registration.jsp").include(request, response);
+			}
+		}else if(option.equalsIgnoreCase("deletePatient")) {
+			long id = Long.parseLong(request.getParameter("id"));
+			if(service.delete(id)) {
+				PrintWriter out = response.getWriter();
+				out.print("Patient deleted successfully");
+			}
+			}
 	}
 }

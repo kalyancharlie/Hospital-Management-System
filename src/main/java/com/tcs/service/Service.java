@@ -12,4 +12,12 @@ public class Service {
 	public boolean register(Patient pt) {
 		return obj.patientRegistration(pt);
 	}
+	public Patient get(long id) {
+		// TODO Auto-generated method stub
+		return obj.searchPatient(id);
+	}
+	public boolean delete(long id) {
+		// TODO Auto-generated method stub
+		return obj.deletePatient(id);
+	}
 }
