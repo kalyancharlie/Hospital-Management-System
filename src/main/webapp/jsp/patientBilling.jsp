@@ -122,7 +122,7 @@
     	<form>
     		<input type="text" name="option" value="dischargePatient" hidden>
     		<input type="text" name="id" value="" hidden>
-    		<button id="billingButton" type="submit">Confirm</button><p id="text">Grand Total<span id="text">Rs.71000</span></p>
+    		<button id="diagnosticSubmit" type="submit">Confirm</button><p id="text">Grand Total<span id="text">Rs.71000</span></p>
     	</form>
     </div>
 </body>

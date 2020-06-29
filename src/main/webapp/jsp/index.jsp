@@ -11,6 +11,12 @@
     <div class="heading">
         <h1>ABC Hospital Management System</h1>
     </div>
+    <%
+    	String msg = (String)request.getAttribute("msg");
+    	if(msg == null) {
+    		msg = "";
+    	}
+    %>
     <div class="login-form">
         <form action="${pageContext.request.contextPath}/Controller" method="POST">
             <div class="form">
@@ -23,6 +29,7 @@
                     <input type="text" placeholder="Enter username" id="username" name="username" autofocus required><br/>
                     <input type="password" placeholder="******" id="password" name="password" required>
                 </div>
+                <p id="message"><%= msg %></p>
                 <div class="form-controls">
                     <input type="submit" value="Login">
                     <input type="reset" value="Reset">

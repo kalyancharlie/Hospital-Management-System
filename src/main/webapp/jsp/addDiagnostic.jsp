@@ -80,30 +80,52 @@
             </tbody>
         </table>
     </div>
-    <form action="/" method="POST">
+    <form action="${pageContext.request.contextPath}/jsp" method="POST">
     	<div>
     		<p id="btn"><button type="submit">Add Diagnostics</button></p>
-        	<p id="btn"><button>Add</button></p>
     	</div>
     </form>
-	    <div class="view-add-medicines">
-	        <table>
-	            <thead>
-	                <tr>
-	                    <th>Name of the test</th>
-	                    <th>Amount</th>
-	                </tr>
-	            </thead>
-	            <tbody>
-	                <tr>
-	                    <td><input type="text" required></td>
-	                    <td><input type="text" required></td>
-	                </tr>
-	            </tbody>
-	        </table>
+    <div class="view-issued-medicines">
+        <table>
+            <thead>
+                <tr>
+                    <th>Name of the test</th>
+                    <th>Amount</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>CBP</td>
+                    <td>RS.2000</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="view-add-medicines">
+        <div class="left-table">
+            <table>
+            <form action="${pageContext.request.contextPath}" method="POST">
+                <tbody>
+                    <tr>
+                        <td>
+                            <select name="testName">
+                                <option value="CBP">CBP</option>
+                                <option value="X-RAY">X-RAY</option>
+                            </select></td>
+                        <td width="38%">Amount From DB</td>
+                    </tr>
+                </tbody>
+            </table>
         </div>
+        <div class="right-button">
+            <button id="btnnew" type="submit">Add</button>
+        </div>
+        </form>
+    </div>
     <div class="form-controls-action update-medicines">
-        <button type="submit">Update</button>
+        <form action="${pageContext.request.contextPath}/jsp/addDiagnostic.jsp" method="POST">
+            <button type="submit" id="diagnosticSubmit">Update</button>
+        </form>
     </div>
 </body>
 </html>

@@ -36,18 +36,25 @@
             </div>
         </div>
     </div>
+    <%
+    	String msg = (String)request.getAttribute("msg");
+    	if(msg == null) {
+    		msg = "";
+    	}
+    %>
     <div class="registration-form">
     	<h2 class="center">Patient Registration</h2>
+    	<p id="message"><%= msg %></p>
         <form action="${pageContext.request.contextPath}/Controller" method="POST">
         	<input type="hidden" name="option" value="registration"/>
             <div class="form">
-            	<div class="form-labels">
+            	<div class="form-labels" style="width:35%; margin-left:-7%;">
                     <label for="ssnId">Patient SSN ID *</label>
                     <label for="patientName">Patient Name *</label>
                     <label for="patientAge">Patient Age *</label>
                     <label for="dateOfAdmission">Date of Admission *</label>
                     <label for="typeOfBed">Type of bed *</label>
-                    <label for="address">Address *</label>
+                    <label for="address">Address *</label><br/><br/>
                     <label for="state">State *</label>
                     <label for="city">City *</label>                
                 </div>

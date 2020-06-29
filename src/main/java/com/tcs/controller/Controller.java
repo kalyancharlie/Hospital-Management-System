@@ -36,9 +36,6 @@ public class Controller extends HttpServlet {
 			operation = "";
 		}
 		
-		System.out.println(option);
-		System.out.println(operation);
-		
 		// LOGIN ROLE CHECK
 		if(option.equalsIgnoreCase("LOGIN")) {
 			String role = null;
@@ -49,29 +46,30 @@ public class Controller extends HttpServlet {
 			user.setUsername(username);
 			user.setPassword(password);
 			role = service.validate(user);
+			role = role != null ? role: "";
 			
 			// ADMISSION DESK EXECUTIVE ROUTE
 			if(role.equalsIgnoreCase("A")) {
-				System.out.println("Admission Executive Loggged In. Role: "+role);
+				System.out.println(new java.util.Date()+" || "+"Admission Executive Loggged In. Role: "+role);
 				request.getRequestDispatcher("/jsp/registration.jsp").forward(request, response);
 			}
 			
 			// PHARMACIST ROUTE
 			else if(role.equalsIgnoreCase("P")) {
-				System.out.println("Pharmacist Logged In. Role: "+role);
+				System.out.println(new java.util.Date()+" || "+"Pharmacist Logged In. Role: "+role);
 				request.getRequestDispatcher("/jsp/patientMedicineIssue.jsp");
 			} 
 			
 			// DIAGNOSTIC ROUTE
 			else if(role.equalsIgnoreCase("D")) {
-				System.out.println("Diagnostic Executive Logged In. Role: "+role);
+				System.out.println(new java.util.Date()+" || "+"Diagnostic Executive Logged In. Role: "+role);
 				request.getRequestDispatcher("/jsp/patientDiagnosticIssue.jsp");
 			} 
 			
 			// LOGIN FAILED
 			else {
 				request.setAttribute("msg", "Error! Login Failed");
-				System.out.println("Login Failed");
+				System.out.println(new java.util.Date()+" || "+"Login Failed");
 				request.getRequestDispatcher("/jsp/index.jsp").include(request, response);
 			}
 		}
@@ -116,8 +114,19 @@ public class Controller extends HttpServlet {
 					request.setAttribute("patient", patient);
 					request.getRequestDispatcher("/jsp/update.jsp").include(request, response);
 				} else {
-					request.setAttribute("msg", "Patient Not Found with the Id: "+id);
+					request.setAttribute("msg", "Patient Details Not Found with Id: ".concat(String.valueOf(id)));
 					request.getRequestDispatcher("/jsp/update.jsp").include(request, response);
+				}
+			}
+			
+			// GET PATIENT OBJECT FOR DELETING
+			else if(page.equalsIgnoreCase("DELETE")) {
+				if(patient != null) {
+					request.setAttribute("patient", patient);
+					request.getRequestDispatcher("/jsp/delete.jsp").include(request, response);
+				} else {
+					request.setAttribute("msg", "Patient Details Not Found with Id: ".concat(String.valueOf(id)));
+					request.getRequestDispatcher("/jsp/delete.jsp").include(request, response);
 				}
 			}
 			
@@ -128,15 +137,38 @@ public class Controller extends HttpServlet {
 					request.getRequestDispatcher("/jsp/viewPatient.jsp").include(request, response);
 				}
 				else {
-					request.setAttribute("msg", "Invalid SSN ID");
+					request.setAttribute("msg", "Patient Details Not Found with Id: ".concat(String.valueOf(id)));
 					request.getRequestDispatcher("/jsp/viewPatient.jsp").include(request, response);
+				}
+			}
+			
+			// GET PATIENT OBJECT FOR MEDICINE ISSUE
+			else if(page.equalsIgnoreCase("PATIENTMEDICINEISSUE")) {
+				if(patient!=null) {
+					request.setAttribute("patient", patient);
+					request.getRequestDispatcher("/jsp/patientMedicineIssue.jsp").include(request, response);
+				}
+				else {
+					request.setAttribute("msg", "Patient Details Not Found with Id: ".concat(String.valueOf(id)));
+					request.getRequestDispatcher("/jsp/patientMedicineIssue.jsp").include(request, response);
+				}
+			}
+			
+			// GET PATIENT OBJECT FOR DIAGNOSTIC ISSUE
+			else if(page.equalsIgnoreCase("PATIENTDIAGNOSTICISSUE")) {
+				if(patient!=null) {
+					request.setAttribute("patient", patient);
+					request.getRequestDispatcher("/jsp/patientDiagnosticIssue.jsp").include(request, response);
+				}
+				else {
+					request.setAttribute("msg", "Patient Details Not Found with Id: ".concat(String.valueOf(id)));
+					request.getRequestDispatcher("/jsp/patientDiagnosticIssue.jsp").include(request, response);
 				}
 			}
 		}
 		
 		// UPDATE PATIENT
 		else if(operation.equalsIgnoreCase("updatePatient")) {
-			System.out.println("Enter update filed");
 			Patient patient = new Patient();
 			patient.setId(Long.parseLong(request.getParameter("id")));
 			patient.setName(request.getParameter("patientName"));
@@ -161,7 +193,7 @@ public class Controller extends HttpServlet {
 		}
 		
 		// DELETE PATIENT
-		else if(option.equalsIgnoreCase("deletePatient")) {
+		else if(operation.equalsIgnoreCase("DELETEPATIENT")) {
 			long id = Long.parseLong(request.getParameter("id"));
 			
 			// DELETE PATIENT SUCCESSFUL
@@ -169,12 +201,12 @@ public class Controller extends HttpServlet {
 				request.setAttribute("msg", "Patient Deleted Successfully");
 				request.getRequestDispatcher("/jsp/delete.jsp").include(request, response);
 			}
+			
+			// DELETE PATIENT FAILED
 			else {
-				request.setAttribute("msg", "Invalid SSN ID");
+				request.setAttribute("msg", "Deletion Failed for Patient ID: "+id);
 				request.getRequestDispatcher("/jsp/delete.jsp").include(request, response);
 			}
-		}
-		
-		
+		}		
 	}
 }

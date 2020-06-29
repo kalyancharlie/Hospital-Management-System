@@ -27,7 +27,7 @@ public class PatientDaoImpl implements PatientDao{
 			while(rs.next()) {
 				role = rs.getString("role");
 			}
-				return role;
+			return role;
 		} catch(SQLException e) {
 			System.out.println(e.getErrorCode()+" "+e.getMessage());
 			return role;
@@ -67,7 +67,7 @@ public class PatientDaoImpl implements PatientDao{
 			ps.setString(10, "active");
 			int i = ps.executeUpdate();
 			if(i==1) {
-				System.out.println("Patient Registered Successfully with Id: "+patient.getId());
+				System.out.println(new java.util.Date()+" || "+"Patient Registered Successfully with Id: "+patient.getId());
 				flag = true;
 			}
 			return flag;
@@ -92,11 +92,11 @@ public class PatientDaoImpl implements PatientDao{
 			ps.setLong(8, patient.getId());
 			i = ps.executeUpdate();
 			if(i>0) {
-				System.out.println("Patient with Id: "+patient.getId()+" Details Updated Successfully");
+				System.out.println(new java.util.Date()+" || "+"Patient with Id: "+patient.getId()+" Details Updated Successfully");
 				return true;
 			}
 		} catch(SQLException e) {
-			System.out.println("Patient with Id: "+patient.getId()+" Details Failed to Update");
+			System.out.println(new java.util.Date()+" || "+"Patient with Id: "+patient.getId()+" Details Failed to Update");
 			System.out.println(e.getErrorCode()+" "+e.getMessage());
 			return false;
 		}
@@ -105,16 +105,12 @@ public class PatientDaoImpl implements PatientDao{
 
 	@Override
 	public boolean deletePatient(long id) {
-		Connection con = null;
-		PreparedStatement ps = null;
-		ResultSet rs = null;
 		boolean flag = false;
 		try {
-			con = DbConnection.getConnection();
-			ps = con.prepareStatement("delete from patient where id=?");
+			ps = con.prepareStatement("DELETE FROM patient WHERE id=?");
 			ps.setLong(1, id);
 			if(ps.executeUpdate()==1) {
-				System.out.println("Deleted Patient with Id: "+id);
+				System.out.println(new java.util.Date()+" || "+"Deleted Patient with Id: "+id);
 				flag=true;
 			}
 		}catch(SQLException e) {
@@ -125,13 +121,9 @@ public class PatientDaoImpl implements PatientDao{
 
 	@Override
 	public Patient searchPatient(long id) {
-		Connection con = null;
-		PreparedStatement ps = null;
-		ResultSet rs = null;
 		Patient patient = new Patient();
 		try {
-			con = DbConnection.getConnection();
-			ps = con.prepareStatement("select * from patient where id = ?");
+			ps = con.prepareStatement("SELECT * FROM patient WHERE id = ?");
 			ps.setLong(1, id);
 			rs = ps.executeQuery();
 			while(rs.next()) {
@@ -142,13 +134,16 @@ public class PatientDaoImpl implements PatientDao{
 				patient.setTypeOfBed(rs.getString(6));
 				patient.setAddress(rs.getString(7));
 				patient.setCity(rs.getString(8));
-				patient.setState(rs.getString(9));	
+				patient.setState(rs.getString(9));
 			}
-			System.out.println("Got Detail with Patient Id: "+id);
-			return patient;
+			if(patient.getId() != 0) {
+				System.out.println(new java.util.Date()+" || "+"Got Details of Patient with Id: "+patient.getId());
+				return patient;
+			}
 		}catch(SQLException e) {
 				System.out.println(e.getErrorCode()+" "+e.getMessage());
 		}
+		System.out.println(new java.util.Date()+" || "+"No Details Found with Id: "+id);
 		return null;
 	}
 

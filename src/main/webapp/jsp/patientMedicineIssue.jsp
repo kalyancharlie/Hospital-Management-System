@@ -1,4 +1,4 @@
-<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
+<%@ page import="com.tcs.model.Patient" language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
 <!DOCTYPE html>
 <html>
@@ -36,12 +36,30 @@
             </div>
         </div>
     </div><br/><br/><br/>
+    <%
+    	Patient patient = null;
+    	String patientId = "";
+        if(request.getAttribute("patient") != null) {
+        	patient = (Patient)request.getAttribute("patient");
+        	patientId = String.valueOf(patient.getId());               		
+        }
+        String msg = (String)request.getAttribute("msg");
+    	if(msg == null) {
+    		msg = "";
+    	}
+    %>
     <div class="form-search-action">
     	<form action="${pageContext.request.contextPath}/Controller" method="POST">
-    		<input type="text" name="id" placeholder="Enter patient id" autofocus required>
+    		<input type="text" name="option" value="getPatient" hidden>
+    		<input type="text" name="page" value="patientMedicineIssue" hidden>
+    		<input type="text" name="id" placeholder="Enter patient id" autofocus required value="<%= patientId %>">
         	<button type="submit">Search</button>
     	</form>
     </div>
+    <p id="message"><%= msg %></p>
+    <% 
+    	if(patient != null) { 
+    %>
     <div class="view-patients-form-new">
         <table>
             <thead>
@@ -56,12 +74,12 @@
             </thead>
             <tbody>
                 <tr>
-                    <td>1234</td>
-                    <td>Joseph</td>
-                    <td>36</td>
-                    <td>Rick Street, Ameerpet, Hyderabad</td>
-                    <td>03-May-2020</td>
-                    <td>Single</td>
+                    <td><%= patient.getId() %></td>
+                    <td><%= patient.getName() %></td>
+                    <td><%= patient.getAge() %></td>
+                    <td><%= patient.getAddress() %></td>
+                    <td><%= patient.getDoj() %></td>
+                    <td><%= patient.getTypeOfBed() %></td>
                 </tr>
             </tbody>
         </table>
@@ -69,9 +87,10 @@
     <div class="form-controls-action">
     	<form action="${pageContext.request.contextPath}/Controller" method="POST">
     		<input type="text" name="option" value="routeToMedicine" hidden>
-    		<input type="text" name="id" value="" hidden>
+    		<input type="text" name="id" value="<%= patientId %>" hidden>
     		<button id="search" type="submit">Issue Medicines</button>
     	</form>
     </div>
+    <% } %>
 </body>
 </html>

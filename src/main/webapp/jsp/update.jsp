@@ -59,10 +59,15 @@
             address = String.valueOf(patient.getAddress());
             state = String.valueOf(patient.getState());
             city = String.valueOf(patient.getCity());                		
-        }                	
+        }
+        String msg = (String)request.getAttribute("msg");
+    	if(msg == null) {
+    		msg = "";
+    	}
     %>
     <div class="registration-form">
     	<h2 class="center">Update Patient</h2>
+    	<p id="message"><%= msg %></p>
     	<form></form>
         	<input type="text" name="option" value="updatePatient" hidden>
             <div class="form">
@@ -105,17 +110,16 @@
                         <option value="none" selected disabled hidden></option>
                     	<option value="Visakhapatnam" <%= citySelected = city.equalsIgnoreCase("Visakhapatnam") ? "Selected" : "" %>>Visakhapatnam</option>
                     	<option value="Vijayawada" <%= citySelected = city.equalsIgnoreCase("Vijayawada") ? "Selected" : "" %>>Vijayawada</option>
-                    </select><br/> 
+                    </select><br/>
+                    <div class="note">
+                    	<p>* Fields are mandatory</p>
+                	</div>
                     <div class="form-controls-action">
                     	<button type="submit">Update</button>
                 	</div>
         		</form>
                 </div>
-                <div class="note">
-                    <p>* Fields are mandatory</p>
-                </div>
             </div>
     </div>
-    <p><%= request.getAttribute("msg") %></p>
 </body>
 </html>

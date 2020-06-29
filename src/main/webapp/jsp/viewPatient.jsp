@@ -1,4 +1,4 @@
-<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
+<%@ page import="com.tcs.model.Patient" language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
 <!DOCTYPE html>
 <html>
@@ -36,11 +36,41 @@
             </div>
         </div>
     </div>
+    <%
+    	Patient patient = null;
+        String name = "";
+        String age = "";
+        String doj = "";
+        String typeOfBed = "";
+        String address = "";
+        String state = "";
+        String city = "";
+        String selectedId = "";
+        String bedSelected = "";
+        String stateSelected = "";
+        String citySelected = "";
+        if(request.getAttribute("patient") != null) {
+        	patient = (Patient)request.getAttribute("patient"); 
+        	selectedId = String.valueOf(patient.getId());
+            name = patient.getName();
+            age = String.valueOf(patient.getAge());
+            doj = String.valueOf(patient.getDoj());
+            typeOfBed = String.valueOf(patient.getTypeOfBed());
+            address = String.valueOf(patient.getAddress());
+            state = String.valueOf(patient.getState());
+            city = String.valueOf(patient.getCity());                		
+        }
+        String msg = (String)request.getAttribute("msg");
+    	if(msg == null) {
+    		msg = "";
+    	}
+    %>
     <div class="registration-form">
     	<h2 class="center">View Patient</h2>
+    	<p id="message"><%= msg %></p>
             <div class="form">
             	<div class="form-labels">
-                    <label for="ssnId">Patient SSN ID *</label>
+                    <label for="ssnId">Patient ID *</label>
                     <label for="patientName">Patient Name *</label>
                     <label for="patientAge">Patient Age *</label>
                     <label for="dateOfAdmission">Date of Admission *</label>
@@ -52,32 +82,30 @@
                 <div class="form-inputs">
                 <form action="${pageContext.request.contextPath}/Controller" method="POST">
                 	<input type="text" name="option" value="getPatient" hidden>
-                    <input type="text" placeholder="" id="ssnId" name="ssnId" autofocus required><button type="submit">Get</button><br/>
+                	<input type="text" name="page" value="search" hidden>
+                    <input type="text" placeholder="" id="id" name="id" autofocus required value="<%= selectedId %>"><button type="submit">Get</button><br/>
                 </form>
-                    <input type="text" placeholder="" id="patientName" name="patientName"/><br/>
-                    <input type="text" placeholder="" id="patientAge" name="patientAge"/><br/>
-                    <input type="date" placeholder=" " id="dateOfAdmission" name="dateOfAdmission"/><br/>
+                    <input type="text" placeholder="" id="patientName" name="patientName" value="<%= name %>"/><br/>
+                    <input type="text" placeholder="" id="patientAge" name="patientAge" value="<%= age %>"/><br/>
+                    <input type="date" placeholder=" " id="dateOfAdmission" name="dateOfAdmission" value="<%= doj %>"/><br/>
                     <select name="typeOfBed" id="typeOfBed">
                         <option value="none" selected disabled hidden></option>
-                    	  <option value="General Ward">General ward</option>
-  						  <option value="Semi Sharing">Semi sharing</option>
-  						  <option value="Single Room">Single room</option>
+                    	  <option value="General Ward" <%= bedSelected = typeOfBed.equalsIgnoreCase("General Ward") ? "Selected" : "" %>>General ward</option>
+  						  <option value="Semi Sharing" <%= bedSelected = typeOfBed.equalsIgnoreCase("Semi Sharing") ? "Selected" : "" %>>Semi sharing</option>
+  						  <option value="Single Room" <%= bedSelected = typeOfBed.equalsIgnoreCase("Single Room") ? "Selected" : "" %>>Single room</option>
                     </select><br/>
-                    <textarea type="text" placeholder="" id="addresas" name="address" rows="3"></textarea><br/>
+                    <textarea placeholder="" id="addresas" name="address" rows="3"><%= address %></textarea><br/>
                     <select name="state" id="state">
                         <option value="none" selected disabled hidden></option>
-                 		<option value="Andhra Pradesh">Andhra Pradesh</option>
-                 		<option value="Telangana">Telangana</option>
-                 		<option value="Odisa">Odisa</option>
+                 		<option value="Andhra Pradesh" <%= stateSelected = state.equalsIgnoreCase("Andhra Pradesh") ? "Selected" : "" %>>Andhra Pradesh</option>
+                 		<option value="Telangana" <%= stateSelected = state.equalsIgnoreCase("Telangana") ? "Selected" : "" %>>Telangana</option>
+                 		<option value="Odisa" <%= stateSelected = state.equalsIgnoreCase("Odisa") ? "Selected" : "" %>>Odisa</option>
                     </select><br/>
                     <select name="city" id="city">
                         <option value="none" selected disabled hidden></option>
-                    	<option value="Visakhapatnam">Visakhapatnam</option>
-                    	<option value="Vijayawada">Vijayawada</option>
+                    	<option value="Visakhapatnam" <%= citySelected = city.equalsIgnoreCase("Visakhapatnam") ? "Selected" : "" %>>Visakhapatnam</option>
+                    	<option value="Vijayawada" <%= citySelected = city.equalsIgnoreCase("Vijayawada") ? "Selected" : "" %>>Vijayawada</option>
                     </select><br/>
-                </div>
-                <div class="note">
-                    <p>* Fields are mandatory</p>
                 </div>
             </div>
     </div>
