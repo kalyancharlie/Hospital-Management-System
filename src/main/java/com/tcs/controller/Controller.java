@@ -29,6 +29,15 @@ public class Controller extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		Service service = new Service();
 		String option = request.getParameter("option");
+		String operation = request.getParameter("operation");
+		if(option == null) {
+			option = "";
+		} if(operation == null) {
+			operation = "";
+		}
+		
+		System.out.println(option);
+		System.out.println(operation);
 		
 		// LOGIN ROLE CHECK
 		if(option.equalsIgnoreCase("LOGIN")) {
@@ -95,21 +104,59 @@ public class Controller extends HttpServlet {
 			}
 		}
 		
-		// VIEW PATIENT
-		else if(option.equalsIgnoreCase("getPatientObject")) {
-			long id= Long.parseLong(request.getParameter("ssnId"));
-			Patient patient=service.get(id); 
+		// GET PATIENT OBJECT
+		else if(option.equalsIgnoreCase("GETPATIENT")) {
+			long id= Long.parseLong(request.getParameter("id"));
+			String page = request.getParameter("page");
+			Patient patient = service.get(id);
 			
-			// VIEW PATIENT SUCCESSFUL
-			if(patient!=null) {
-				request.setAttribute("patient", patient);
-				request.getRequestDispatcher("/jsp/viewPatient.jsp").include(request, response);
+			// GET PATIENT OBJECT FOR UPDATING
+			if(page.equalsIgnoreCase("UPDATE")) {
+				if(patient != null) {
+					request.setAttribute("patient", patient);
+					request.getRequestDispatcher("/jsp/update.jsp").include(request, response);
+				} else {
+					request.setAttribute("msg", "Patient Not Found with the Id: "+id);
+					request.getRequestDispatcher("/jsp/update.jsp").include(request, response);
+				}
+			}
+			
+			// GET PATIENT OBJECT FOR VIEWING
+			else if(page.equalsIgnoreCase("SEARCH")) {
+				if(patient!=null) {
+					request.setAttribute("patient", patient);
+					request.getRequestDispatcher("/jsp/viewPatient.jsp").include(request, response);
+				}
+				else {
+					request.setAttribute("msg", "Invalid SSN ID");
+					request.getRequestDispatcher("/jsp/viewPatient.jsp").include(request, response);
+				}
+			}
+		}
+		
+		// UPDATE PATIENT
+		else if(operation.equalsIgnoreCase("updatePatient")) {
+			System.out.println("Enter update filed");
+			Patient patient = new Patient();
+			patient.setId(Long.parseLong(request.getParameter("id")));
+			patient.setName(request.getParameter("patientName"));
+			patient.setAge(Integer.parseInt(request.getParameter("patientAge")));
+			patient.setDoj(Date.valueOf(request.getParameter("dateOfAdmission")));
+			patient.setTypeOfBed(request.getParameter("typeOfBed"));
+			patient.setAddress(request.getParameter("address"));
+			patient.setState(request.getParameter("state"));
+			patient.setCity(request.getParameter("city"));
+			
+			// UPDATE PATIENT SUCCESS
+			if(service.update(patient)) {
+				request.setAttribute("msg", "Patient Details Updated Successfully");
+				request.getRequestDispatcher("/jsp/update.jsp").include(request, response);
 			} 
 			
-			// VIEW PATIENT FAILED
+			// UPDATE PATIENT FAILED
 			else {
-				request.setAttribute("msg", "Invalid SSN ID");
-				request.getRequestDispatcher("/jsp/viewPatient.jsp").include(request, response);
+				request.setAttribute("msg", "Patient Details Update Failed");
+				request.getRequestDispatcher("/jsp/update.jsp").include(request, response);
 			}
 		}
 		
@@ -127,5 +174,7 @@ public class Controller extends HttpServlet {
 				request.getRequestDispatcher("/jsp/delete.jsp").include(request, response);
 			}
 		}
+		
+		
 	}
 }

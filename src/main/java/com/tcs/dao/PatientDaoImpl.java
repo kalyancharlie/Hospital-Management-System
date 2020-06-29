@@ -12,15 +12,14 @@ import com.tcs.model.User;
 import com.tcs.util.DbConnection;
 
 public class PatientDaoImpl implements PatientDao{
+	private Connection con = DbConnection.getConnection();
+	private PreparedStatement ps = null;
+	private ResultSet rs = null;
 
 	@Override
 	public String validateLogin(User user) {
-		Connection con = null;
-		PreparedStatement ps = null;
-		ResultSet rs = null;
 		String role = null;
 		try {
-			con = DbConnection.getConnection();
 			ps = con.prepareStatement("SELECT role FROM userstore WHERE username = ? AND password = ?");
 			ps.setString(1, user.getUsername());
 			ps.setString(2, user.getPassword());
@@ -38,11 +37,7 @@ public class PatientDaoImpl implements PatientDao{
 	@Override
 	public long patientCount() {
 		long count = 0;
-		Connection con = null;
-		PreparedStatement ps = null;
-		ResultSet rs = null;
 		try {
-			con = DbConnection.getConnection();
 			ps = con.prepareStatement("SELECT COUNT(*) FROM patient");
 			rs = ps.executeQuery();
 			while(rs.next()) {
@@ -57,11 +52,8 @@ public class PatientDaoImpl implements PatientDao{
 
 	@Override
 	public boolean patientRegistration(Patient patient) {
-		Connection con = null;
-		PreparedStatement ps = null;
 		boolean flag = false;
 		try {
-			con = DbConnection.getConnection();
 			ps = con.prepareStatement("INSERT INTO PATIENT (ssn_id, id, name, age, doj, bed, address, city, state, status) values (?,?,?,?,?,?,?,?,?,?)");
 			ps.setLong(1, patient.getSsnId());
 			ps.setLong(2, patient.getId());
@@ -87,6 +79,27 @@ public class PatientDaoImpl implements PatientDao{
 
 	@Override
 	public boolean updatePatient(Patient patient) {
+		int i =0;
+		try {
+			ps = con.prepareStatement("UPDATE patient SET name=?, age=?, doj=?, bed=?, address=?, city=?, state=? WHERE id=?");
+			ps.setString(1,patient.getName());
+			ps.setInt(2, patient.getAge());
+			ps.setDate(3, patient.getDoj());
+			ps.setString(4, patient.getTypeOfBed());
+			ps.setString(5, patient.getAddress());
+			ps.setString(6, patient.getCity());
+			ps.setString(7, patient.getState());
+			ps.setLong(8, patient.getId());
+			i = ps.executeUpdate();
+			if(i>0) {
+				System.out.println("Patient with Id: "+patient.getId()+" Details Updated Successfully");
+				return true;
+			}
+		} catch(SQLException e) {
+			System.out.println("Patient with Id: "+patient.getId()+" Details Failed to Update");
+			System.out.println(e.getErrorCode()+" "+e.getMessage());
+			return false;
+		}
 		return false;
 	}
 
@@ -115,24 +128,24 @@ public class PatientDaoImpl implements PatientDao{
 		Connection con = null;
 		PreparedStatement ps = null;
 		ResultSet rs = null;
-		Patient pt = new Patient();
+		Patient patient = new Patient();
 		try {
 			con = DbConnection.getConnection();
-			ps = con.prepareStatement("select * from patient where id=?");
+			ps = con.prepareStatement("select * from patient where id = ?");
 			ps.setLong(1, id);
 			rs = ps.executeQuery();
 			while(rs.next()) {
-				pt.setId(rs.getLong(2));
-				pt.setName(rs.getString(3));
-				pt.setAge(rs.getInt(4));
-				pt.setDoj(rs.getDate(5));
-				pt.setTypeOfBed(rs.getString(6));
-				pt.setAddress(rs.getString(7));
-				pt.setCity(rs.getString(8));
-				pt.setState(rs.getString(9));	
+				patient.setId(rs.getLong(2));
+				patient.setName(rs.getString(3));
+				patient.setAge(rs.getInt(4));
+				patient.setDoj(rs.getDate(5));
+				patient.setTypeOfBed(rs.getString(6));
+				patient.setAddress(rs.getString(7));
+				patient.setCity(rs.getString(8));
+				patient.setState(rs.getString(9));	
 			}
 			System.out.println("Got Detail with Patient Id: "+id);
-			return pt;
+			return patient;
 		}catch(SQLException e) {
 				System.out.println(e.getErrorCode()+" "+e.getMessage());
 		}

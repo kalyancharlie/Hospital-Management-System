@@ -11,8 +11,12 @@ public class Service {
 		return obj.validateLogin(user);
 	}
 	
-	public boolean register(Patient pt) {
-		return obj.patientRegistration(pt);
+	public boolean register(Patient patient) {
+		return obj.patientRegistration(patient);
+	}
+	
+	public boolean update(Patient patient) {
+		return obj.updatePatient(patient);
 	}
 	
 	public Patient get(long id) {
