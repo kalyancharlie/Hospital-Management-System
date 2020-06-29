@@ -66,7 +66,7 @@
   						  <option value="Semi Sharing">Semi sharing</option>
   						  <option value="Single Room">Single room</option>
                     </select><br/>
-                    <textarea type="text" placeholder="" id="addresas" name="address" rows="3"></textarea><br/>
+                    <textarea type="text" placeholder="" id="address" name="address" rows="3"></textarea><br/>
                     <select name="state" id="state">
                         <option value="none" selected disabled hidden></option>
                  		<option value="Andhra Pradesh">Andhra Pradesh</option>

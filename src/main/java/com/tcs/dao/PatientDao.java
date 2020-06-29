@@ -9,8 +9,8 @@ public interface PatientDao {
 	public abstract long patientCount();
 	public abstract boolean patientRegistration(Patient patient);
 	public abstract boolean updatePatient(Patient patient);
-	public abstract boolean deletePatient(int id);
-	public abstract Patient searchPatient(int id);
+	public abstract boolean deletePatient(long id);
+	public abstract Patient searchPatient(long id);
 	public abstract Patient[] viewAllPatients();
 	public abstract Medicine[] viewMedcines(int id);
 	public abstract Diagnostic[] viewDiagnostics(int id);

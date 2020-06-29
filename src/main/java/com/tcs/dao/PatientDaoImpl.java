@@ -92,14 +92,51 @@ public class PatientDaoImpl implements PatientDao{
 	}
 
 	@Override
-	public boolean deletePatient(int id) {
-		// TODO Auto-generated method stub
-		return false;
+	public boolean deletePatient(long id) {
+		Connection con = null;
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		boolean flag = false;
+		try {
+			con = DbConnection.getConnection();
+			ps = con.prepareStatement("delete from patient where id=?");
+			ps.setLong(1, id);
+			if(ps.executeUpdate()==1) {
+				System.out.println("Deleted Patient with Id: "+id);
+				flag=true;
+			}
+		}catch(SQLException e) {
+			e.printStackTrace();
+		}
+		return flag;
 	}
 
 	@Override
-	public Patient searchPatient(int id) {
-		// TODO Auto-generated method stub
+	public Patient searchPatient(long id) {
+		Connection con = null;
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		Patient pt = new Patient();
+		try {
+			con = DbConnection.getConnection();
+			ps = con.prepareStatement("select * from patient where id=?");
+			ps.setLong(1, id);
+			rs = ps.executeQuery();
+			while(rs.next()) {
+				pt.setId(rs.getLong(2));
+				pt.setName(rs.getString(3));
+				pt.setAge(rs.getInt(4));
+				pt.setDoj(rs.getDate(5));
+				pt.setTypeOfBed(rs.getString(6));
+				pt.setAddress(rs.getString(7));
+				pt.setCity(rs.getString(8));
+				pt.setState(rs.getString(9));	
+			}
+			System.out.println("Got Detail with Patient Id: "+id);
+			return pt;
+		}catch(SQLException e) {
+				System.out.println(e.getErrorCode()+" "+e.getMessage());
+		}
 		return null;
 	}
 
