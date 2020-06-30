@@ -150,40 +150,52 @@ public class PatientDaoImpl implements PatientDao{
 	}
 
 	@Override
-	public Patient[] viewAllPatients() {
+	public List<Patient> viewAllPatients() {
 		return null;
 	}
 
 	@Override
-	public Medicine[] viewMedcines(long id) {
+	public List<Medicine> viewPatientMedcines(long id) {
 		return null;
 	}
-
+	
+	@Override
+	public List<Medicine> viewMedicines(long id) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	
 	@Override
 	public List<Diagnostic> viewDiagnostics(long id) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public List<Diagnostic> viewPatientDiagnostics(long id) {
 		long did;
-		List<Diagnostic> diagnostic_list = new ArrayList<Diagnostic>();
+		List<Diagnostic> diagnosticList = new ArrayList<Diagnostic>();
 		try {
-			ps = con.prepareStatement("select did from patient_medicine where pid=?");
+			ps = con.prepareStatement("SELECT did FROM patient_diagnostic WHERE pid=?");
 			ps.setLong(1, id);
 			rs = ps.executeQuery();
 			while(rs.next()) {
 			did = rs.getLong(1);
-			PreparedStatement ps1 = con.prepareStatement("select * from medicine where did=?");
+			PreparedStatement ps1 = con.prepareStatement("SELECT * FROM medicine WHERE did=?");
 			ps1.setLong(1, did);
 			ResultSet rs1 = ps.executeQuery();
-			Diagnostic diagnostic = new Diagnostic();
 			while(rs1.next()) {
+				Diagnostic diagnostic = new Diagnostic();
 				diagnostic.setId(rs1.getLong(1));
 				diagnostic.setName(rs1.getString(2));
 				diagnostic.setAmount(rs1.getDouble(3));
+				diagnosticList.add(diagnostic);
 			}
-			diagnostic_list.add(diagnostic);
 			}
-		}catch(Exception e) {
+		} catch(Exception e) {
 			e.printStackTrace();
 		}
-		return diagnostic_list;
+		return diagnosticList;
 	}
 
 	@Override

@@ -14,8 +14,10 @@ public interface PatientDao {
 	boolean updatePatient(Patient patient);
 	boolean deletePatient(long id);
 	Patient searchPatient(long id);
-	abstract Patient[] viewAllPatients();
-	Medicine[] viewMedcines(long id);
+	List<Patient> viewAllPatients();
+	List<Medicine> viewPatientMedcines(long id);
+	List<Medicine> viewMedicines(long id);
+	List<Diagnostic> viewPatientDiagnostics(long id);
 	List<Diagnostic> viewDiagnostics(long id);
 	double generateBill(long id);
 }

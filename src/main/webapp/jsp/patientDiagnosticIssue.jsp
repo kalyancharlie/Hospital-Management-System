@@ -74,7 +74,7 @@
             </thead>
             <tbody>
                 <tr>
-                    <td><%= patient.getId() %></td>
+                    <td>${ patient.getId() }</td>
                     <td><%= patient.getName() %></td>
                     <td><%= patient.getAge() %></td>
                     <td><%= patient.getAddress() %></td>

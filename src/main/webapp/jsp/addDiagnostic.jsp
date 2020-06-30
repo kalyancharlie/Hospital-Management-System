@@ -112,7 +112,7 @@
                                 <option value="CBP">CBP</option>
                                 <option value="X-RAY">X-RAY</option>
                             </select></td>
-                        <td width="38%">Amount From DB</td>
+                        <td width="38%">Rs.1200</td>
                     </tr>
                 </tbody>
             </table>
