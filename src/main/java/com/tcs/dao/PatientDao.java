@@ -19,5 +19,5 @@ public interface PatientDao {
 	List<Medicine> viewMedicines(long id);
 	List<Diagnostic> viewPatientDiagnostics(long id);
 	List<Diagnostic> viewDiagnostics(long id);
-	double generateBill(long id);
+	Double[] generateBill(long id);
 }

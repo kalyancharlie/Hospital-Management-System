@@ -1,6 +1,7 @@
 package com.tcs.dao;
 
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -12,12 +13,15 @@ import com.tcs.model.Medicine;
 import com.tcs.model.Patient;
 import com.tcs.model.User;
 import com.tcs.util.DbConnection;
+import com.tcs.util.Utility;
 
 public class PatientDaoImpl implements PatientDao{
 	private Connection con = DbConnection.getConnection();
 	private PreparedStatement ps = null;
 	private ResultSet rs = null;
-
+	private static final String BED1= "General Ward";
+	private static final String BED2= "Semi Sharing";
+	private static final String BED3= "Single Room";
 	@Override
 	public String validateLogin(User user) {
 		String role = null;
@@ -167,8 +171,21 @@ public class PatientDaoImpl implements PatientDao{
 	
 	@Override
 	public List<Diagnostic> viewDiagnostics(long id) {
-		// TODO Auto-generated method stub
-		return null;
+		List<Diagnostic> diagnosticList = new ArrayList<Diagnostic>();
+		try {
+			ps = con.prepareStatement("select * from diagnostic");
+			rs = ps.executeQuery();
+			while(rs.next()) {
+				Diagnostic diagnostic = new Diagnostic();
+				diagnostic.setId(rs.getLong(1));
+				diagnostic.setName(rs.getString(2));
+				diagnostic.setAmount(rs.getDouble(3));
+				diagnosticList.add(diagnostic);
+			}
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
+		return diagnosticList;
 	}
 
 	@Override
@@ -181,7 +198,7 @@ public class PatientDaoImpl implements PatientDao{
 			rs = ps.executeQuery();
 			while(rs.next()) {
 			did = rs.getLong(1);
-			PreparedStatement ps1 = con.prepareStatement("SELECT * FROM medicine WHERE did=?");
+			PreparedStatement ps1 = con.prepareStatement("SELECT * FROM diagnostic WHERE did=?");
 			ps1.setLong(1, did);
 			ResultSet rs1 = ps.executeQuery();
 			while(rs1.next()) {
@@ -199,7 +216,46 @@ public class PatientDaoImpl implements PatientDao{
 	}
 
 	@Override
-	public double generateBill(long id) {
-		return 0;
+	public Double[] generateBill(long id) {
+		double diagnostic_ammount = 0;
+		double medicine_ammount = 0;
+		Date doj=null;
+		String bed=null;
+		double rate=0;
+		int days;
+		Double[] bill = new Double[5];
+		List<Diagnostic> diag;
+		List<Medicine> medicine;
+		try {
+			ps = con.prepareStatement("select doj, bed from patient where id=?");
+			rs = ps.executeQuery();
+			while(rs.next()) {
+				doj = rs.getDate(1);
+				bed = rs.getString(2);
+			}
+			days = Utility.numberOfDays(doj);
+			bill[0] = (double) days;
+			if(bed==BED1)
+				rate = 2000;
+			else if(bed==BED2)
+				rate = 4000;
+			else if(bed==BED3)
+				rate = 8000;
+			bill[1] = rate*days;
+			diag = viewPatientDiagnostics(id);
+			for(int i=0;i<diag.size();i++) {
+				diagnostic_ammount+= diag.get(i).getAmount();
+			}
+			bill[2] = diagnostic_ammount;
+			medicine = viewPatientMedcines(id);
+			for(int i=0;i<medicine.size();i++) {
+				medicine_ammount+= (medicine.get(i).getAmount()*medicine.get(i).getAmount());
+			}
+			bill[3] = medicine_ammount;
+			bill[4] = bill[1]+bill[2]+bill[3];
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
+		return bill;
 	}
 }
