@@ -1,4 +1,4 @@
-<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
+<%@ page import="com.tcs.model.Diagnostic, com.tcs.model.Patient, java.util.*" language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
 <!DOCTYPE html>
 <html>
@@ -36,6 +36,61 @@
             </div>
         </div>
     </div>
+    <%
+    	// PATIENT RECORD
+    	Patient patient = null;
+    	String patientId = "";
+        if(request.getAttribute("patient") != null) {
+        	patient = (Patient)request.getAttribute("patient");
+        	patientId = String.valueOf(patient.getId());               		
+        }
+        String msg = (String)request.getAttribute("msg");
+    	if(msg == null) {
+    		msg = "";
+    	}
+    	
+    	String success = (String)request.getAttribute("success");
+    	if(success == null) {
+    		success = "";
+    	}
+    	
+    	// PATIENT OLD DIAGNOSTIC RECORD
+    	ArrayList<Diagnostic> patientDiagnostic = null;
+    	if(request.getAttribute("patientDiagnostic") != null) {
+    		patientDiagnostic = (ArrayList<Diagnostic>)request.getAttribute("patientDiagnostic");
+    	}
+    	
+    	// PATIENT MASTER DIAGNOSTIC RECORD
+    	ArrayList<Diagnostic> masterDiagnostic = null;
+    	if(request.getAttribute("masterDiagnostic") != null) {
+    		masterDiagnostic = (ArrayList<Diagnostic>)request.getAttribute("masterDiagnostic");
+    	}
+    	
+    	// SHOW DIAGNOSTICS CHECK
+    	String showDiagnostic = "";
+    	if(request.getAttribute("showDiagnostic") != null) {
+    		showDiagnostic = (String)request.getAttribute("showDiagnostic");
+    	}
+    	
+    	// PATIENT NEW DIAGNOSTICS RECORD
+    	ArrayList<Diagnostic> newDiagnostic = null;
+    	if(request.getAttribute("newDiagnostic") != null) {
+    		newDiagnostic = (ArrayList<Diagnostic>)request.getAttribute("newDiagnostic");
+    	}
+    %>
+    <div class="form-search-action">
+    	<form action="${pageContext.request.contextPath}/Controller" method="POST">
+    		<input type="text" name="option" value="getPatientForDiagnostic" hidden>
+    		<input type="text" name="operation" value="getAllObjects" hidden>
+    		<input type="text" name="id" placeholder="Enter patient id" autofocus required value="<%= patientId %>">
+        	<button type="submit">Search</button>
+    	</form>
+    </div>
+    <p id="message"><%= msg %></p>
+    <p id="message"><%= success %></p>
+    <% 
+    	if(patient != null) { 
+    %>
     <div class="view-patients-form">
         <h2 class="center">Diagnostics</h2>
         <table>
@@ -46,23 +101,26 @@
                     <th>Age</th>
                     <th>Address</th>
                     <th>DOJ</th>
-                    <th>Date of Discharge</th>
                     <th>Type of Room</th>
                 </tr>
             </thead>
             <tbody>
                 <tr>
-                    <td>1234</td>
-                    <td>Joseph</td>
-                    <td>36</td>
-                    <td>Rick Street, Ameerpet, Hyderabad</td>
-                    <td>03-May-2020</td>
-                    <td>10-May-2020</td>
-                    <td>Single</td>
+                    <td><%= patient.getId() %></td>
+                    <td><%= patient.getName() %></td>
+                    <td><%= patient.getAge() %></td>
+                    <td><%= patient.getAddress() %></td>
+                    <td><%= patient.getDoj() %></td>
+                    <td><%= patient.getTypeOfBed() %></td>
                 </tr>
             </tbody>
         </table>
+    </div>  
+    <% if(patientDiagnostic == null) { %>
+    <div class="view-issued-medicines">
+        <h2 class="center">No Diagnostics Conducted</h2>
     </div>
+    <% } else { %>
     <div class="view-issued-medicines">
         <h2 class="center">Diagnostics Conducted</h2>
         <table>
@@ -73,18 +131,28 @@
                 </tr>
             </thead>
             <tbody>
+            	<% for(int i=0; i<patientDiagnostic.size(); i++) { %>
                 <tr>
-                    <td>CBP</td>
-                    <td>RS.2000</td>
+                    <td><%= patientDiagnostic.get(i).getName() %></td>
+                    <td>RS.<%= patientDiagnostic.get(i).getAmount() %></td>
                 </tr>
+                <% } %>
             </tbody>
         </table>
     </div>
-    <form action="${pageContext.request.contextPath}/jsp" method="POST">
+    <% } %>    
+    <form action="${pageContext.request.contextPath}/Controller" method="POST">
+    	<input type="text" name="option" value="getPatientForDiagnostic" hidden>
+    	<input type="text" name="operation" value="showDiagnostic" hidden>
     	<div>
     		<p id="btn"><button type="submit">Add Diagnostics</button></p>
     	</div>
     </form>
+    <% } %>
+    
+    <% if(showDiagnostic != null && !showDiagnostic.equals("")) {
+    		if(newDiagnostic != null) {
+    %>
     <div class="view-issued-medicines">
         <table>
             <thead>
@@ -94,38 +162,66 @@
                 </tr>
             </thead>
             <tbody>
+            	<% for(int i=0; i<newDiagnostic.size(); i++) { %>
                 <tr>
-                    <td>CBP</td>
-                    <td>RS.2000</td>
+                    <td><%= newDiagnostic.get(i).getName() %></td>
+                    <td>RS.<%= newDiagnostic.get(i).getAmount() %></td>
                 </tr>
+                <% } %>
             </tbody>
         </table>
     </div>
+    <% } %>   
     <div class="view-add-medicines">
         <div class="left-table">
             <table>
-            <form action="${pageContext.request.contextPath}" method="POST">
+            <form action="${pageContext.request.contextPath}/Controller" method="POST">
+            	<input type="text" name="option" value="getPatientForDiagnostic" hidden>
+    			<input type="text" name="operation" value="addDiagnostic" hidden>
                 <tbody>
                     <tr>
                         <td>
                             <select name="testName">
-                                <option value="CBP">CBP</option>
-                                <option value="X-RAY">X-RAY</option>
+                            	<option value="none" selected disabled hidden>
+                            	<% for(int i=0; i<masterDiagnostic.size(); i++) { %>
+                                <option value="CBP"><%= masterDiagnostic.get(i).getName() %></option>
+                                <% } %>
                             </select></td>
-                        <td width="38%">Rs.1200</td>
+                            <% 
+                            	String selectedDiagnostic = "";
+                            	if(request.getParameter("testName") != null) 
+                            	selectedDiagnostic = (String)request.getParameter("testName");
+                            	double selectedAmount = 0;
+                            	long diagnosticId = 0;
+                            	if(!selectedDiagnostic.equals(""))
+                            	for(int i=0; i<masterDiagnostic.size(); i++) {
+                            		if(masterDiagnostic.get(i).getName().equals(selectedDiagnostic)) {
+                            			selectedAmount = masterDiagnostic.get(i).getAmount();
+                            			diagnosticId = masterDiagnostic.get(i).getId();
+                            			break;
+                            		}
+                            	}
+                            %>
+                        <td width="38%"><%= selectedAmount %></td>
                     </tr>
                 </tbody>
             </table>
         </div>
         <div class="right-button">
+        	<input type="text" name="diagnosticId" value="<%= diagnosticId %>">
             <button id="btnnew" type="submit">Add</button>
         </div>
         </form>
     </div>
     <div class="form-controls-action update-medicines">
-        <form action="${pageContext.request.contextPath}/jsp/addDiagnostic.jsp" method="POST">
+        <form action="${pageContext.request.contextPath}/Controller" method="POST">
+            <input type="text" name="option" value="getPatientForDiagnostic" hidden>
+        	<input type="text" name="operation" value="addDiagnosticToPatient" hidden>
+        	<input type="text" name="id" value="<%= patient.getId() %>">
+        	<% request.setAttribute("newDiagnostics", newDiagnostic); %>
             <button type="submit" id="diagnosticSubmit">Update</button>
         </form>
     </div>
+    <% } %>
 </body>
 </html>

@@ -1,4 +1,4 @@
-<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
+<%@ page import="com.tcs.model.Patient, com.tcs.service.Service, java.util.*" language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
 <!DOCTYPE html>
 <html>
@@ -25,18 +25,28 @@
             <button class="pharmacist dropbtn"><span>Pharmacy</span></button>
             <div class="pharmacist-functions dropdown-content">
                 <a id="link" href="${pageContext.request.contextPath}/jsp/viewPatient.jsp">Search Patient</a><br/>
-                <a id="link" href="${pageContext.request.contextPath}/jsp/patientMedicineIssue.jsp">Issue Medicines</a><br/>
+                <a id="link" href="${pageContext.request.contextPath}/jsp/issueMedicines.jsp">Issue Medicines</a><br/>
             </div>
         </div>
         <div class="di-functions dropdown">
             <button class="diagnostic dropbtn"><span>Diagnostics</span></button>
             <div class="diagnostic-functions dropdown-content">
                 <a id="link" href="${pageContext.request.contextPath}/jsp/viewPatient.jsp">Search Patient</a><br/>
-                <a id="link" href="${pageContext.request.contextPath}/jsp/patientDiagnosticIssue.jsp">Add Diagnostics</a><br/>
+                <a id="link" href="${pageContext.request.contextPath}/jsp/addDiagnostic.jsp">Add Diagnostics</a><br/>
             </div>
         </div>
     </div>
+    <%
+    	Service service = new Service();
+    	ArrayList<Patient> patients = null;
+    	if(service != null) {
+    		////
+    	}
+    %>
     <div class="view-patients-form">
+    	<% if(patients == null || patients.size() == 0) { %>
+    	<h2 class="center">There are no Patients in Database</h2>
+    	<% } else { %>
         <h2 class="center">View Patients</h2>
         <table>
             <thead>
@@ -50,16 +60,19 @@
                 </tr>
             </thead>
             <tbody>
+            	<% for (int i=0; i<patients.size(); i++) { %>
                 <tr>
-                    <td>1234</td>
-                    <td>Joseph</td>
-                    <td>36</td>
-                    <td>Rick Street, Ameerpet, Hyderabad</td>
-                    <td>03-May-2020</td>
-                    <td>Single</td>
+                   <td><%= patients.get(i).getId() %></td>
+                    <td><%= patients.get(i).getName() %></td>
+                    <td><%= patients.get(i).getAge() %></td>
+                    <td><%= patients.get(i).getAddress() %></td>
+                    <td><%= patients.get(i).getDoj() %></td>
+                    <td><%= patients.get(i).getTypeOfBed() %></td>
                 </tr>
+                <% } %>
             </tbody>
         </table>
     </div>
+    <% } %>
 </body>
 </html>
