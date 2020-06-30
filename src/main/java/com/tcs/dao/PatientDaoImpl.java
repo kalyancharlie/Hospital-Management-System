@@ -216,14 +216,14 @@ public class PatientDaoImpl implements PatientDao{
 	}
 
 	@Override
-	public Double[] generateBill(long id) {
+	public double[] generateBill(long id) {
 		double diagnostic_ammount = 0;
 		double medicine_ammount = 0;
 		Date doj=null;
 		String bed=null;
 		double rate=0;
 		int days;
-		Double[] bill = new Double[5];
+		double[] bill = new double[5];
 		List<Diagnostic> diag;
 		List<Medicine> medicine;
 		try {
