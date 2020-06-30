@@ -4,6 +4,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 import com.tcs.model.Diagnostic;
 import com.tcs.model.Medicine;
@@ -158,8 +160,30 @@ public class PatientDaoImpl implements PatientDao{
 	}
 
 	@Override
-	public Diagnostic[] viewDiagnostics(long id) {
-		return null;
+	public List<Diagnostic> viewDiagnostics(long id) {
+		long did;
+		List<Diagnostic> diagnostic_list = new ArrayList<Diagnostic>();
+		try {
+			ps = con.prepareStatement("select did from patient_medicine where pid=?");
+			ps.setLong(1, id);
+			rs = ps.executeQuery();
+			while(rs.next()) {
+			did = rs.getLong(1);
+			PreparedStatement ps1 = con.prepareStatement("select * from medicine where did=?");
+			ps1.setLong(1, did);
+			ResultSet rs1 = ps.executeQuery();
+			Diagnostic diagnostic = new Diagnostic();
+			while(rs1.next()) {
+				diagnostic.setId(rs1.getLong(1));
+				diagnostic.setName(rs1.getString(2));
+				diagnostic.setAmount(rs1.getDouble(3));
+			}
+			diagnostic_list.add(diagnostic);
+			}
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
+		return diagnostic_list;
 	}
 
 	@Override

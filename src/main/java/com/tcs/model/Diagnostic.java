@@ -1,17 +1,14 @@
 package com.tcs.model;
 
 public class Diagnostic {
-	int id;
+	long id;
 	String name;
 	double amount;
 	
-	public int getId() {
+	public long getId() {
 		return id;
 	}
 	
-	public void setId(int id) {
-		this.id = id;
-	}
 	
 	public String getName() {
 		return name;
@@ -27,5 +24,9 @@ public class Diagnostic {
 	
 	public void setAmount(double amount) {
 		this.amount = amount;
+	}
+
+	public void setId(long id) {
+		this.id=id;
 	}
 }

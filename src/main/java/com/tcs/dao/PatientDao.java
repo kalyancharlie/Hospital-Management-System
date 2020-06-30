@@ -1,5 +1,7 @@
 package com.tcs.dao;
 
+import java.util.List;
+
 import com.tcs.model.Diagnostic;
 import com.tcs.model.Medicine;
 import com.tcs.model.Patient;
@@ -14,6 +16,6 @@ public interface PatientDao {
 	Patient searchPatient(long id);
 	abstract Patient[] viewAllPatients();
 	Medicine[] viewMedcines(long id);
-	Diagnostic[] viewDiagnostics(long id);
+	List<Diagnostic> viewDiagnostics(long id);
 	double generateBill(long id);
 }
