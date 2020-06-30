@@ -34,19 +34,25 @@ public class Service {
 	public List<Diagnostic> getPatientDiagnstics(long id){
 		return obj.viewPatientDiagnostics(id);
 	}
-	public List<Diagnostic> getDiagnstics(long id){
-		return obj.viewDiagnostics(id);
+	public List<Diagnostic> getDiagnstics(){
+		return obj.viewDiagnostics();
 	}
 	public double[] getBill(long id) {
 		return obj.generateBill(id);
 	}
-	public List<Medicine> getMedicines(long id){
-		return obj.viewMedicines(id);
+	public List<Medicine> getMedicines(){
+		return obj.viewMedicines();
 	}
 	public List<Medicine> getPatientMedicines(long id){
 		return obj.viewPatientMedcines(id);
 	}
 	public List<Patient> getAllPatients(){
 		return obj.viewAllPatients();
+	}
+	public boolean addMedicines(long id, List<Medicine> medicine) {
+		return obj.addMedicines(id, medicine);
+	}
+	public boolean addDiagnostics(long id, List<Diagnostic> diagnostic) {
+		return obj.addDiagnostics(id, diagnostic);
 	}
 }
