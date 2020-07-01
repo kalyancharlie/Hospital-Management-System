@@ -21,5 +21,5 @@ public interface PatientDao {
 	List<Diagnostic> viewDiagnostics();
 	double[] generateBill(long id);
 	boolean addMedicines(long id, List<Medicine> medicineList);
-	boolean addDiagnostics(long id, List<Diagnostic> diagnosticList);	
+	boolean addDiagnostics(long id, List<Diagnostic> diagnosticList);
 }
