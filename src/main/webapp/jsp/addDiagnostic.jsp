@@ -4,7 +4,7 @@
 <html>
 <head>
 	<meta charset="ISO-8859-1">
-	<link rel="stylesheet" href="${pageContext.request.contextPath}/css/style.css" type="text/css">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/style.css" type="text/css">
 	<title>Add Diagnostics</title>
 </head>
 <body>
@@ -78,7 +78,7 @@
     		newDiagnostic = (ArrayList<Diagnostic>)session.getAttribute("newDiagnostic");
     	
     %>
-    <div class="form-search-action" style="margin-top: 6%">
+    <div class="form-search-action" style="margin-top: 6%;margin-top: 80px">
     	<form action="${pageContext.request.contextPath}/Controller" method="POST">
     		<input type="text" name="option" value="getPatientForDiagnostic" hidden>
     		<input type="text" name="operation" value="getAllObjects" hidden>
@@ -183,19 +183,26 @@
                 <tbody>
                     <tr>
                         <td>
-                            <select name="testName">
+                            <select name="testName" id="testName" onchange="getRateByName()">
                             	<option value="none" selected disabled hidden>
                             	<% for(int i=0; i<masterDiagnostic.size(); i++) { %>
                                 <option value="<%= masterDiagnostic.get(i).getName() %>"><%= masterDiagnostic.get(i).getName() %></option>
                                 <% } %>
                             </select></td>
-                        <td width="38%">Rs.</td>
+                        <td width="38%" id="injectAmount"></td>
+                        	<select id="options" style="visibility: hidden; display: none;">
+                                <option value="none" selected disabled hidden></option>
+                        		<% for(int i=0; i<masterDiagnostic.size(); i++) { %>
+                        		<option value="<%= masterDiagnostic.get(i).getAmount() %>" hidden><%= masterDiagnostic.get(i).getAmount() %></option>
+                        		<% } %>
+                        	</select>
+                        </td>
                     </tr>
                 </tbody>
             </table>
         </div>
         <div class="right-button">
-        	<input type="text" name="diagnosticId" value="1" hidden>
+        	<input type="text" name="diagnosticId" id="injectDiagnosticId" hidden>
         	<% session.setAttribute("newDiagnostic", newDiagnostic);
         	%>
             <button id="btnnew" type="submit">Add</button>
@@ -212,4 +219,5 @@
     </div>
     <% } %>
 </body>
+<script src="${pageContext.request.contextPath}/js/script.js"></script>
 </html>
