@@ -5,6 +5,7 @@
 <head>
 	<meta charset="ISO-8859-1">
 	<link rel="stylesheet" href="${pageContext.request.contextPath}/css/style.css" type="text/css">
+	<script src="${pageContext.request.contextPath}/js/script.js"></script>
 	<title>Patient Registration</title>
 </head>
 <body>
@@ -45,7 +46,7 @@
     <div class="registration-form">
     	<h2 class="center">Patient Registration</h2>
     	<p id="message"><%= msg %></p>
-        <form action="${pageContext.request.contextPath}/Controller" method="POST">
+        <form action="${pageContext.request.contextPath}/Controller" method="POST"  name='register' onsubmit="return validateForm()">
         	<input type="hidden" name="option" value="registration"/>
             <div class="form">
             	<div class="form-labels" style="width:35%; margin-left:-7%;">
