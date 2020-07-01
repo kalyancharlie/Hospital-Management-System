@@ -117,7 +117,7 @@
             </tbody>
         </table>
     </div>
-     <% session.setAttribute("sid", patient.getId()); %>
+    <% session.setAttribute("sid", patient.getId()); %>
     <% if(patientDiagnostic == null) { %>
     <div class="view-issued-medicines">
         <h2 class="center">No Diagnostics Conducted</h2>

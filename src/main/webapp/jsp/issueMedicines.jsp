@@ -76,11 +76,12 @@
     	ArrayList<Medicine> newMedicine = new ArrayList<Medicine>();
     		newMedicine = (ArrayList<Medicine>)session.getAttribute("newMedicine");
     %>
-    <div class="form-search-action" style="margin-top: 6%">
+    <div class="form-search-action" style="margin-top: 6%;margin-top: 80px">
     	<form action="${pageContext.request.contextPath}/Controller" method="POST">
     		<input type="text" name="option" value="getPatientForMedicine" hidden>
     		<input type="text" name="operation" value="getAllObjects" hidden>
     		<input type="text" name="id" placeholder="Enter patient id" autofocus required value="<%= patientId %>">
+        	<% session.setAttribute("sid", request.getParameter("id")); %>
         	<button type="submit">Search</button>
     	</form>
     </div>
@@ -114,6 +115,7 @@
             </tbody>
         </table>
     </div>
+    <% session.setAttribute("sid", patient.getId()); %>
     <% if(patientMedicine == null) { %>
     <div class="view-issued-medicines">
         <h2 class="center">No Medicines Record Found</h2>
@@ -136,7 +138,7 @@
                     <td><%= patientMedicine.get(i).getName() %></td>
                     <td><%= patientMedicine.get(i).getQty() %></td>
                     <td>Rs.<%= patientMedicine.get(i).getRate() %></td>
-                    <td>Rs.<%= patientMedicine.get(i).getRate()*patientMedicine.get(i).getQty() %></td>
+                    <td>Rs.<%= patientMedicine.get(i).getAmount() %></td>
                 </tr>
                 <% } %>
             </tbody>
@@ -170,7 +172,7 @@
                     <td><%= newMedicine.get(i).getName() %></td>
                     <td><%= newMedicine.get(i).getQty() %></td>
                     <td>Rs.<%= newMedicine.get(i).getRate() %></td>
-                    <td>Rs.<%= newMedicine.get(i).getRate()*newMedicine.get(i).getQty() %></td>
+                    <td>Rs.<%= newMedicine.get(i).getAmount() %></td>
                 </tr>
                 <% } %>
             </tbody>
@@ -187,24 +189,40 @@
                 <tbody>
                     <tr>
                         <td width="30%">
-                            <select name="medicineName">
+                            <select name="medicineName" id="medicineName" onchange="getMedicineByName1()">
                             	<option value="none" selected disabled hidden>
                             	<% for(int i=0; i<masterMedicine.size(); i++) { %>
                                 <option value="<%= masterMedicine.get(i).getName() %>"><%= masterMedicine.get(i).getName() %></option>
                                 <% } %>
                             </select></td>
-                        <td width="10%"><input type="text" name="qty"></td>
-                        <td></td>
-                        <td width="20%"></td>
+                        <td style="visibility: hidden; display: none;">
+                        	<select name="medicineQuantity" id="medicineQuantity">
+                        		<option value="none" selected disabled hidden></option>
+                        		<% for(int i=0; i<masterMedicine.size(); i++) { %>
+                        		<option value="<%= masterMedicine.get(i).getQty() %>" hidden><%= masterMedicine.get(i).getQty() %></option>
+                        		<% } %>
+                        	</select>
+                        </td>
+                        <td style="visibility: hidden; display: none;">
+                        	<select name="medicineRate" id="medicineRate">
+                        		<option value="none" selected disabled hidden></option>
+                        		<% for(int i=0; i<masterMedicine.size(); i++) { %>
+                        		<option value="<%= masterMedicine.get(i).getRate() %>" hidden><%= masterMedicine.get(i).getRate() %></option>
+                        		<% } %>
+                        	</select>
+                        </td>
+                        <td width="10%"><input type="text" name="qty" id="qty" onblur="getMedicineByName2()"></td>
+                        <td id="injectMedicineRate"></td>
+                        <td width="20%" id="injectMedicineAmount"></td>
                     </tr>
                 </tbody>
             </table>
         </div>
         <div class="right-button">
-        	<input type="text" name="medicineId" value="1" hidden>
-        	<input type="text" name="qty" value="1" hidden>
+        	<input type="text" name="medicineId" id="injectMedicineId" hidden>
+        	<input type="text" name="qty" id="injectMedicineQuantity" hidden>
         	<% request.setAttribute("newMedicine", newMedicine); %>
-            <button id="btnnew" type="submit">Add</button>
+            <button id="btnnew" type="submit" onclick="getMedicineByName2()">Add</button>
         </div>
         </form>
     </div>

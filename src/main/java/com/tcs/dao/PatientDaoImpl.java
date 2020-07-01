@@ -190,12 +190,14 @@ public class PatientDaoImpl implements PatientDao{
 	public List<Medicine> viewPatientMedcines(long id) {
 		List<Medicine> medicines = new ArrayList<Medicine>();
 		long mid = 0;
+		int qty =0;
 		try {
-			ps = con.prepareStatement("SELECT mid FROM patient_medicine WHERE pid = ?");
+			ps = con.prepareStatement("SELECT mid, qty FROM patient_medicine WHERE pid = ?");
 			ps.setLong(1, id);
 			rs = ps.executeQuery();
 			while(rs.next()) {
 				mid = rs.getLong(1);
+				qty = rs.getInt(2);
 				PreparedStatement ps2 = con.prepareStatement("SELECT * FROM medicine WHERE mid=?");
 				ps2.setLong(1, mid);
 				ResultSet rs2 = ps2.executeQuery();
@@ -203,7 +205,7 @@ public class PatientDaoImpl implements PatientDao{
 					Medicine medicine = new Medicine();
 					medicine.setMid(rs2.getLong(1));
 					medicine.setName(rs2.getString(2));
-					medicine.setQty(rs2.getInt(3));
+					medicine.setQty(qty);
 					medicine.setRate(rs2.getLong(4));
 					medicine.setAmount();
 					medicines.add(medicine);
@@ -221,7 +223,7 @@ public class PatientDaoImpl implements PatientDao{
 	}
 	
 	@Override
-	public Medicine viewMedicineById(long mid) {
+	public Medicine viewMedicineById(long mid, int qty) {
 		Medicine medicine = new Medicine();
 		try {
 			ps = con.prepareStatement("SELECT * FROM medicine WHERE mid=?");
@@ -230,8 +232,9 @@ public class PatientDaoImpl implements PatientDao{
 			while(rs.next()) {
 				medicine.setMid(mid);
 				medicine.setName(rs.getString(2));
-				medicine.setQty(rs.getInt(3));
+				medicine.setQty(qty);
 				medicine.setRate(rs.getLong(4));
+				medicine.setAmount();
 			}
 			if(medicine != null) {
 				System.out.println(new java.util.Date()+" || "+"Got Medicine with Id: "+mid);
@@ -332,8 +335,8 @@ public class PatientDaoImpl implements PatientDao{
 		try {
 			for(int i=0; i<medicines.size(); i++) {
 				ps = con.prepareStatement("INSERT INTO patient_medicine VALUES(?, ?, ?)");
-				ps.setLong(1, medicines.get(i).getMid());
-				ps.setLong(2, id);
+				ps.setLong(1, id);
+				ps.setLong(2, medicines.get(i).getMid());
 				ps.setLong(3, medicines.get(i).getQty());
 				flag = ps.executeUpdate();
 				if(flag == 1)
@@ -466,6 +469,31 @@ public class PatientDaoImpl implements PatientDao{
 		} catch(SQLException e) {
 			System.err.println("Failed to Discharge Patient with Id: "+id);
 			System.out.println(e.getErrorCode()+" "+e.getMessage());
+		}
+		return false;
+	}
+
+	@Override
+	public boolean updateMasterMedicines(ArrayList<Medicine> newMedicines) {
+		int count = 0;
+		try {
+			for(int i=0; i<newMedicines.size(); i++) {
+				ps = con.prepareStatement("UPDATE medicine SET qty=qty-? where mid=?");
+				ps.setInt(1, newMedicines.get(i).getQty());
+				ps.setLong(2, newMedicines.get(i).getMid());
+				i = ps.executeUpdate();
+				if(i > 0) {
+					count++;
+				}
+			}
+			if(count > 0) {
+				System.out.println("Master Medicines Record Updated "+newMedicines.size()+"/"+count);
+				return true;
+			}
+		} catch(SQLException e) {
+			System.err.println("Failed to Update Master Medicines Record Updated "+newMedicines.size()+"/"+count);
+			System.out.println(e.getErrorCode()+" "+e.getMessage());
+			return false;
 		}
 		return false;
 	}

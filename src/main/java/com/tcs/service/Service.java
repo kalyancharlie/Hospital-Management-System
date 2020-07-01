@@ -60,12 +60,16 @@ public class Service {
 		return obj.viewPatientMedcines(id);
 	}
 	
-	public Medicine getMedicineById(long mid) {
-		return obj.viewMedicineById(mid);
+	public Medicine getMedicineById(long mid, int qty) {
+		return obj.viewMedicineById(mid, qty);
 	}
 	
 	public boolean addMedicines(long id, ArrayList<Medicine> medicines) {
 		return obj.addPatientMedicines(id, medicines);
+	}
+	
+	public boolean updateMedicines(ArrayList<Medicine> newMedicine) {
+		return obj.updateMasterMedicines(newMedicine);
 	}
 	
 	public List<Patient> getAllPatients(){
