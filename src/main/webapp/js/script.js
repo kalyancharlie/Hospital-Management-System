@@ -88,53 +88,38 @@ function getMedicineByName2() {
     }
 }
 
-//For Registration Page
+// FORM VALIDATIONS
 
-function validateForm() {
-	  var ssnId = document.register.ssnId;
-	  var name = document.register.patientName;
-	  var age = document.register.patientAge;
-	  var bed = document.register.typeOfBed;
-	  var address = document.register.address;
-	  var city = document.register.city;
-	  var state = document.register.state
-	  var letters = /^[A-Za-z]+$/;
-	  var age1 = /^\d{1,3}$/;
-	  var id = /^\d{9}$/;
-	  var address = /^[0-9a-zA-Z]+$/;
+// REGULAR EXPRESSIONS
 
-	  if(!(ssnId.value.match(id))){
-		  alert('Enter must 9 digit number only');
-		  return false;
-	  }
-	  else if(!(name.value.match(letters)))
-	  {
-		 alert('enter only alphabates');
-	    return false;
-	  }
-	   else if(!(age.value.match(age1))){
-		   alert('Please enter your age');
-		   return false;
-	   }
-	   else if(bed.value.equals(null) || bed.value.equals("") ||bed==null)
-	   {
-	   alert('Select Type of bed from the list');
-	   return false;
-	   }
-	   else if(!(address.value.match(address)))
-		  {
-		   alert('Please enter your address');
-		  return false;
-		  }
-	   else if(city.value == "none")
-	   {
-	   alert('Select your city from the list');
-	   return false;
-	   }
-	   else if(state.value == "none")
-	   {
-	   alert('Select your state from the list');
-	   return false;
-	   }
-return true;
+var PATIENTSSNID = /^[\d]{1,9}$/;
+var PATIENTID = /^[1-9][\d]{8}$/;
+var PATIENTAGE = /^[1-9][\d]{0,2}$/;
+var PATINETDATE = /^([\d]{1,2}(-|:)){2}[\d]{1,4}$/;
+var ALPHABETS = /^[A-Za-z]+$/;
+
+// REGISTRATION PAGE
+
+var ssnId = document.getElementById("ssnId");
+var name = document.getElementById("patientName");
+var age = document.getElementById("patientAge");
+var bed = document.getElementById("typeOfBed");
+var address = document.getElementById(address);
+var city = document.getElementById("city");
+var state = document.getElementById("state");
+console.log(ssnId);
+console.log(name);
+console.log(age);
+console.log(bed);
+console.log(address);
+console.log(city);
+console.log(state);
+
+function validateId() {
+    if(true) {
+        return true; 
+    } else {
+        alert("Enter Id with Length of 10 only Numbers ");
+        return false;
+    }
 }
