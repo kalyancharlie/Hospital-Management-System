@@ -8,6 +8,7 @@
 <title>Login</title>
 </head>
 <body>
+    <% session.invalidate(); %>
     <div class="heading">
         <h1>ABC Hospital Management System</h1>
     </div>
