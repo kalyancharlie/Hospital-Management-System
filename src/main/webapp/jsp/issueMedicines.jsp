@@ -73,7 +73,7 @@
     	}
     	
     	// PATIENT NEW MEDICINES RECORD
-    	ArrayList<Medicine> newMedicine = null;
+    	ArrayList<Medicine> newMedicine = new ArrayList<Medicine>();
     		newMedicine = (ArrayList<Medicine>)session.getAttribute("newMedicine");
     %>
     <div class="form-search-action" style="margin-top: 6%">

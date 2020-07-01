@@ -44,6 +44,7 @@
         	patient = (Patient)request.getAttribute("patient");
         	patientId = String.valueOf(patient.getId());               		
         }
+        
         String msg = (String)request.getAttribute("msg");
     	if(msg == null) {
     		msg = "";
@@ -82,6 +83,7 @@
     		<input type="text" name="option" value="getPatientForDiagnostic" hidden>
     		<input type="text" name="operation" value="getAllObjects" hidden>
     		<input type="text" name="id" placeholder="Enter patient id" autofocus required value="<%= patientId %>">
+    		<% session.setAttribute("sid", request.getParameter("id")); %>
         	<button type="submit">Search</button>
     	</form>
     </div>
@@ -114,7 +116,8 @@
                 </tr>
             </tbody>
         </table>
-    </div>  
+    </div>
+     <% session.setAttribute("sid", patient.getId()); %>
     <% if(patientDiagnostic == null) { %>
     <div class="view-issued-medicines">
         <h2 class="center">No Diagnostics Conducted</h2>

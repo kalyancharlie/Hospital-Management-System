@@ -193,6 +193,9 @@ public class Controller extends HttpServlet {
 		// ADD DIAGNOSTICS TO PATIENT ROUTE
 		else if(option.equalsIgnoreCase("GETPATIENTFORDIAGNOSTIC")) {
 			long id = Long.parseLong(request.getParameter("id"));
+			String stringPid = String.valueOf(id);
+			String stringSid = String.valueOf(session.getAttribute("sid"));
+			System.out.println("PID:"+stringPid+" SID:"+stringSid);
 			operation = request.getParameter("operation");
 			Patient patient = service.get(id);
 			ArrayList<Diagnostic> patientDiagnostic = (ArrayList<Diagnostic>)service.getPatientDiagnostics(id);
@@ -201,6 +204,12 @@ public class Controller extends HttpServlet {
 			// PATIENT SEARCH AND RETRIEVING OLD DIAGNOSTICS
 			if(operation.equalsIgnoreCase("GETALLOBJECTS")) {
 				if(patient != null) {
+					if(stringPid.equals(stringSid)) {
+						System.out.println("Equals");
+					} else {
+						session.setAttribute("newDiagnostic", new ArrayList<Diagnostic>());
+						System.out.println("Not Equals");
+					}
 					request.setAttribute("patient", patient);
 					request.setAttribute("patientDiagnostic", patientDiagnostic);
 					request.setAttribute("masterDiagnostic", masterDiagnostic);
@@ -234,7 +243,13 @@ public class Controller extends HttpServlet {
 				request.setAttribute("patient", patient);
 				request.setAttribute("patientDiagnostic", patientDiagnostic);
 				request.setAttribute("masterDiagnostic", masterDiagnostic);
-				session.setAttribute("newDiagnostic", new2);
+				if(stringPid.equals(stringSid)) {
+					session.setAttribute("newDiagnostic", new2);
+					System.out.println("Equals");
+				} else {
+					session.setAttribute("newDiagnostic", new ArrayList<Diagnostic>());
+					System.out.println("Not Equals");
+				}
 				request.setAttribute("showDiagnostic", "TRUE");
 				request.getRequestDispatcher("/jsp/addDiagnostic.jsp").include(request, response);
 			}
