@@ -18,7 +18,7 @@
                 <a id="link" href="${pageContext.request.contextPath}/jsp/delete.jsp">Delete Patient</a><br/>
                 <a id="link" href="${pageContext.request.contextPath}/jsp/viewPatient.jsp">Search Patient</a><br/>
                 <a id="link" href="${pageContext.request.contextPath}/jsp/viewAllPatients.jsp">View All Patients</a><br/>
-                <a id="link" href="${pageContext.request.contextPath}/jsp/patientBillingIssue.jsp">Patient Billing</a><br/>
+                <a id="link" href="${pageContext.request.contextPath}/jsp/patientBilling.jsp">Patient Billing</a><br/>
             </div>
         </div>
         <div class="ph-functions dropdown">
@@ -74,11 +74,9 @@
     	
     	// PATIENT NEW MEDICINES RECORD
     	ArrayList<Medicine> newMedicine = null;
-    	if(request.getAttribute("newDiagnostic") != null) {
-    		newMedicine = (ArrayList<Medicine>)request.getAttribute("newMedicine");
-    	}
+    		newMedicine = (ArrayList<Medicine>)session.getAttribute("newMedicine");
     %>
-    <div class="form-search-action">
+    <div class="form-search-action" style="margin-top: 6%">
     	<form action="${pageContext.request.contextPath}/Controller" method="POST">
     		<input type="text" name="option" value="getPatientForMedicine" hidden>
     		<input type="text" name="operation" value="getAllObjects" hidden>
@@ -91,7 +89,7 @@
     <% 
     	if(patient != null) { 
     %>
-    <div class="view-patients-form">
+    <div class="view-patients-form" style="margin-top:0px">
         <h2 class="center">Pharmacy</h2>
         <table>
             <thead>
@@ -148,15 +146,13 @@
     <form action="${pageContext.request.contextPath}/Controller" method="POST">
     	<input type="text" name="option" value="getPatientForMedicine" hidden>
     	<input type="text" name="operation" value="showMedicine" hidden>
+    	<input type="text" name="id" value="<%= patientId %>" hidden required>
     	<div>
     		<p id="btn"><button type="submit">Issue Medicines</button></p>
     	</div>
     </form>
     <% } %>
-    
-    <% if(showMedicine != null && !showMedicine.equals("")) {
-    		if(newMedicine != null) {
-    %>
+    <% if(showMedicine != null && !showMedicine.equals("")) { %>
     <div class="view-issued-medicines">
         <table>
             <thead>
@@ -167,6 +163,7 @@
 		            <th>Amount</th>
                 </tr>
             </thead>
+            <% if(newMedicine != null) { %>
             <tbody>
             	<% for(int i=0; i<newMedicine.size(); i++) { %>
                 <tr>
@@ -186,44 +183,27 @@
             <form action="${pageContext.request.contextPath}/Controller" method="POST">
             	<input type="text" name="option" value="getPatientForMedicine" hidden>
     			<input type="text" name="operation" value="addMedicine" hidden>
+    			<input type="text" name="id" value="<%= patientId %>" hidden required>
                 <tbody>
                     <tr>
-                        <td>
+                        <td width="30%">
                             <select name="medicineName">
                             	<option value="none" selected disabled hidden>
                             	<% for(int i=0; i<masterMedicine.size(); i++) { %>
-                                <option value="Acebutolol"><%= masterMedicine.get(i).getName() %></option>
+                                <option value="<%= masterMedicine.get(i).getName() %>"><%= masterMedicine.get(i).getName() %></option>
                                 <% } %>
                             </select></td>
-                        <td><input type="text" name="qty"></td>
-                        <%
-                        	String selectedMedicine = "";
-                        	long medicineId = 0;
-                        	double selectedQuantity = 0;
-                        	double selectedRate = 0;
-                        	double totalAmount = 0;
-                        	if(request.getParameter("medicineName") != null)
-                        		selectedMedicine = (String)request.getParameter("medicineName");
-                        	if(request.getParameter("qty") != null)
-                        		selectedQuantity = Double.valueOf(request.getParameter("qty"));
-                        	if(selectedQuantity != 0 && selectedMedicine.equals(""))
-                        		for(int i=0; i<masterMedicine.size(); i++) {
-                        			if(selectedMedicine.equals(masterMedicine.get(i).getName())) {
-                        				medicineId = masterMedicine.get(i).getMid();
-                        				selectedRate = masterMedicine.get(i).getRate();
-                        				totalAmount = masterMedicine.get(i).getRate()*selectedQuantity;
-                        				break;
-                        			}
-                        		}
-                        %>
-                        <td>Rs.<%= selectedRate %></td>
-                        <td width="38%">Rs.<%= totalAmount %></td>
+                        <td width="10%"><input type="text" name="qty"></td>
+                        <td></td>
+                        <td width="20%"></td>
                     </tr>
                 </tbody>
             </table>
         </div>
         <div class="right-button">
-        	<input type="text" name="medicineId" value="<%= medicineId %>">
+        	<input type="text" name="medicineId" value="1" hidden>
+        	<input type="text" name="qty" value="1" hidden>
+        	<% request.setAttribute("newMedicine", newMedicine); %>
             <button id="btnnew" type="submit">Add</button>
         </div>
         </form>
@@ -232,8 +212,7 @@
         <form action="${pageContext.request.contextPath}/Controller" method="POST">
         	<input type="text" name="option" value="getPatientForMedicine" hidden>
         	<input type="text" name="operation" value="addMedicineToPatient" hidden>
-        	<input type="text" name="id" value="<%= patient.getId() %>">
-        	<% request.setAttribute("newMedicine", newMedicine); %>
+        	<input type="text" name="id" value="<%= patient.getId() %>" hidden>
             <button type="submit" id="diagnosticSubmit">Update</button>
         </form>
     </div>

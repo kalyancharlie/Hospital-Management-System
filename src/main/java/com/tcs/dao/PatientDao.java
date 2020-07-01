@@ -1,5 +1,6 @@
 package com.tcs.dao;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import com.tcs.model.Diagnostic;
@@ -16,8 +17,13 @@ public interface PatientDao {
 	Patient searchPatient(long id);
 	List<Patient> viewAllPatients();
 	List<Medicine> viewPatientMedcines(long id);
-	List<Medicine> viewMedicines(long id);
+	Medicine viewMedicineById(long mid);
+	List<Medicine> viewMedicines();
+	boolean addPatientMedicines(long id, ArrayList<Medicine> medicines);
 	List<Diagnostic> viewPatientDiagnostics(long id);
-	List<Diagnostic> viewDiagnostics(long id);
+	Diagnostic viewDiagnosticById(long did);
+	boolean addPatientDiagnostics(long id, ArrayList<Diagnostic> diagnostics);
+	List<Diagnostic> viewDiagnostics();
 	double[] generateBill(long id);
+	boolean dischargePatient(long id);
 }

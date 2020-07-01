@@ -1,4 +1,4 @@
-<%@ page import="com.tcs.model.*, java.util.*" language="java" contentType="text/html; charset=ISO-8859-1"
+<%@ page import="com.tcs.model.*, java.util.*, com.tcs.util.Utility" language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
 <!DOCTYPE html>
 <html>
@@ -18,7 +18,7 @@
                 <a id="link" href="${pageContext.request.contextPath}/jsp/delete.jsp">Delete Patient</a><br/>
                 <a id="link" href="${pageContext.request.contextPath}/jsp/viewPatient.jsp">Search Patient</a><br/>
                 <a id="link" href="${pageContext.request.contextPath}/jsp/viewAllPatients.jsp">View All Patients</a><br/>
-                <a id="link" href="${pageContext.request.contextPath}/jsp/patientBillingIssue.jsp">Patient Billing</a><br/>
+                <a id="link" href="${pageContext.request.contextPath}/jsp/patientBilling.jsp">Patient Billing</a><br/>
             </div>
         </div>
         <div class="ph-functions dropdown">
@@ -77,7 +77,7 @@
     		bill = (double[])request.getAttribute("patientBill");
     	}
     %>
-    <div class="form-search-action">
+    <div class="form-search-action" style="margin-top: 6%">
     	<form action="${pageContext.request.contextPath}/Controller" method="POST">
     		<input type="text" name="option" value="getPatientForBilling" hidden>
     		<input type="text" name="operation" value="getAllObjects" hidden>
@@ -85,7 +85,7 @@
         	<button type="submit">Search</button>
     	</form>
     </div>
-    <div class="view-patients-form">
+    <div class="view-patients-form" style="margin-top:0px">
         <h2 class="center">Patient Billing</h2>
         <p id="message"><%= success %></p>
         <% if(patient != null) { %>
@@ -109,7 +109,7 @@
                     <td><%= patient.getAge() %></td>
                     <td><%= patient.getAddress() %></td>
                     <td><%= patient.getDoj() %></td>
-                    <td><%= new java.util.Date().getDate()+"/"+new java.util.Date().getMonth()+"/"+new java.util.Date().getYear() %></td>
+                    <td><%= Utility.today() %></td>
                     <td><%= patient.getTypeOfBed() %></td>
                 </tr>
             </tbody>
@@ -118,8 +118,10 @@
     <div class="billing-text">
         <p id="text"><strong>No.of days: </strong><%= bill[0] %></p><p id="text"><strong>Bill for Room: </strong></p><p id="text">Rs.<%= bill[1] %></p>
     </div>
+    <% if(patientMedicine != null) { %>
     <div class="view-issued-medicines">
         <h2 class="center">Pharmacy Charges</h2>
+        
         <table>
             <thead>
                 <tr>
@@ -140,11 +142,12 @@
                 <% } %>
                 <tr class="column">
                 	<td colspan="3" id="text-column"><p id="text"><strong>Bill for Pharmacy: </strong></p></td>
-                	<td id="text-column"><p id="text">Rs.56000</p></td>
+                	<td id="text-column"><p id="text">Rs.<%= bill[2] %></p></td>
                 </tr>
             </tbody>
         </table>
     </div>
+    <% } if(patientDiagnostic != null) { %>
     <div class="billing-text">
     </div>
     <div class="view-add-medicines">
@@ -165,16 +168,16 @@
                 <% } %>
                 <tr class="column">
                 	<td id="text-column"><p id="text"><strong>Bill for Diagnostics: </strong></p></td>
-                	<td id="text-column"><p id="text">Rs.<%= bill[3] %></p></td>
+                	<td id="text-column"><p id="text">Rs. <%= bill[3] %></p></td>
                 </tr>
             </tbody>
         </table>
     </div>
+    <% } %>
     <div class="billing-text">
     </div>
     <div class="form-controls-action update-medicines">
     	<form action="${pageContext.request.contextPath}/Controller" method="POST">
-    		m action="${pageContext.request.contextPath}/Controller" method="POST">
     		<input type="text" name="option" value="getPatientForBilling" hidden>
     		<input type="text" name="operation" value="dischargePatient" hidden>
     		<input type="text" name="id" value="<%= patient.getId() %>" hidden>

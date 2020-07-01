@@ -18,21 +18,21 @@
                 <a id="link" href="${pageContext.request.contextPath}/jsp/delete.jsp">Delete Patient</a><br/>
                 <a id="link" href="${pageContext.request.contextPath}/jsp/viewPatient.jsp">Search Patient</a><br/>
                 <a id="link" href="${pageContext.request.contextPath}/jsp/viewAllPatients.jsp">View All Patients</a><br/>
-                <a id="link" href="${pageContext.request.contextPath}/jsp/patientBillingIssue.jsp">Patient Billing</a><br/>
+                <a id="link" href="${pageContext.request.contextPath}/jsp/patientBilling.jsp">Patient Billing</a><br/>
             </div>
         </div>
         <div class="ph-functions dropdown">
             <button class="pharmacist dropbtn"><span>Pharmacy</span></button>
             <div class="pharmacist-functions dropdown-content">
                 <a id="link" href="${pageContext.request.contextPath}/jsp/viewPatient.jsp">Search Patient</a><br/>
-                <a id="link" href="${pageContext.request.contextPath}/jsp/patientMedicineIssue.jsp">Issue Medicines</a><br/>
+                <a id="link" href="${pageContext.request.contextPath}/jsp/issueMedicines.jsp">Issue Medicines</a><br/>
             </div>
         </div>
         <div class="di-functions dropdown">
             <button class="diagnostic dropbtn"><span>Diagnostics</span></button>
             <div class="diagnostic-functions dropdown-content">
                 <a id="link" href="${pageContext.request.contextPath}/jsp/viewPatient.jsp">Search Patient</a><br/>
-                <a id="link" href="${pageContext.request.contextPath}/jsp/patientDiagnosticIssue.jsp">Add Diagnostics</a><br/>
+                <a id="link" href="${pageContext.request.contextPath}/jsp/addDiagnostic.jsp">Add Diagnostics</a><br/>
             </div>
         </div>
     </div>
@@ -73,12 +73,11 @@
     	}
     	
     	// PATIENT NEW DIAGNOSTICS RECORD
-    	ArrayList<Diagnostic> newDiagnostic = null;
-    	if(request.getAttribute("newDiagnostic") != null) {
-    		newDiagnostic = (ArrayList<Diagnostic>)request.getAttribute("newDiagnostic");
-    	}
+    	ArrayList<Diagnostic> newDiagnostic = new ArrayList<Diagnostic>();
+    		newDiagnostic = (ArrayList<Diagnostic>)session.getAttribute("newDiagnostic");
+    	
     %>
-    <div class="form-search-action">
+    <div class="form-search-action" style="margin-top: 6%">
     	<form action="${pageContext.request.contextPath}/Controller" method="POST">
     		<input type="text" name="option" value="getPatientForDiagnostic" hidden>
     		<input type="text" name="operation" value="getAllObjects" hidden>
@@ -91,7 +90,7 @@
     <% 
     	if(patient != null) { 
     %>
-    <div class="view-patients-form">
+    <div class="view-patients-form" style="margin-top:0px">
         <h2 class="center">Diagnostics</h2>
         <table>
             <thead>
@@ -144,15 +143,13 @@
     <form action="${pageContext.request.contextPath}/Controller" method="POST">
     	<input type="text" name="option" value="getPatientForDiagnostic" hidden>
     	<input type="text" name="operation" value="showDiagnostic" hidden>
+    	<input type="text" name="id" value="<%= patientId %>" hidden required>
     	<div>
     		<p id="btn"><button type="submit">Add Diagnostics</button></p>
     	</div>
     </form>
     <% } %>
-    
-    <% if(showDiagnostic != null && !showDiagnostic.equals("")) {
-    		if(newDiagnostic != null) {
-    %>
+    <% if(showDiagnostic != null && !showDiagnostic.equals("")) { %>
     <div class="view-issued-medicines">
         <table>
             <thead>
@@ -161,6 +158,7 @@
                     <th>Amount</th>
                 </tr>
             </thead>
+            <% if(newDiagnostic != null) { %>
             <tbody>
             	<% for(int i=0; i<newDiagnostic.size(); i++) { %>
                 <tr>
@@ -178,37 +176,25 @@
             <form action="${pageContext.request.contextPath}/Controller" method="POST">
             	<input type="text" name="option" value="getPatientForDiagnostic" hidden>
     			<input type="text" name="operation" value="addDiagnostic" hidden>
+    			<input type="text" name="id" value="<%= patientId %>" hidden required>
                 <tbody>
                     <tr>
                         <td>
                             <select name="testName">
                             	<option value="none" selected disabled hidden>
                             	<% for(int i=0; i<masterDiagnostic.size(); i++) { %>
-                                <option value="CBP"><%= masterDiagnostic.get(i).getName() %></option>
+                                <option value="<%= masterDiagnostic.get(i).getName() %>"><%= masterDiagnostic.get(i).getName() %></option>
                                 <% } %>
                             </select></td>
-                            <% 
-                            	String selectedDiagnostic = "";
-                            	if(request.getParameter("testName") != null) 
-                            	selectedDiagnostic = (String)request.getParameter("testName");
-                            	double selectedAmount = 0;
-                            	long diagnosticId = 0;
-                            	if(!selectedDiagnostic.equals(""))
-                            	for(int i=0; i<masterDiagnostic.size(); i++) {
-                            		if(masterDiagnostic.get(i).getName().equals(selectedDiagnostic)) {
-                            			selectedAmount = masterDiagnostic.get(i).getAmount();
-                            			diagnosticId = masterDiagnostic.get(i).getId();
-                            			break;
-                            		}
-                            	}
-                            %>
-                        <td width="38%"><%= selectedAmount %></td>
+                        <td width="38%">Rs.</td>
                     </tr>
                 </tbody>
             </table>
         </div>
         <div class="right-button">
-        	<input type="text" name="diagnosticId" value="<%= diagnosticId %>">
+        	<input type="text" name="diagnosticId" value="1" hidden>
+        	<% session.setAttribute("newDiagnostic", newDiagnostic);
+        	%>
             <button id="btnnew" type="submit">Add</button>
         </div>
         </form>
@@ -217,8 +203,7 @@
         <form action="${pageContext.request.contextPath}/Controller" method="POST">
             <input type="text" name="option" value="getPatientForDiagnostic" hidden>
         	<input type="text" name="operation" value="addDiagnosticToPatient" hidden>
-        	<input type="text" name="id" value="<%= patient.getId() %>">
-        	<% request.setAttribute("newDiagnostics", newDiagnostic); %>
+        	<input type="text" name="id" value="<%= patient.getId() %>" hidden>
             <button type="submit" id="diagnosticSubmit">Update</button>
         </form>
     </div>

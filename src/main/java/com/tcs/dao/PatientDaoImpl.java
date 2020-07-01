@@ -102,7 +102,7 @@ public class PatientDaoImpl implements PatientDao{
 				return true;
 			}
 		} catch(SQLException e) {
-			System.out.println(new java.util.Date()+" || "+"Patient with Id: "+patient.getId()+" Details Failed to Update");
+			System.err.println(new java.util.Date()+" || "+"Patient with Id: "+patient.getId()+" Details Failed to Update");
 			System.out.println(e.getErrorCode()+" "+e.getMessage());
 			return false;
 		}
@@ -119,8 +119,9 @@ public class PatientDaoImpl implements PatientDao{
 				System.out.println(new java.util.Date()+" || "+"Deleted Patient with Id: "+id);
 				flag=true;
 			}
-		}catch(SQLException e) {
-			e.printStackTrace();
+		} catch(SQLException e) {
+			System.err.println(new java.util.Date()+" || "+"Failed to Delete Patient with Id: "+id);
+			System.out.println(e.getErrorCode()+" "+e.getMessage());
 		}
 		return flag;
 	}
@@ -146,116 +147,326 @@ public class PatientDaoImpl implements PatientDao{
 				System.out.println(new java.util.Date()+" || "+"Got Details of Patient with Id: "+patient.getId());
 				return patient;
 			}
-		}catch(SQLException e) {
-				System.out.println(e.getErrorCode()+" "+e.getMessage());
+		} catch(SQLException e) {
+			System.err.println(new java.util.Date()+" || "+"Failed to Retrieve Patient with Id: "+id);
+			System.out.println(e.getErrorCode()+" "+e.getMessage());
 		}
-		System.out.println(new java.util.Date()+" || "+"No Details Found with Id: "+id);
+		System.out.println(new java.util.Date()+" || "+"Failed to Retrieve Patient with Id: "+id);
 		return null;
 	}
 
 	@Override
 	public List<Patient> viewAllPatients() {
+		List<Patient> patients = new ArrayList<Patient>();
+		try {
+			ps = con.prepareStatement("SELECT * FROM patient");
+			rs = ps.executeQuery();
+			while(rs.next()) {
+				Patient patient = new Patient();
+				patient.setId(rs.getLong(2));
+				patient.setName(rs.getString(3));
+				patient.setAge(rs.getInt(4));
+				patient.setDoj(rs.getDate(5));
+				patient.setTypeOfBed(rs.getString(6));
+				patient.setAddress(rs.getString(7));
+				patient.setCity(rs.getString(8));
+				patient.setState(rs.getString(9));
+				patient.setState(rs.getString(10));
+				if(rs.getString(10).equalsIgnoreCase("ACTIVE"))
+					patients.add(patient);
+			}
+			if(patients != null && patients.size() > 0) {
+				System.out.println(new java.util.Date()+" || "+"Got All Patient Details");
+				return patients;
+			} 
+		} catch(SQLException e) {
+			System.err.println(new java.util.Date()+" || "+"Failed to Retrieve All Patient Details");
+			System.out.println(e.getErrorCode()+" "+e.getMessage());
+		}
 		return null;
 	}
 
 	@Override
 	public List<Medicine> viewPatientMedcines(long id) {
-		return null;
-	}
-	
-	@Override
-	public List<Medicine> viewMedicines(long id) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-	
-	@Override
-	public List<Diagnostic> viewDiagnostics(long id) {
-		List<Diagnostic> diagnosticList = new ArrayList<Diagnostic>();
+		List<Medicine> medicines = new ArrayList<Medicine>();
+		long mid = 0;
 		try {
-			ps = con.prepareStatement("select * from diagnostic");
+			ps = con.prepareStatement("SELECT mid FROM patient_medicine WHERE pid = ?");
+			ps.setLong(1, id);
+			rs = ps.executeQuery();
+			while(rs.next()) {
+				mid = rs.getLong(1);
+				PreparedStatement ps2 = con.prepareStatement("SELECT * FROM medicine WHERE mid=?");
+				ps2.setLong(1, mid);
+				ResultSet rs2 = ps2.executeQuery();
+				while(rs2.next()) {
+					Medicine medicine = new Medicine();
+					medicine.setMid(rs2.getLong(1));
+					medicine.setName(rs2.getString(2));
+					medicine.setQty(rs2.getInt(3));
+					medicine.setRate(rs2.getLong(4));
+					medicine.setAmount();
+					medicines.add(medicine);
+				}
+			}
+			if(medicines != null & medicines.size() > 0) {
+				System.out.println(new java.util.Date()+" || "+"Got All Medicines Details with Patient Id: "+id);
+				return medicines;
+			}
+		} catch(SQLException e) {
+			System.err.println(new java.util.Date()+" || "+"Failed to Retrieve Medicines for Patient with Id: "+id);
+			System.out.println(e.getErrorCode()+" "+e.getMessage());
+		}
+		return null;
+	}
+	
+	@Override
+	public Medicine viewMedicineById(long mid) {
+		Medicine medicine = new Medicine();
+		try {
+			ps = con.prepareStatement("SELECT * FROM medicine WHERE mid=?");
+			ps.setLong(1, mid);
+			rs = ps.executeQuery();
+			while(rs.next()) {
+				medicine.setMid(mid);
+				medicine.setName(rs.getString(2));
+				medicine.setQty(rs.getInt(3));
+				medicine.setRate(rs.getLong(4));
+			}
+			if(medicine != null) {
+				System.out.println(new java.util.Date()+" || "+"Got Medicine with Id: "+mid);
+				return medicine;
+			}
+		} catch(SQLException e) {
+			System.err.println(new java.util.Date()+" || "+"Failed to Retrieve Medicine with Id: "+mid);
+			System.out.println(e.getErrorCode()+" "+e.getMessage());
+		}
+		return null;
+	}
+	
+	@Override
+	public List<Medicine> viewMedicines() {
+		List<Medicine> medicines = new ArrayList<Medicine>();
+		try {
+			ps = con.prepareStatement("SELECT * FROM medicine");
+			rs = ps.executeQuery();
+			while(rs.next()) {
+				Medicine medicine = new Medicine();
+				medicine.setMid(rs.getLong(1));
+				medicine.setName(rs.getString(2));
+				medicine.setQty(rs.getInt(3));
+				medicine.setRate(rs.getLong(4));
+				medicines.add(medicine);
+			}
+			if(medicines != null && medicines.size() > 0) {
+				System.out.println(new java.util.Date()+" || "+"Got All Master Medicines Details");
+				return medicines;
+			}
+		} catch(SQLException e) {
+			System.err.println(new java.util.Date()+" || "+"Failed to Retrieve All Master Medicines Details");
+			System.out.println(e.getErrorCode()+" "+e.getMessage());
+		}
+		return null;
+	} 
+	
+	@Override
+	public List<Diagnostic> viewDiagnostics() {
+		List<Diagnostic> diagnostics = new ArrayList<Diagnostic>();
+		try {
+			ps = con.prepareStatement("SELECT * FROM diagnostic");
 			rs = ps.executeQuery();
 			while(rs.next()) {
 				Diagnostic diagnostic = new Diagnostic();
 				diagnostic.setId(rs.getLong(1));
 				diagnostic.setName(rs.getString(2));
 				diagnostic.setAmount(rs.getDouble(3));
-				diagnosticList.add(diagnostic);
+				diagnostics.add(diagnostic);
 			}
-		}catch(Exception e) {
-			e.printStackTrace();
+			if(diagnostics != null && diagnostics.size() > 0) {
+				System.out.println(new java.util.Date()+" || "+"Got All Master Diagnostics Details");
+				return diagnostics;
+			}
+		} catch(SQLException e) {
+			System.err.println(new java.util.Date()+" || "+"Failed to Retrieve All Master Diagnostics Details");
+			System.out.println(e.getErrorCode()+" "+e.getMessage());
 		}
-		return diagnosticList;
+		return null;
 	}
 
 	@Override
 	public List<Diagnostic> viewPatientDiagnostics(long id) {
-		long did;
-		List<Diagnostic> diagnosticList = new ArrayList<Diagnostic>();
+		long did = 0;
+		List<Diagnostic> diagnostics = new ArrayList<Diagnostic>();
 		try {
 			ps = con.prepareStatement("SELECT did FROM patient_diagnostic WHERE pid=?");
 			ps.setLong(1, id);
 			rs = ps.executeQuery();
 			while(rs.next()) {
-			did = rs.getLong(1);
-			PreparedStatement ps1 = con.prepareStatement("SELECT * FROM diagnostic WHERE did=?");
-			ps1.setLong(1, did);
-			ResultSet rs1 = ps.executeQuery();
-			while(rs1.next()) {
-				Diagnostic diagnostic = new Diagnostic();
-				diagnostic.setId(rs1.getLong(1));
-				diagnostic.setName(rs1.getString(2));
-				diagnostic.setAmount(rs1.getDouble(3));
-				diagnosticList.add(diagnostic);
+				did = rs.getLong(1);
+				PreparedStatement ps2 = con.prepareStatement("SELECT * FROM diagnostic WHERE did=?");
+				ps2.setLong(1, did);
+				ResultSet rs2 = ps2.executeQuery();
+					while(rs2.next()) {
+						Diagnostic diagnostic = new Diagnostic();
+						diagnostic.setId(rs2.getLong(1));
+						diagnostic.setName(rs2.getString(2));
+						diagnostic.setAmount(rs2.getDouble(3));
+						diagnostics.add(diagnostic);
+					}
 			}
+			if(diagnostics != null & diagnostics.size() > 0) {
+				System.out.println(new java.util.Date()+" || "+"Got All Diagnostics Details with Patient Id: "+id);
+				return diagnostics;
 			}
-		} catch(Exception e) {
-			e.printStackTrace();
+		} catch(SQLException e) {
+			System.err.println(new java.util.Date()+" || "+"Failed to Retrieve Diagnostics Details for Patient with Id: "+id);
+			System.out.println(e.getErrorCode()+" "+e.getMessage());
 		}
-		return diagnosticList;
+		return null;
+	}
+	
+	@Override
+	public boolean addPatientMedicines(long id, ArrayList<Medicine> medicines) {
+		int count = 0;
+		int flag = 0;
+		try {
+			for(int i=0; i<medicines.size(); i++) {
+				ps = con.prepareStatement("INSERT INTO patient_medicine VALUES(?, ?, ?)");
+				ps.setLong(1, medicines.get(i).getMid());
+				ps.setLong(2, id);
+				ps.setLong(3, medicines.get(i).getQty());
+				flag = ps.executeUpdate();
+				if(flag == 1)
+				count++;
+			}
+			if(count > 0) {
+				System.out.println(new java.util.Date()+" || "+"Added "+medicines.size()+"/"+count+" Medicines to Patient with Id: "+id);
+				return true;
+			}
+		} catch(SQLException e) {
+			System.err.println(new java.util.Date()+" || "+"Failed to Add Medicines to Patient with Id: "+id);
+			System.out.println(e.getErrorCode()+" "+e.getMessage());
+			return false;
+		}
+		return false;
+	}
+	
+	@Override
+	public Diagnostic viewDiagnosticById(long did) {
+		Diagnostic diagnostic = new Diagnostic();
+		try {
+			ps = con.prepareStatement("SELECT * FROM diagnostic WHERE did=?");
+			ps.setLong(1, did);
+			rs = ps.executeQuery();
+			while(rs.next()) {
+				diagnostic.setId(rs.getLong(1));
+				diagnostic.setName(rs.getString(2));
+				diagnostic.setAmount(rs.getLong(3));
+			}
+			if(diagnostic != null) {
+				System.out.println(new java.util.Date()+" || "+"Got Diagnostic with Id: "+did);
+				return diagnostic;
+			}
+		} catch(SQLException e) {
+			System.err.println(new java.util.Date()+" || "+"Failed to Retrieve Diagnostic with Id: "+did);
+			System.out.println(e.getErrorCode()+" "+e.getMessage());
+		}
+		return null;
+	}
+	
+	@Override
+	public boolean addPatientDiagnostics(long id, ArrayList<Diagnostic> diagnostics) {
+		int count = 0;
+		int flag = 0;
+		try {
+			for(int i=0; i<diagnostics.size(); i++) {
+				ps = con.prepareStatement("INSERT INTO patient_diagnostic VALUES(?, ?)");
+				ps.setLong(1, id);
+				ps.setLong(2, diagnostics.get(i).getId());
+				flag = ps.executeUpdate();
+				if(flag == 1)
+				count++;
+			}
+			if(count > 0) {
+				System.out.println(new java.util.Date()+" || "+"Added "+diagnostics.size()+"/"+count+" Diagnostics to Patient with Id: "+id);
+				return true;
+			}
+		} catch(SQLException e) {
+			System.err.println(new java.util.Date()+" || "+"Failed to Add Diagnostics to Patient with Id: "+id);
+			System.out.println(e.getErrorCode()+" "+e.getMessage());
+			return false;
+		}
+		return false;
 	}
 
 	@Override
 	public double[] generateBill(long id) {
-		double diagnostic_ammount = 0;
-		double medicine_ammount = 0;
-		Date doj=null;
-		String bed=null;
-		double rate=0;
-		int days;
-		double[] bill = new double[5];
-		List<Diagnostic> diag;
-		List<Medicine> medicine;
+		double diagnostic_amount = 0;
+		double medicine_amount = 0;
+		Date doj = null;
+		String bed = null;
+		double rate = 0;
+		long days = 1;
+		double[] bill = new double[] {0, 0, 0, 0, 0};
+		List<Diagnostic> diag = null;
+		List<Medicine> medicine = null;
 		try {
-			ps = con.prepareStatement("select doj, bed from patient where id=?");
+			ps = con.prepareStatement("SELECT doj, bed FROM patient WHERE id=?");
+			ps.setLong(1, id);
 			rs = ps.executeQuery();
 			while(rs.next()) {
 				doj = rs.getDate(1);
 				bed = rs.getString(2);
+				days = Utility.numberOfDays(doj);
+				bill[0] = (double)days;
+				if(bed.equalsIgnoreCase(BED1))
+					rate = 2000;
+				else if(bed.equalsIgnoreCase(BED2))
+					rate = 4000;
+				else if(bed.equalsIgnoreCase(BED3))
+					rate = 8000;
+				if(days == 0) {
+					days = 1;
+				}
+				bill[1] = rate*days;
+				medicine = viewPatientMedcines(id);
+				if(medicine != null && medicine.size() > 0)
+				for(int i=0;i<medicine.size();i++) {
+					medicine_amount += medicine.get(i).getAmount();
+				}
+				bill[2] = medicine_amount;
+				diag = viewPatientDiagnostics(id);
+				if(diag != null && diag.size() > 0)
+				for(int i=0;i<diag.size();i++) {
+					diagnostic_amount+= diag.get(i).getAmount();
+				}
+				bill[3] = diagnostic_amount;
+				bill[4] = bill[1]+bill[2]+bill[3];
 			}
-			days = Utility.numberOfDays(doj);
-			bill[0] = (double) days;
-			if(bed==BED1)
-				rate = 2000;
-			else if(bed==BED2)
-				rate = 4000;
-			else if(bed==BED3)
-				rate = 8000;
-			bill[1] = rate*days;
-			diag = viewPatientDiagnostics(id);
-			for(int i=0;i<diag.size();i++) {
-				diagnostic_ammount+= diag.get(i).getAmount();
-			}
-			bill[2] = diagnostic_ammount;
-			medicine = viewPatientMedcines(id);
-			for(int i=0;i<medicine.size();i++) {
-				medicine_ammount+= (medicine.get(i).getAmount()*medicine.get(i).getAmount());
-			}
-			bill[3] = medicine_ammount;
-			bill[4] = bill[1]+bill[2]+bill[3];
-		}catch(Exception e) {
-			e.printStackTrace();
+			System.out.println("Generated Bill for Patient with Id: "+id);
+		} catch(SQLException e) {
+			System.err.println("Failed to Generate Bill for Patient with Id: "+id);
+			System.out.println(e.getErrorCode()+" "+e.getMessage());
 		}
 		return bill;
+	}
+
+	@Override
+	public boolean dischargePatient(long id) {
+		int i = 0;
+		try {
+			ps = con.prepareStatement("UPDATE patient SET status=? where id=?");
+			ps.setString(1, "DISCHARGED");
+			ps.setLong(2, id);
+			i = ps.executeUpdate();
+			if(i > 0) {
+				System.out.println("Patient with Id: "+id+" Discharged From Hospital");
+				return true;
+			}
+		} catch(SQLException e) {
+			System.err.println("Failed to Discharge Patient with Id: "+id);
+			System.out.println(e.getErrorCode()+" "+e.getMessage());
+		}
+		return false;
 	}
 }

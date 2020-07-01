@@ -9,6 +9,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import com.tcs.dao.PatientDaoImpl;
 import com.tcs.model.Diagnostic;
@@ -30,6 +31,7 @@ public class Controller extends HttpServlet {
 	}
 	
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		HttpSession session = request.getSession(true);
 		Service service = new Service();
 		String option = request.getParameter("option");
 		String operation = request.getParameter("operation");
@@ -144,30 +146,6 @@ public class Controller extends HttpServlet {
 					request.getRequestDispatcher("/jsp/viewPatient.jsp").include(request, response);
 				}
 			}
-			
-//			// GET PATIENT OBJECT FOR MEDICINE ISSUE
-//			else if(page.equalsIgnoreCase("PATIENTMEDICINEISSUE")) {
-//				if(patient!=null) {
-//					request.setAttribute("patient", patient);
-//					request.getRequestDispatcher("/jsp/patientMedicineIssue.jsp").include(request, response);
-//				}
-//				else {
-//					request.setAttribute("msg", "Patient Details Not Found with Id: ".concat(String.valueOf(id)));
-//					request.getRequestDispatcher("/jsp/patientMedicineIssue.jsp").include(request, response);
-//				}
-//			}
-//			
-//			// GET PATIENT OBJECT FOR DIAGNOSTIC ISSUE
-//			else if(page.equalsIgnoreCase("PATIENTDIAGNOSTICISSUE")) {
-//				if(patient!=null) {
-//					request.setAttribute("patient", patient);
-//					request.getRequestDispatcher("/jsp/patientDiagnosticIssue.jsp").include(request, response);
-//				}
-//				else {
-//					request.setAttribute("msg", "Patient Details Not Found with Id: ".concat(String.valueOf(id)));
-//					request.getRequestDispatcher("/jsp/patientDiagnosticIssue.jsp").include(request, response);
-//				}
-//			}
 		}
 		
 		// UPDATE PATIENT
@@ -217,9 +195,8 @@ public class Controller extends HttpServlet {
 			long id = Long.parseLong(request.getParameter("id"));
 			operation = request.getParameter("operation");
 			Patient patient = service.get(id);
-			ArrayList<Diagnostic> patientDiagnostic = null;//------------------
-			ArrayList<Diagnostic> newDiagnostic = null;//-----------------
-			ArrayList<Diagnostic> masterDiagnostic = null;//----------------
+			ArrayList<Diagnostic> patientDiagnostic = (ArrayList<Diagnostic>)service.getPatientDiagnostics(id);
+			ArrayList<Diagnostic> masterDiagnostic = (ArrayList<Diagnostic>) service.getDiagnostics();
 			
 			// PATIENT SEARCH AND RETRIEVING OLD DIAGNOSTICS
 			if(operation.equalsIgnoreCase("GETALLOBJECTS")) {
@@ -236,23 +213,37 @@ public class Controller extends HttpServlet {
 			
 			// SHOW DIAGNOSTICS TO ADD NEW ONES
 			else if(operation.equalsIgnoreCase("SHOWDIAGNOSTIC")) {
+				request.setAttribute("patient", patient);
+				request.setAttribute("patientDiagnostic", patientDiagnostic);
+				request.setAttribute("masterDiagnostic", masterDiagnostic);
 				request.setAttribute("showDiagnostic", "TRUE");
 				request.getRequestDispatcher("/jsp/addDiagnostic.jsp").include(request, response);
 			}
 			
 			// ADD NEW DIAGNOSTICS TO PAGE
 			else if(operation.equalsIgnoreCase("ADDDIAGNOSTIC")) {
-				String did = request.getParameter("diagnosticId");
-				Diagnostic diagnostic = null; //----------------------------
-				newDiagnostic.add(diagnostic); //-------------------------
-				request.setAttribute("newDiagnostic", newDiagnostic);
+				long did = Long.parseLong(request.getParameter("diagnosticId"));
+				Diagnostic diagnostic = (Diagnostic)service.getDiagnosticById(did);
+				System.out.println(diagnostic.getName());
+				ArrayList<Diagnostic> new2 = (ArrayList<Diagnostic>) session.getAttribute("newDiagnostic");
+				if(new2 == null) {
+					new2 = new ArrayList<Diagnostic>();
+				}
+				new2.add(diagnostic);
+				System.out.println(new2.size());
+				request.setAttribute("patient", patient);
+				request.setAttribute("patientDiagnostic", patientDiagnostic);
+				request.setAttribute("masterDiagnostic", masterDiagnostic);
+				session.setAttribute("newDiagnostic", new2);
+				request.setAttribute("showDiagnostic", "TRUE");
+				request.getRequestDispatcher("/jsp/addDiagnostic.jsp").include(request, response);
 			}
 			
 			// ADD NEW DIAGNOSTICS TO PATIENT
 			else if(operation.equalsIgnoreCase("ADDDIAGNOSTICTOPATIENT")) {
 				@SuppressWarnings("unchecked")
-				ArrayList<Diagnostic> allObjects = (ArrayList<Diagnostic>)request.getAttribute("newDiagnostics");
-				if(allObjects!=null) { //-------------------------
+				ArrayList<Diagnostic> allObjects = (ArrayList<Diagnostic>)session.getAttribute("newDiagnostic");
+				if(service.addDiagnostics(id, allObjects)) { //-------------------------
 					request.setAttribute("success", "Patient Diagnostics Added Succcessfully");
 					request.getRequestDispatcher("/jsp/addDiagnostic.jsp").include(request, response);
 				} else {
@@ -267,9 +258,9 @@ public class Controller extends HttpServlet {
 			long id = Long.parseLong(request.getParameter("id"));
 			operation = request.getParameter("operation");
 			Patient patient = service.get(id);
-			ArrayList<Medicine> patientMedicine = null;//------------------
-			ArrayList<Medicine> newMedicine = null;//-----------------
-			ArrayList<Medicine> masterMedicine = null;//----------------
+			ArrayList<Medicine> patientMedicine = (ArrayList<Medicine>)service.getPatientMedicines(id);
+			ArrayList<Medicine> newMedicine = (ArrayList<Medicine>)request.getAttribute("newMedicine");
+			ArrayList<Medicine> masterMedicine = (ArrayList<Medicine>)service.getMedicines();
 
 			// PATIENT SEARCH AND RETRIEVING OLD MEDICINES
 			if(operation.equalsIgnoreCase("GETALLOBJECTS")) {
@@ -286,24 +277,36 @@ public class Controller extends HttpServlet {
 
 			// SHOW MEDICINES TO ADD NEW ONES
 			else if(operation.equalsIgnoreCase("SHOWMEDICINE")) {
+				request.setAttribute("newMedicine", newMedicine);
+				request.setAttribute("patient", patient);
+				request.setAttribute("patientMedicine", patientMedicine);
+				request.setAttribute("masterMedicine", masterMedicine);
 				request.setAttribute("showMedicine", "TRUE");
 				request.getRequestDispatcher("/jsp/issueMedicines.jsp").include(request, response);
 			}
 
 			// ADD NEW MEDICINES TO PAGE
 			else if(operation.equalsIgnoreCase("ADDMEDICINE")) {
-				String did = request.getParameter("medicineId");
-				Medicine medicine = null; //----------------------------
-				newMedicine.add(medicine); //-------------------------
+				long mid = Long.parseLong(request.getParameter("medicineId"));
+				Medicine medicine = (Medicine)service.getMedicineById(mid);
+				newMedicine.add(medicine);
 				request.setAttribute("newMedicine", newMedicine);
+				request.setAttribute("patient", patient);
+				request.setAttribute("patientMedicine", patientMedicine);
+				request.setAttribute("masterMedicine", masterMedicine);
+				request.getRequestDispatcher("/jsp/issueMedicines.jsp").include(request, response);
 			}
 
 			// ADD NEW MEDICINES TO PATIENT
 			else if(operation.equalsIgnoreCase("ADDMEDICINETOPATIENT")) {
 				@SuppressWarnings("unchecked")
 				ArrayList<Medicine> allObjects = (ArrayList<Medicine>)request.getAttribute("newMedicine");
-				if(allObjects!=null) { //-------------------------
+				if(service.addMedicines(id, allObjects)) {
 					request.setAttribute("success", "Patient Medicines Added Succcessfully");
+					request.setAttribute("newMedicine", newMedicine);
+					request.setAttribute("patient", patient);
+					request.setAttribute("patientMedicine", patientMedicine);
+					request.setAttribute("masterMedicine", masterMedicine);
 					request.getRequestDispatcher("/jsp/issueMedicines.jsp").include(request, response);
 				} else {
 					request.setAttribute("success", "Patient Medicines Added Succcessfully");
@@ -315,27 +318,28 @@ public class Controller extends HttpServlet {
 		// GENERATE BILL FOR PATIENT
 		else if(option.equalsIgnoreCase("GETPATIENTFORBILLING")) {
 			long id = Long.parseLong(request.getParameter("id"));
-			operation = request.getParameter("operation");
+			operation = (String)request.getParameter("operation");
 			Patient patient = service.get(id);
-			ArrayList<Diagnostic> patientDiagnostic = null;//----------------------
-			ArrayList<Medicine> patientMedicine = null;//-------------------------
+			ArrayList<Diagnostic> patientDiagnostic = (ArrayList<Diagnostic>)service.getPatientDiagnostics(id);
+			ArrayList<Medicine> patientMedicine = (ArrayList<Medicine>)service.getPatientMedicines(id);
+			double[] patientBill = service.getBill(id);
 			if(operation.equalsIgnoreCase("GETALLOBJECTS")) {
 				if(patient != null) {
 					request.setAttribute("patientDiagnostic", patientDiagnostic);
 					request.setAttribute("patientMedicine", patientMedicine);
 					request.setAttribute("patient", patient);
+					request.setAttribute("patientBill", patientBill);
 					request.setAttribute("msg", "TRUE");
 					request.setAttribute("done", "TRUE");
-					request.getRequestDispatcher("/jsp/patientBilling.jsp");
+					request.getRequestDispatcher("/jsp/patientBilling.jsp").include(request, response);
 				} else {
 					request.setAttribute("msg", null);
 					request.setAttribute("success", "Patient Details Not Found with id: "+id);
-					request.getRequestDispatcher("/jsp/patientBilling.jsp");
+					request.getRequestDispatcher("/jsp/patientBilling.jsp").include(request, response);
 				}
 			}
 			else if (operation.equalsIgnoreCase("DISCHARGEPATIENT")) {
-				// CALL SERVICE METHOD AND CHECK FOR DISCHARGE
-				if(patient != null) { //-----------------------------
+				if(service.discharge(id)) { //-----------------------------
 					request.setAttribute("success", "Patient with Id: "+id +" Discharged Successfully");
 					request.getRequestDispatcher("/jsp/patientBilling.jsp").include(request, response);
 				} else {
