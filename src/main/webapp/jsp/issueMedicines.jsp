@@ -8,16 +8,16 @@
 	<title>Issue Medicines</title>
 </head>
 <body>
-<%
-response.setHeader("Cache-Control","no-cache");
-response.setHeader("Cache-Control","no-store");
-response.setHeader("Pragma","no-cache");
-response.setDateHeader("Expires",0);
-if(session.getAttribute("userId")==null)
-{
-response.sendRedirect("index.jsp");
-}
-%>
+	<%
+		response.setHeader("Cache-Control","no-cache");
+		response.setHeader("Cache-Control","no-store");
+		response.setHeader("Pragma","no-cache");
+		response.setDateHeader("Expires",0);
+		if(session.getAttribute("userId")==null)
+			{
+			response.sendRedirect("${pageContext.request.contextPath}/jsp/index.jsp");
+			}
+	%>
 	<div class="heading">
         <h1>ABC Hospital Management System</h1>
         <div class="ad-functions dropdown">

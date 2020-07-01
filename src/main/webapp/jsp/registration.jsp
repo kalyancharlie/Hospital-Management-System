@@ -9,16 +9,16 @@
 	<title>Patient Registration</title>
 </head>
 <body>
-<%
-response.setHeader("Cache-Control","no-cache");
-response.setHeader("Cache-Control","no-store");
-response.setHeader("Pragma","no-cache");
-response.setDateHeader("Expires",0);
-if(session.getAttribute("userId")==null)
-{
-response.sendRedirect("index.jsp");
-}
-%>
+	<%
+		response.setHeader("Cache-Control","no-cache");
+		response.setHeader("Cache-Control","no-store");
+		response.setHeader("Pragma","no-cache");
+		response.setDateHeader("Expires",0);
+		if(session.getAttribute("userId")==null)
+			{
+			response.sendRedirect("${pageContext.request.contextPath}/jsp/index.jsp");
+			}
+	%>
 	<div class="heading">
         <h1>ABC Hospital Management System</h1>
         <div class="ad-functions dropdown">
@@ -56,7 +56,7 @@ response.sendRedirect("index.jsp");
     <div class="registration-form">
     	<h2 class="center">Patient Registration</h2>
     	<p id="message"><%= msg %></p>
-        <form action="${pageContext.request.contextPath}/Controller" method="POST"  name='register' onsubmit="return validateForm()">
+        <form action="${pageContext.request.contextPath}/Controller" method="POST" name="register" onsubmit="return validateRegistration()">
         	<input type="hidden" name="option" value="registration"/>
             <div class="form">
             	<div class="form-labels" style="width:35%; margin-left:-7%;">

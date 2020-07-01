@@ -8,16 +8,16 @@
 	<title>Delete Patient</title>
 </head>
 <body>
-<%
-response.setHeader("Cache-Control","no-cache");
-response.setHeader("Cache-Control","no-store");
-response.setHeader("Pragma","no-cache");
-response.setDateHeader("Expires",0);
-if(session.getAttribute("userId")==null)
-{
-response.sendRedirect("index.jsp");
-}
-%>
+	<%
+		response.setHeader("Cache-Control","no-cache");
+		response.setHeader("Cache-Control","no-store");
+		response.setHeader("Pragma","no-cache");
+		response.setDateHeader("Expires",0);
+		if(session.getAttribute("userId")==null)
+			{
+			response.sendRedirect("${pageContext.request.contextPath}/jsp/index.jsp");
+			}
+	%>
 	<div class="heading">
         <h1>ABC Hospital Management System</h1>
         <div class="ad-functions dropdown">
@@ -91,12 +91,12 @@ response.sendRedirect("index.jsp");
                     <label for="city">City *</label>                
                 </div>
                 <div class="form-inputs">
-                <form action="${pageContext.request.contextPath}/Controller" method="POST">                	
+                <form action="${pageContext.request.contextPath}/Controller" name="search" onsubmit="return validateDelete()" method="POST">                	
                 	<input type="text" name="option" value="getPatient" hidden>
                 	<input type="text" name="page" value="delete" hidden>
                     <input type="text" placeholder="" id="id" name="id" autofocus required value="<%= selectedId %>"><button type="submit">Get</button><br/>
                 </form>
-                <form action="${pageContext.request.contextPath}/Controller" method="POST">
+                <form action="${pageContext.request.contextPath}/Controller" name="deletes" onsubmit="return confirmDelete()" method="POST">
                 	<input type="text" name="operation" value="deletePatient" hidden>
                 	<input type="text" name="id" value="<%= selectedId %>" hidden>
                     <input type="text" placeholder="" id="patientName" name="patientName" value="<%= name %>"/><br/>

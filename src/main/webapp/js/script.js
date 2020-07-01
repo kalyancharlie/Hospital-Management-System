@@ -95,31 +95,79 @@ function getMedicineByName2() {
 var PATIENTSSNID = /^[\d]{1,9}$/;
 var PATIENTID = /^[1-9][\d]{8}$/;
 var PATIENTAGE = /^[1-9][\d]{0,2}$/;
-var PATINETDATE = /^([\d]{1,2}(-|:)){2}[\d]{1,4}$/;
-var ALPHABETS = /^[A-Za-z]+$/;
+var PATINETDATE = /^[\d]{1,4}((-|:)([\d]{1,2})){2}$/;
+var ALPHABETS = /^[A-Za-z ]+$/;
 
 // REGISTRATION PAGE
+function validateRegistration() {
+    if(!register.ssnId.value.trim().match(PATIENTSSNID)) {
+        alert("Enter only numbers less than 10 digit for SSNID");
+        register.ssnId.focus();
+        return false;
+    }
+    else if(!register.patientName.value.trim().match(ALPHABETS)) {
+        alert("Please check your name");
+        register.patientName.focus();
+        return false;
+    }
+    else if(!register.patientAge.value.trim().match(PATIENTAGE)) {
+        alert("Invalid Age! Try Again");
+        register.patientAge.focus();
+        return false;
+    }
+    else if(!register.dateOfAdmission.value.trim().match(PATINETDATE)) {
+        alert("Please Check the Date");
+        register.dateOfAdmission.focus();
+        return false;
+    }
+    else if(register.typeOfBed.selectedIndex == 0) {
+        alert("Please Select the Bed");
+        register.typeOfBed.focus();
+        return false;
+    }
+    else if(register.state.selectedIndex == 0) {
+        alert("Please Select your state");
+        register.state.focus();
+        return false;
+    }
+    else if(register.city.selectedIndex == 0) {
+        alert("Please select your city");
+        register.city.focus();
+        return false;
+    }
+    return true;
+}
 
-var ssnId = document.getElementById("ssnId");
-var name = document.getElementById("patientName");
-var age = document.getElementById("patientAge");
-var bed = document.getElementById("typeOfBed");
-var address = document.getElementById(address);
-var city = document.getElementById("city");
-var state = document.getElementById("state");
-console.log(ssnId);
-console.log(name);
-console.log(age);
-console.log(bed);
-console.log(address);
-console.log(city);
-console.log(state);
+// DELETE PAGE VALIDATION & ALERTS
+function validateDelete() {
+    if(!search.id.value.trim().match(PATIENTID)) {
+        alert("Invalid Patient ID");
+        search.id.focus();
+        return false;
+    }
+}
 
-function validateId() {
-    if(true) {
-        return true; 
+function confirmDelete() {
+    if(confirm("Are you sure to delete this patient")) {
+        return true;
     } else {
-        alert("Enter Id with Length of 10 only Numbers ");
+        return false;
+    }
+}
+
+// UPDATE PAGE VALIDATION & ALERTS
+function validateUpdate() {
+    if(!update.id.value.trim().match(PATIENTID)) {
+        alert("Invalid Patient ID");
+        search.id.focus();
+        return false;
+    }
+}
+
+function confirmUpdate() {
+    if(confirm("Do you want to update")) {
+        return true;
+    } else {
         return false;
     }
 }

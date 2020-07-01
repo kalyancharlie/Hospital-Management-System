@@ -52,6 +52,7 @@ public class Controller extends HttpServlet {
 			user.setPassword(password);
 			role = service.validate(user);
 			role = role != null ? role: "";
+			session.setAttribute("userId", role);
 			
 			// ADMISSION DESK EXECUTIVE ROUTE
 			if(role.equalsIgnoreCase("A")) {
