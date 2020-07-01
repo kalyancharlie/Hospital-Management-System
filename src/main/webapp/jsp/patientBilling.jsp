@@ -1,4 +1,4 @@
-<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
+<%@ page import="com.tcs.model.*, java.util.*" language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
 <!DOCTYPE html>
 <html>
@@ -25,19 +25,71 @@
             <button class="pharmacist dropbtn"><span>Pharmacy</span></button>
             <div class="pharmacist-functions dropdown-content">
                 <a id="link" href="${pageContext.request.contextPath}/jsp/viewPatient.jsp">Search Patient</a><br/>
-                <a id="link" href="${pageContext.request.contextPath}/jsp/patientMedicineIssue.jsp">Issue Medicines</a><br/>
+                <a id="link" href="${pageContext.request.contextPath}/jsp/issueMedicines.jsp">Issue Medicines</a><br/>
             </div>
         </div>
         <div class="di-functions dropdown">
             <button class="diagnostic dropbtn"><span>Diagnostics</span></button>
             <div class="diagnostic-functions dropdown-content">
                 <a id="link" href="${pageContext.request.contextPath}/jsp/viewPatient.jsp">Search Patient</a><br/>
-                <a id="link" href="${pageContext.request.contextPath}/jsp/patientDiagnosticIssue.jsp">Add Diagnostics</a><br/>
+                <a id="link" href="${pageContext.request.contextPath}/jsp/addDiagnostic.jsp">Add Diagnostics</a><br/>
             </div>
         </div>
     </div>
+    <%
+    	// PATIENT RECORD
+    	Patient patient = null;
+    	String patientId = "";
+        if(request.getAttribute("patient") != null) {
+        	patient = (Patient)request.getAttribute("patient");
+        	patientId = String.valueOf(patient.getId());               		
+        }
+        String msg = "";
+    	if(request.getAttribute("msg") != null) {
+    		msg = (String)request.getAttribute("msg");
+    	}
+    	
+    	String success = "";
+    	if(request.getAttribute("success") != null) {
+    		success = (String)request.getAttribute("success");
+    	}
+    	
+    	String done = "";
+    	if(request.getAttribute("done") != null) {
+    		done = (String)request.getAttribute("done");
+    	}
+    	
+    	// PATIENT MEDICINES RECORD
+    	ArrayList<Medicine> patientMedicine = null;
+    	if(request.getAttribute("patientMedicine") != null) {
+    		patientMedicine = (ArrayList<Medicine>)request.getAttribute("patientMedicine");
+    	}
+    	
+    	// PATIENT DIAGNOSTIC RECORD
+    	ArrayList<Diagnostic> patientDiagnostic = null;
+    	if(request.getAttribute("patientDiagnostic") != null) {
+    		patientDiagnostic = (ArrayList<Diagnostic>)request.getAttribute("patientDiagnostic");
+    	}
+    	
+    	// PATIENT BILL 
+    	double[] bill = null;
+    	if(request.getAttribute("patientBill") != null) {
+    		bill = (double[])request.getAttribute("patientBill");
+    	}
+    %>
+    <div class="form-search-action">
+    	<form action="${pageContext.request.contextPath}/Controller" method="POST">
+    		<input type="text" name="option" value="getPatientForBilling" hidden>
+    		<input type="text" name="operation" value="getAllObjects" hidden>
+    		<input type="text" name="id" placeholder="Enter patient id" autofocus required value="<%= patientId %>">
+        	<button type="submit">Search</button>
+    	</form>
+    </div>
     <div class="view-patients-form">
         <h2 class="center">Patient Billing</h2>
+        <p id="message"><%= success %></p>
+        <% if(patient != null) { %>
+        <% if(msg != null || !msg.equals("") && done != null ) { %>
         <table>
             <thead>
                 <tr>
@@ -52,19 +104,19 @@
             </thead>
             <tbody>
                 <tr>
-                    <td>1234</td>
-                    <td>Joseph</td>
-                    <td>36</td>
-                    <td>Rick Street, Ameerpet, Hyderabad</td>
-                    <td>03-May-2020</td>
-                    <td>10-May-2020</td>
-                    <td>Single</td>
+                    <td><%= patient.getId() %></td>
+                    <td><%= patient.getName() %></td>
+                    <td><%= patient.getAge() %></td>
+                    <td><%= patient.getAddress() %></td>
+                    <td><%= patient.getDoj() %></td>
+                    <td><%= new java.util.Date().getDate()+"/"+new java.util.Date().getMonth()+"/"+new java.util.Date().getYear() %></td>
+                    <td><%= patient.getTypeOfBed() %></td>
                 </tr>
             </tbody>
         </table>
     </div>
     <div class="billing-text">
-        <p id="text"><strong>No.of days: </strong>7</p><p id="text"><strong>Bill for Room: </strong></p><p id="text">Rs.56000</p>
+        <p id="text"><strong>No.of days: </strong><%= bill[0] %></p><p id="text"><strong>Bill for Room: </strong></p><p id="text">Rs.<%= bill[1] %></p>
     </div>
     <div class="view-issued-medicines">
         <h2 class="center">Pharmacy Charges</h2>
@@ -72,18 +124,20 @@
             <thead>
                 <tr>
                     <th>Medicine</th>
-                    <th>Qunatity</th>
+                    <th>Quantity</th>
                     <th>Rate</th>
                     <th>Amount</th>
                 </tr>
             </thead>
             <tbody>
+            	<% for(int i=0; i<patientMedicine.size(); i++) { %>
                 <tr>
-                    <td>Acebutolol</td>
-                    <td>10</td>
-                    <td>200</td>
-                    <td>RS.2000</td>
+                    <td><%= patientMedicine.get(i).getName() %></td>
+                    <td><%= patientMedicine.get(i).getQty() %></td>
+                    <td><%= patientMedicine.get(i).getRate() %></td>
+                    <td>Rs.<%= patientMedicine.get(i).getQty() * patientMedicine.get(i).getRate() %></td>
                 </tr>
+                <% } %>
                 <tr class="column">
                 	<td colspan="3" id="text-column"><p id="text"><strong>Bill for Pharmacy: </strong></p></td>
                 	<td id="text-column"><p id="text">Rs.56000</p></td>
@@ -103,27 +157,31 @@
                 </tr>
             </thead>
             <tbody>
+            	<% for(int i=0; i<patientDiagnostic.size(); i++) { %>
                 <tr>
-                    <td>CBP</td>
-                    <td>Rs.4000</td>
+                    <td><%= patientDiagnostic.get(i).getName() %></td>
+                    <td><%= patientDiagnostic.get(i).getAmount() %></td>
                 </tr>
+                <% } %>
                 <tr class="column">
                 	<td id="text-column"><p id="text"><strong>Bill for Diagnostics: </strong></p></td>
-                	<td id="text-column"><p id="text">Rs.10500</p></td>
+                	<td id="text-column"><p id="text">Rs.<%= bill[3] %></p></td>
                 </tr>
             </tbody>
-             
         </table>
     </div>
     <div class="billing-text">
-        
     </div>
     <div class="form-controls-action update-medicines">
-    	<form>
-    		<input type="text" name="option" value="dischargePatient" hidden>
-    		<input type="text" name="id" value="" hidden>
-    		<button id="diagnosticSubmit" type="submit">Confirm</button><p id="text">Grand Total<span id="text">Rs.71000</span></p>
+    	<form action="${pageContext.request.contextPath}/Controller" method="POST">
+    		m action="${pageContext.request.contextPath}/Controller" method="POST">
+    		<input type="text" name="option" value="getPatientForBilling" hidden>
+    		<input type="text" name="operation" value="dischargePatient" hidden>
+    		<input type="text" name="id" value="<%= patient.getId() %>" hidden>
+    		<button id="diagnosticSubmit" type="submit">Confirm</button><p id="text">Grand Total<span id="text">Rs.<%= bill[4] %></span></p>
     	</form>
     </div>
+    <% } %>
+    <% } %>
 </body>
 </html>
