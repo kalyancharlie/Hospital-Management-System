@@ -1,4 +1,4 @@
-<%@ page import="com.tcs.model.*, java.util.*, com.tcs.util.Utility" language="java" contentType="text/html; charset=ISO-8859-1"
+<%@ page import="com.tcs.model.*, java.util.*, com.tcs.util.Utility, java.math.BigDecimal" language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
 <!DOCTYPE html>
 <html>
@@ -88,7 +88,7 @@
     	}
     %>
     <div class="form-search-action" style="margin-top: 6%">
-    	<form action="${pageContext.request.contextPath}/Controller" method="POST">
+    	<form action="${pageContext.request.contextPath}/Controller" name="search" method="POST" onsubmit="return validateBilling()">
     		<input type="text" name="option" value="getPatientForBilling" hidden>
     		<input type="text" name="operation" value="getAllObjects" hidden>
     		<input type="text" name="id" placeholder="Enter patient id" autofocus required value="<%= patientId %>">
@@ -126,7 +126,7 @@
         </table>
     </div>
     <div class="billing-text">
-        <p id="text"><strong>No.of days: </strong><%= bill[0] %></p><p id="text"><strong>Bill for Room: </strong></p><p id="text">Rs.<%= bill[1] %></p>
+        <p id="text"><strong>No.of days: </strong><%= new BigDecimal(bill[0]).toPlainString() %></p><p id="text"><strong>Bill for Room: </strong></p><p id="text">Rs.<%= new BigDecimal(bill[1]).toPlainString() %></p>
     </div>
     <% if(patientMedicine != null) { %>
     <div class="view-issued-medicines">
@@ -152,7 +152,7 @@
                 <% } %>
                 <tr class="column">
                 	<td colspan="3" id="text-column"><p id="text"><strong>Bill for Pharmacy: </strong></p></td>
-                	<td id="text-column"><p id="text">Rs.<%= bill[2] %></p></td>
+                	<td id="text-column"><p id="text">Rs.<%= new BigDecimal(bill[2]).toPlainString() %></p></td>
                 </tr>
             </tbody>
         </table>
@@ -178,7 +178,7 @@
                 <% } %>
                 <tr class="column">
                 	<td id="text-column"><p id="text"><strong>Bill for Diagnostics: </strong></p></td>
-                	<td id="text-column"><p id="text">Rs. <%= bill[3] %></p></td>
+                	<td id="text-column"><p id="text">Rs. <%= new BigDecimal(bill[3]).toPlainString() %></p></td>
                 </tr>
             </tbody>
         </table>
@@ -187,11 +187,11 @@
     <div class="billing-text">
     </div>
     <div class="form-controls-action update-medicines">
-    	<form action="${pageContext.request.contextPath}/Controller" method="POST">
+    	<form action="${pageContext.request.contextPath}/Controller" method="POST" onsubmit="return confirmBilling()">
     		<input type="text" name="option" value="getPatientForBilling" hidden>
     		<input type="text" name="operation" value="dischargePatient" hidden>
     		<input type="text" name="id" value="<%= patient.getId() %>" hidden>
-    		<button id="diagnosticSubmit" type="submit">Confirm</button><p id="text">Grand Total<span id="text">Rs.<%= bill[4] %></span></p>
+    		<button id="diagnosticSubmit" type="submit">Confirm</button><p id="text">Grand Total<span id="text">Rs.<%= new BigDecimal(bill[4]).toPlainString() %></span></p>
     	</form>
     </div>
     <% } %>

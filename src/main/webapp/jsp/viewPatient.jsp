@@ -90,7 +90,7 @@
                     <label for="city">City *</label>                
                 </div>
                 <div class="form-inputs">
-                <form action="${pageContext.request.contextPath}/Controller" method="POST">
+                <form action="${pageContext.request.contextPath}/Controller" name="search" method="POST" onsubmit="return validateDelete()">
                 	<input type="text" name="option" value="getPatient" hidden>
                 	<input type="text" name="page" value="search" hidden>
                     <input type="text" placeholder="" id="id" name="id" autofocus required value="<%= selectedId %>"><button type="submit">Get</button><br/>

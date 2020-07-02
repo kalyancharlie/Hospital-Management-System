@@ -87,7 +87,7 @@
     		newMedicine = (ArrayList<Medicine>)session.getAttribute("newMedicine");
     %>
     <div class="form-search-action" style="margin-top: 6%;margin-top: 80px">
-    	<form action="${pageContext.request.contextPath}/Controller" method="POST">
+    	<form action="${pageContext.request.contextPath}/Controller" name="search" method="POST" onsubmit="return validateDelete()">
     		<input type="text" name="option" value="getPatientForMedicine" hidden>
     		<input type="text" name="operation" value="getAllObjects" hidden>
     		<input type="text" name="id" placeholder="Enter patient id" autofocus required value="<%= patientId %>">
@@ -179,7 +179,7 @@
             <tbody>
             	<% for(int i=0; i<newMedicine.size(); i++) { %>
                 <tr>
-                    <td><%= newMedicine.get(i).getName() %></td>
+                    <td id="medicineNameCheck"><%= newMedicine.get(i).getName() %></td>
                     <td><%= newMedicine.get(i).getQty() %></td>
                     <td>Rs.<%= newMedicine.get(i).getRate() %></td>
                     <td>Rs.<%= newMedicine.get(i).getAmount() %></td>
@@ -192,7 +192,7 @@
     <div class="view-add-medicines">
         <div class="left-table">
             <table>
-            <form action="${pageContext.request.contextPath}/Controller" method="POST">
+            <form action="${pageContext.request.contextPath}/Controller" name="addMedicines" method="POST" onsubmit="return confirmAddMedicines()">
             	<input type="text" name="option" value="getPatientForMedicine" hidden>
     			<input type="text" name="operation" value="addMedicine" hidden>
     			<input type="text" name="id" value="<%= patientId %>" hidden required>
@@ -237,7 +237,7 @@
         </form>
     </div>
     <div class="form-controls-action update-medicines">
-        <form action="${pageContext.request.contextPath}/Controller" method="POST">
+        <form action="${pageContext.request.contextPath}/Controller" name="pushMedicines" method="POST" onsubmit="return confirmMedicines()">
         	<input type="text" name="option" value="getPatientForMedicine" hidden>
         	<input type="text" name="operation" value="addMedicineToPatient" hidden>
         	<input type="text" name="id" value="<%= patient.getId() %>" hidden>

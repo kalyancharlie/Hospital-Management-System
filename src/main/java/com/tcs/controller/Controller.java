@@ -382,19 +382,24 @@ public class Controller extends HttpServlet {
 					request.getRequestDispatcher("/jsp/paitentBilling.jsp").include(request, response);
 				}
 			}
-			else if(operation.equalsIgnoreCase("")) {
-				String pageNo = request.getParameter("pageNo");
-				long noOfPatients = service.getPatientCount();
-				int totalPages = (int)noOfPatients/15;
-				int page = Integer.parseInt(pageNo)-1;
-				long start = (page*15)+1;
-				long end = ((start+15)<noOfPatients)?(start+15):noOfPatients;
-				List<Patient> patientList = (List<Patient>)service.getAllPatients(start, end);
-				if(patientList!=null) {
-					request.setAttribute("patientList", patientList);
-					request.setAttribute("pageNo",pageNo);
-					request.setAttribute("totalPages", totalPages);
-				}
+		}
+		
+		// VIEW ALL PATIENTS PAGINATION
+		else if(operation.equalsIgnoreCase("NAVIGATION")) {
+			String pageNo = request.getParameter("pageNo");
+			long noOfPatients = service.getPatientCount();
+			int totalPages = (int)noOfPatients/15;
+			int page = Integer.parseInt(pageNo)-1;
+			long start = (page*15)+1;
+			long end = ((start+15)<noOfPatients)?(start+15):noOfPatients;
+			List<Patient> patientList = (List<Patient>)service.getAllPatients(start, end);
+			if(patientList!=null) {
+				request.setAttribute("patientList", patientList);
+				request.setAttribute("pageNo",pageNo);
+				request.setAttribute("totalPages", totalPages);
+				request.getRequestDispatcher("/jsp/viewAllPatients.jps").include(request, response);
+			} else {
+				request.getRequestDispatcher("jsp/viewAllPatients.jsp").include(request, response);
 			}
 		}
 	}

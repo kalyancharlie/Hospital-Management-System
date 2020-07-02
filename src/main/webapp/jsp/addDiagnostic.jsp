@@ -89,7 +89,7 @@
     	
     %>
     <div class="form-search-action" style="margin-top: 6%;margin-top: 80px">
-    	<form action="${pageContext.request.contextPath}/Controller" method="POST">
+    	<form action="${pageContext.request.contextPath}/Controller" name="search" method="POST" onsubmit="return validateDiagnostics()">
     		<input type="text" name="option" value="getPatientForDiagnostic" hidden>
     		<input type="text" name="operation" value="getAllObjects" hidden>
     		<input type="text" name="id" placeholder="Enter patient id" autofocus required value="<%= patientId %>">
@@ -175,7 +175,7 @@
             <tbody>
             	<% for(int i=0; i<newDiagnostic.size(); i++) { %>
                 <tr>
-                    <td><%= newDiagnostic.get(i).getName() %></td>
+                    <td id="diagnosticNameCheck"><%= newDiagnostic.get(i).getName() %></td>
                     <td>RS.<%= newDiagnostic.get(i).getAmount() %></td>
                 </tr>
                 <% } %>
@@ -186,7 +186,7 @@
     <div class="view-add-medicines">
         <div class="left-table">
             <table>
-            <form action="${pageContext.request.contextPath}/Controller" method="POST">
+            <form action="${pageContext.request.contextPath}/Controller" name="addDiagnostics" method="POST" onsubmit="return confirmAddDiagnostics()">
             	<input type="text" name="option" value="getPatientForDiagnostic" hidden>
     			<input type="text" name="operation" value="addDiagnostic" hidden>
     			<input type="text" name="id" value="<%= patientId %>" hidden required>
@@ -220,7 +220,7 @@
         </form>
     </div>
     <div class="form-controls-action update-medicines">
-        <form action="${pageContext.request.contextPath}/Controller" method="POST">
+        <form action="${pageContext.request.contextPath}/Controller" name="pushDiagnostics" method="POST" onsubmit="return confirmDiagnostics()">
             <input type="text" name="option" value="getPatientForDiagnostic" hidden>
         	<input type="text" name="operation" value="addDiagnosticToPatient" hidden>
         	<input type="text" name="id" value="<%= patient.getId() %>" hidden>

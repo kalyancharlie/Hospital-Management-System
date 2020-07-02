@@ -47,6 +47,7 @@
         </div>
     </div>
     <%
+    	
     	Service service = new Service();
     	ArrayList<Patient> patients = (ArrayList<Patient>)service.getAllPatients();
     %>

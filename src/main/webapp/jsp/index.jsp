@@ -19,7 +19,7 @@
     	}
     %>
     <div class="login-form">
-        <form action="${pageContext.request.contextPath}/Controller" method="POST">
+        <form action="${pageContext.request.contextPath}/Controller" name="login" method="POST" onsubmit="return validateLogin()">
             <div class="form">
                 <div class="form-labels">
                     <label for="username">Username</label>

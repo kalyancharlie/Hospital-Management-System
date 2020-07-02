@@ -78,7 +78,6 @@
     <div class="registration-form">
     	<h2 class="center">Delete Patient</h2>
     	<p id="message"><%= msg %></p>
-    	<form></form>
             <div class="form">
             	<div class="form-labels">
                     <label for="ssnId">Patient ID *</label>
@@ -91,12 +90,12 @@
                     <label for="city">City *</label>                
                 </div>
                 <div class="form-inputs">
-                <form action="${pageContext.request.contextPath}/Controller" name="search" onsubmit="return validateDelete()" method="POST">                	
+                <form action="${pageContext.request.contextPath}/Controller" name="search" method="POST" onsubmit="return validateDelete()">                	
                 	<input type="text" name="option" value="getPatient" hidden>
                 	<input type="text" name="page" value="delete" hidden>
                     <input type="text" placeholder="" id="id" name="id" autofocus required value="<%= selectedId %>"><button type="submit">Get</button><br/>
                 </form>
-                <form action="${pageContext.request.contextPath}/Controller" name="deletes" onsubmit="return confirmDelete()" method="POST">
+                <form action="${pageContext.request.contextPath}/Controller" name="deletes" method="POST" onsubmit="return confirmDelete()">
                 	<input type="text" name="operation" value="deletePatient" hidden>
                 	<input type="text" name="id" value="<%= selectedId %>" hidden>
                     <input type="text" placeholder="" id="patientName" name="patientName" value="<%= name %>"/><br/>

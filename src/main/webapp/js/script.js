@@ -77,7 +77,7 @@ function getMedicineByName2() {
 
     selectedIndex = parseInt(document.getElementById("medicineName").selectedIndex);
     document.getElementById("injectMedicineId").value = selectedIndex;
-    if(medicineQuantity[selectedIndex] >= qty) {
+    if(medicineQuantity[selectedIndex] >= qty && qty > 0) {
         document.getElementById("injectMedicineQuantity").value = qty;
         rate = parseInt(medicineRate[selectedIndex]);
         total = parseInt(medicineRate[selectedIndex]*qty);
@@ -85,6 +85,8 @@ function getMedicineByName2() {
         document.getElementById("injectMedicineAmount").innerHTML = total;
     } else {
         alert("Selected Quantity is not Available. Please choose Less Amount");
+        addMedicines.qty.focus();
+        return false;
     }
 }
 
@@ -92,11 +94,28 @@ function getMedicineByName2() {
 
 // REGULAR EXPRESSIONS
 
+var USERID = /^[a-z][a-z0-9]{7,}$/;
+var PASSWORD = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[^a-zA-Z0-9])(?!.*\s).{10,}$/;
 var PATIENTSSNID = /^[\d]{1,9}$/;
 var PATIENTID = /^[1-9][\d]{8}$/;
 var PATIENTAGE = /^[1-9][\d]{0,2}$/;
 var PATINETDATE = /^[\d]{1,4}((-|:)([\d]{1,2})){2}$/;
 var ALPHABETS = /^[A-Za-z ]+$/;
+
+// LOGIN PAGE
+function validateLogin() {
+    if(!login.username.value.trim().match(USERID)) {
+        alert("Enter valid Username");
+        login.username.focus();
+        return false;
+    }
+    else if(!login.password.value.trim().match(PASSWORD)) {
+        alert("Password must contain min of 10 digits");
+        login.password.focus();
+        return false;
+    }
+    return true;
+}
 
 // REGISTRATION PAGE
 function validateRegistration() {
@@ -135,22 +154,29 @@ function validateRegistration() {
         register.city.focus();
         return false;
     }
-    return true;
+    return confirm("Do you want to Register?");
 }
 
-// DELETE PAGE VALIDATION & ALERTS
+// DELETE PAGE & SEARCH PAGE VALIDATION & ALERTS
 function validateDelete() {
     if(!search.id.value.trim().match(PATIENTID)) {
         alert("Invalid Patient ID");
         search.id.focus();
         return false;
     }
+    return true;
 }
 
 function confirmDelete() {
-    if(confirm("Are you sure to delete this patient")) {
-        return true;
+    if(deletes.id.value.match(PATIENTID)) {
+        if(confirm("Are you sure to delete this patient")) {
+            return true;
+        } else {
+            return false;
+        }
     } else {
+        alert("Please Enter Id to Delete");
+        search.id.focus();
         return false;
     }
 }
@@ -158,16 +184,114 @@ function confirmDelete() {
 // UPDATE PAGE VALIDATION & ALERTS
 function validateUpdate() {
     if(!update.id.value.trim().match(PATIENTID)) {
-        alert("Invalid Patient ID");
-        search.id.focus();
+        alert("Invalid Patient ID. Enter ID of length 10");
+        update.id.focus();
         return false;
+    } else {
+        return true;
     }
 }
 
 function confirmUpdate() {
-    if(confirm("Do you want to update")) {
+    if(updates.id.value.trim().match(PATIENTID)) {
+        if(confirm("Do you want to update")) {
+            return true;
+        } else {
+            return false;
+        }
+    } else if(updates.id.value == null || updates.id.value == "") {
+        alert("Please Enter Id to Update");
+        update.id.focus();
+        return false;
+    }
+    return true;
+}
+
+// PATIENT BILLING VALIDATION & ALERTS
+
+function validateBilling() {
+    return validateDelete();
+}
+
+function confirmBilling() {
+    if(confirm("Do you want to Discharge the Patient")) {
         return true;
     } else {
         return false;
+    }
+}
+
+// ISSUE MEDICINES PAGE VALIDATION & ALERTS
+
+function validateMedicines() {
+    return validateDelete();
+}
+
+function confirmAddMedicines() {
+    if(addMedicines.medicineName.selectedIndex == 0) {
+        alert("There is no Medicine selected. Select Medicine to add");
+        addMedicines.medicineName.focus();
+        return false;
+    } 
+    else if(addMedicines.qty.value == "" || addMedicines.qty.value == null) {
+        alert("There is no Quantity Entered. Please enter valid qty");
+        addMedicines.qty.focus();
+        return false;
+    } 
+
+    if(confirm("Do you want to add this Medicine?")) {
+        return true;
+    } else {
+        addMedicines.qty.focus();
+        return false;
+    }
+}
+
+function confirmMedicines() {
+	if(document.getElementById("medicineNameCheck") == null || document.getElementById("medicineNameCheck").value == "") {
+        alert("There are no medicines added to update");
+        addMedicines.medicineName.focus();
+        return false;
+    } else {
+        if(confirm("Do you want to update medicines?")) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+}
+
+// ADD DIAGNOSTICS PAGE VALIDATION & ALERTS
+
+function validateDiagnostics() {
+    return validateDelete();
+}
+
+function confirmAddDiagnostics() {
+    if(addDiagnostics.testName.selectedIndex == 0) {
+        alert("There is no Diagnostic selected. Select Diagnostic to add");
+        addDiagnostics.testName.focus();
+        return false;
+    }
+
+    if(confirm("Do you want to add this Diagnostic?")) {
+        return true;
+    } else {
+        addDiagnostics.testName.focus();
+        return false;
+    }
+}
+
+function confirmDiagnostics() {
+	if(document.getElementById("diagnosticNameCheck") == null || document.getElementById("diagnosticNameCheck").value == "") {
+        alert("There are no Diagnostics added to update");
+        addDiagnostics.testName.focus();
+        return false;
+    } else {
+        if(confirm("Do you want to update Diagnostics?")) {
+            return true;
+        } else {
+            return false;
+        }
     }
 }
