@@ -72,11 +72,16 @@ public class Service {
 		return obj.updateMasterMedicines(newMedicine);
 	}
 	
-	public List<Patient> getAllPatients(){
-		return obj.viewAllPatients();
+	public List<Patient> getAllPatients(long start, long end) {
+		return obj.viewAllPatients(start, end);
 	}
 	
 	public boolean discharge(long id) {
 		return obj.dischargePatient(id);
 	}
+
+	public long getPatientCount() {
+		return obj.patientCount();
+	}
+
 }

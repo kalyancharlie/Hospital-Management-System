@@ -15,7 +15,7 @@ public interface PatientDao {
 	boolean updatePatient(Patient patient);
 	boolean deletePatient(long id);
 	Patient searchPatient(long id);
-	List<Patient> viewAllPatients();
+	List<Patient> viewAllPatients(long start, long end);
 	List<Medicine> viewPatientMedcines(long id);
 	boolean updateMasterMedicines(ArrayList<Medicine> newMedicines);
 	Medicine viewMedicineById(long mid, int qty);
@@ -27,4 +27,5 @@ public interface PatientDao {
 	List<Diagnostic> viewDiagnostics();
 	double[] generateBill(long id);
 	boolean dischargePatient(long id);
+	
 }

@@ -3,6 +3,7 @@ package com.tcs.controller;
 import java.io.IOException;
 import java.sql.Date;
 import java.util.ArrayList;
+import java.util.List;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -379,6 +380,20 @@ public class Controller extends HttpServlet {
 				} else {
 					request.setAttribute("success", "Failed to Discharge Patient with Id: "+id);
 					request.getRequestDispatcher("/jsp/paitentBilling.jsp").include(request, response);
+				}
+			}
+			else if(operation.equalsIgnoreCase("")) {
+				String pageNo = request.getParameter("pageNo");
+				long noOfPatients = service.getPatientCount();
+				int totalPages = (int)noOfPatients/15;
+				int page = Integer.parseInt(pageNo)-1;
+				long start = (page*15)+1;
+				long end = ((start+15)<noOfPatients)?(start+15):noOfPatients;
+				List<Patient> patientList = (List<Patient>)service.getAllPatients(start, end);
+				if(patientList!=null) {
+					request.setAttribute("patientList", patientList);
+					request.setAttribute("pageNo",pageNo);
+					request.setAttribute("totalPages", totalPages);
 				}
 			}
 		}

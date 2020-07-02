@@ -156,10 +156,12 @@ public class PatientDaoImpl implements PatientDao{
 	}
 
 	@Override
-	public List<Patient> viewAllPatients() {
+	public List<Patient> viewAllPatients(long start, long end) {
 		List<Patient> patients = new ArrayList<Patient>();
 		try {
-			ps = con.prepareStatement("SELECT * FROM patient");
+			ps = con.prepareStatement("SELECT * FROM patient where status='active' limit ?,?");
+			ps.setLong(1, start-1);
+			ps.setLong(2, end-start+1);
 			rs = ps.executeQuery();
 			while(rs.next()) {
 				Patient patient = new Patient();
