@@ -205,7 +205,7 @@ public class Controller extends HttpServlet {
 			String stringSid = String.valueOf(session.getAttribute("sid"));
 			System.out.println("PID:"+stringPid+" SID:"+stringSid);
 			operation = request.getParameter("operation");
-			Patient patient = service.get(id);
+			Patient patient = service.getActivePatient(id);
 			ArrayList<Diagnostic> patientDiagnostic = (ArrayList<Diagnostic>)service.getPatientDiagnostics(id);
 			ArrayList<Diagnostic> masterDiagnostic = (ArrayList<Diagnostic>) service.getDiagnostics();
 			
@@ -284,7 +284,7 @@ public class Controller extends HttpServlet {
 			String stringPid = String.valueOf(id);
 			String stringSid = String.valueOf(session.getAttribute("sid"));
 			operation = request.getParameter("operation");
-			Patient patient = service.get(id);
+			Patient patient = service.getActivePatient(id);
 			ArrayList<Medicine> patientMedicine = (ArrayList<Medicine>)service.getPatientMedicines(id);
 			//ArrayList<Medicine> newMedicine = (ArrayList<Medicine>)request.getAttribute("newMedicine");
 			ArrayList<Medicine> masterMedicine = (ArrayList<Medicine>)service.getMedicines();
@@ -360,7 +360,7 @@ public class Controller extends HttpServlet {
 		else if(option.equalsIgnoreCase("GETPATIENTFORBILLING")) {
 			long id = Long.parseLong(request.getParameter("id"));
 			operation = (String)request.getParameter("operation");
-			Patient patient = service.get(id);
+			Patient patient = service.getActivePatient(id);
 			ArrayList<Diagnostic> patientDiagnostic = (ArrayList<Diagnostic>)service.getPatientDiagnostics(id);
 			ArrayList<Medicine> patientMedicine = (ArrayList<Medicine>)service.getPatientMedicines(id);
 			double[] patientBill = service.getBill(id);

@@ -32,6 +32,10 @@ public class Service {
 		return obj.searchPatient(id);
 	}
 	
+	public Patient getActivePatient(long id) {
+		return obj.viewActivePatient(id);
+	}
+	
 	public boolean delete(long id) {
 		return obj.deletePatient(id);
 	}

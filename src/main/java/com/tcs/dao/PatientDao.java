@@ -16,6 +16,7 @@ public interface PatientDao {
 	boolean updatePatient(Patient patient);
 	boolean deletePatient(long id);
 	Patient searchPatient(long id);
+	Patient viewActivePatient(long id);
 	List<Patient> viewAllPatients(long start, long end);
 	List<Medicine> viewPatientMedcines(long id);
 	boolean updateMasterMedicines(ArrayList<Medicine> newMedicines);

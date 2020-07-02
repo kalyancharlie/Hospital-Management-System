@@ -517,4 +517,33 @@ public class PatientDaoImpl implements PatientDao{
 		}
 		return 0;
 	}
+
+	@Override
+	public Patient viewActivePatient(long id) {
+		Patient patient = new Patient();
+		try {
+			ps = con.prepareStatement("SELECT * FROM patient WHERE id = ? AND status='active'");
+			ps.setLong(1, id);
+			rs = ps.executeQuery();
+			while(rs.next()) {
+				patient.setId(rs.getLong(2));
+				patient.setName(rs.getString(3));
+				patient.setAge(rs.getInt(4));
+				patient.setDoj(rs.getDate(5));
+				patient.setTypeOfBed(rs.getString(6));
+				patient.setAddress(rs.getString(7));
+				patient.setCity(rs.getString(8));
+				patient.setState(rs.getString(9));
+			}
+			if(patient.getId() != 0) {
+				System.out.println(new java.util.Date()+" || "+"Got Details of Patient with Id: "+patient.getId());
+				return patient;
+			}
+		} catch(SQLException e) {
+			System.err.println(new java.util.Date()+" || "+"Failed to Retrieve Patient with Id: "+id);
+			System.out.println(e.getErrorCode()+" "+e.getMessage());
+		}
+		System.out.println(new java.util.Date()+" || "+"Failed to Retrieve Patient with Id: "+id);
+		return null;
+	}
 }
