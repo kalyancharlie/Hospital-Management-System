@@ -16,6 +16,10 @@ public class Service {
 		return obj.validateLogin(user);
 	}
 	
+	public long getMaxId() {
+		return obj.viewMaxId();
+	}
+	
 	public boolean register(Patient patient) {
 		return obj.patientRegistration(patient);
 	}
@@ -83,5 +87,4 @@ public class Service {
 	public long getPatientCount() {
 		return obj.patientCount();
 	}
-
 }

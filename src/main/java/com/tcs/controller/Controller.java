@@ -84,10 +84,16 @@ public class Controller extends HttpServlet {
 		// PATIENT REGISTRATION
 		else if(option.equalsIgnoreCase("REGISTRATION")) {
 			Patient patient = new Patient();
-			PatientDaoImpl patientDaoImpl = new PatientDaoImpl();
+			long id = 0;
+			id = service.getMaxId();
+			if(id == 0) {
+				id = 100000000;
+			} else {
+				id += 1;
+			}
 			
 			patient.setSsnId(Integer.parseInt(request.getParameter("ssnId")));
-			patient.setId(100000000 + patientDaoImpl.patientCount());
+			patient.setId(id);
 			patient.setName(request.getParameter("patientName"));
 			patient.setAge(Integer.parseInt(request.getParameter("patientAge")));
 			patient.setTypeOfBed(request.getParameter("typeOfBed"));

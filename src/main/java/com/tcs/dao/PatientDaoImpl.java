@@ -500,4 +500,21 @@ public class PatientDaoImpl implements PatientDao{
 		}
 		return false;
 	}
+
+	@Override
+	public long viewMaxId() {
+		long id = 0;
+		try {
+			ps = con.prepareStatement("SELECT MAX(id) FROM patient");
+			rs = ps.executeQuery();
+			while(rs.next()) {
+				id = rs.getLong(1);
+			}
+			return id;
+		} catch(SQLException e) {
+			System.err.println("Failed to Fetch Max Id from Patient");
+			System.out.println(e.getErrorCode()+" "+e.getMessage());
+		}
+		return 0;
+	}
 }

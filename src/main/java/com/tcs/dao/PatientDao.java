@@ -11,6 +11,7 @@ import com.tcs.model.User;
 public interface PatientDao {
 	String validateLogin(User user);
 	long patientCount();
+	long viewMaxId();
 	boolean patientRegistration(Patient patient);
 	boolean updatePatient(Patient patient);
 	boolean deletePatient(long id);
