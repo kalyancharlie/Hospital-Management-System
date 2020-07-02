@@ -386,18 +386,27 @@ public class Controller extends HttpServlet {
 		
 		// VIEW ALL PATIENTS PAGINATION
 		else if(operation.equalsIgnoreCase("NAVIGATION")) {
-			String pageNo = request.getParameter("pageNo");
+			int page = 1;
+			String pageNo = (String) request.getParameter("pageNo");
+			String customPageNumber = (String)request.getParameter("customPageNumber");
 			long noOfPatients = service.getPatientCount();
-			int totalPages = (int)noOfPatients/15;
-			int page = Integer.parseInt(pageNo)-1;
-			long start = (page*15)+1;
-			long end = ((start+15)<noOfPatients)?(start+15):noOfPatients;
+			double total = Math.ceil((double)noOfPatients/10);
+			System.out.println((int)total);
+			String totalPages = String.valueOf((int)total);
+			if(customPageNumber != null) {
+				System.out.println("Page Number:"+customPageNumber);
+				page = Integer.parseInt(customPageNumber)-1;
+			} else {
+				page = Integer.parseInt(pageNo)-1;
+			}
+			long start = (page*10)+1;
+			long end = ((start+10)<noOfPatients)?(start+10):noOfPatients;
 			List<Patient> patientList = (List<Patient>)service.getAllPatients(start, end);
 			if(patientList!=null) {
 				request.setAttribute("patientList", patientList);
 				request.setAttribute("pageNo",pageNo);
 				request.setAttribute("totalPages", totalPages);
-				request.getRequestDispatcher("/jsp/viewAllPatients.jps").include(request, response);
+				request.getRequestDispatcher("/jsp/viewAllPatients.jsp").include(request, response);
 			} else {
 				request.getRequestDispatcher("jsp/viewAllPatients.jsp").include(request, response);
 			}

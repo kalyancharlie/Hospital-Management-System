@@ -16,7 +16,7 @@
 		response.setDateHeader("Expires",0);
 		if(session.getAttribute("userId")==null)
 			{
-			response.sendRedirect("${pageContext.request.contextPath}/jsp/index.jsp");
+				request.getRequestDispatcher("/jsp/index.jsp").forward(request, response);
 			}
 	%>
 	<div class="heading">
@@ -47,6 +47,9 @@
             </div>
         </div>
     </div>
+    <div class="logout">
+    	<a href="${pageContext.request.contextPath}/jsp/index.jsp">Logout</a>
+	</div>
     <%
     	String msg = (String)request.getAttribute("msg");
     	if(msg == null) {

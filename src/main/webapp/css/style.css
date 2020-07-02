@@ -241,7 +241,7 @@ body {
 	width: 98%;
 	max-width: 1300px;
 	margin: 0px auto;
-	margin-top: 12vh;
+	margin-top: 3% ;
 }
 
 table, th, td {
@@ -263,6 +263,58 @@ table thead {
 table tbody {
 	background-color: #fafafa;
 	color: black;
+}
+
+.page-numbers {
+	width:100%;
+	margin-top:1%;
+	margin-bottom: 6%;
+}
+	
+.previous-page {
+	float:left;
+}
+	
+.previous-page button {
+	margin-left: 100%;
+	width: 70px;
+	padding: 5px;
+}
+	
+.next-page {
+	float:right;
+}
+
+.next-page button {
+	width: 70px;
+	padding: 5px;
+	margin-left: -100%;
+}
+
+.current-page {
+	width: 50%;
+	float:left;
+}
+
+.current-page p {
+	margin: 0px;
+	margin-left: 2%;
+	margin-bottom:2%;
+}
+
+.right-search {
+	float:right;
+	width:auto;
+}
+
+form.page-search-form {
+	width: 100%;
+}
+
+form.page-search-form button {
+	display: inline;
+	float: right;
+	margin-left: 5px;
 }
 
 /****************************/
@@ -442,4 +494,24 @@ form div {
 #message {
 	text-align: center;
 	display:block;
+}
+
+/****************************/
+/*        LOGOUT PAGE       */
+/****************************/
+
+.logout {
+	clear: both;
+    margin-top: 5%;
+}
+
+.logout a {
+	float: right;
+    margin-right: 5%;
+    text-decoration: none;
+    color: black;
+    font-stretch: condensed;
+    margin-top: 10px;
+    background-color: RGB(239, 239, 239);
+    padding: 2px 8px;
 }

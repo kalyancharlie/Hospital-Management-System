@@ -15,7 +15,7 @@
 		response.setDateHeader("Expires",0);
 		if(session.getAttribute("userId")==null)
 			{
-			response.sendRedirect("${pageContext.request.contextPath}/jsp/index.jsp");
+				request.getRequestDispatcher("/jsp/index.jsp").forward(request, response);
 			}
 	%>
 	<div class="heading">
@@ -49,13 +49,46 @@
     <%
     	
     	Service service = new Service();
-    	ArrayList<Patient> patients = (ArrayList<Patient>)service.getAllPatients();
+    	ArrayList<Patient> patients = null;
+    	String pageNo = "";
+    	long noOfPatients = service.getPatientCount();
+		double total = Math.ceil((double)noOfPatients/10);
+		System.out.println((int)total);
+		String totalPages = String.valueOf((int)total);
+    	if(pageNo.equals("") || pageNo == null) {
+    		patients = (ArrayList<Patient>)service.getAllPatients(1, 10);
+    	}
+    	if(request.getAttribute("pageNo") != null) {
+    		pageNo = (String)request.getAttribute("pageNo");
+    	}
+    	if(request.getAttribute("patientList") != null) {
+    		patients = (ArrayList<Patient>)request.getAttribute("patientList");
+    	}
     %>
+    <div class="logout">
+    	<a href="${pageContext.request.contextPath}/jsp/index.jsp">Logout</a>
+	</div>
     <div class="view-patients-form">
     	<% if(patients == null || patients.size() == 0) { %>
     	<h2 class="center">There are no Patients in Database</h2>
     	<% } else { %>
         <h2 class="center">View Patients</h2>
+        <div>
+            <div class="current-page">
+            	<% if(pageNo.equals("") || pageNo == null) { %>
+            	<p id="currentNumber">Page: <%= 1 %>/<%= totalPages %></p>
+            	<% } else { %>
+                <p id="currentNumber">Page: <%= pageNo %>/<%= totalPages %></p>
+                <% } %>
+            </div>
+            <div class="right-search">
+                <form class="page-search-form" action="${pageContext.request.contextPath}/Controller" name="searchpage" method="POST" onsubmit="return validateSearchPageNumber()">
+                    <input type="text" name="operation" value="navigation" hidden>
+                    <input type="text" name="customPageNumber" placeholder="Enter page number">
+                    <button type="submit" style="cursor: pointer;">Search Page</button>
+             </form>
+        </div>
+        </div>
         <table>
             <thead>
                 <tr>
@@ -80,6 +113,32 @@
                 <% } %>
             </tbody>
         </table>
+    </div>
+    <div class="page-numbers">
+    	<div class="previous-page">
+    		<form action="${pageContext.request.contextPath}/Controller" name="previouspage" method="POST">
+    			<input type="text" value="<%= totalPages %>" name="total" hidden> 
+	    		<input type="text" name="operation" value="navigation" hidden>
+	    		<% if(pageNo.equals("") || pageNo == null) { %>
+	    		<input type="text" name="pageNo" value="1" hidden>
+	    		<% } else { %>
+	    		<input type="text" name="pageNo" value="<%= Integer.parseInt(pageNo)-1 %>" hidden>
+	    		<% } %>
+	    		<button type="submit" id="prev" style="cursor: pointer;">Prev</button>
+    		</form>
+    	</div>
+    	<div class="next-page">
+    		<form action="${pageContext.request.contextPath}/Controller" name="nextpage" method="POST">
+	    		<input type="text" name="operation" value="navigation" hidden>
+	    		<% if(pageNo.equals("") || pageNo == null) { %>
+	    		<input type="text" name="pageNo" value="2" hidden>
+	    		<% } else { %>
+	    		<input type="text" name="pageNo" value="<%= Integer.parseInt(pageNo)+1 %>" hidden>
+	    		<% } %>
+	    		<input type="text" value="<%= totalPages %>" name="total" hidden> 
+	    		<button type="submit" id="next" style="cursor: pointer;">Next</button>
+	    	</form>
+    	</div>
     </div>
     <% } %>
 </body>

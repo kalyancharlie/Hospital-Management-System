@@ -15,7 +15,7 @@
 		response.setDateHeader("Expires",0);
 		if(session.getAttribute("userId")==null)
 			{
-			response.sendRedirect("${pageContext.request.contextPath}/jsp/index.jsp");
+				request.getRequestDispatcher("/jsp/index.jsp").forward(request, response);
 			}
 	%>
 	<div class="heading">
@@ -88,6 +88,9 @@
     		newDiagnostic = (ArrayList<Diagnostic>)session.getAttribute("newDiagnostic");
     	
     %>
+    <div class="logout">
+    	<a href="${pageContext.request.contextPath}/jsp/index.jsp">Logout</a>
+	</div>
     <div class="form-search-action" style="margin-top: 6%;margin-top: 80px">
     	<form action="${pageContext.request.contextPath}/Controller" name="search" method="POST" onsubmit="return validateDiagnostics()">
     		<input type="text" name="option" value="getPatientForDiagnostic" hidden>

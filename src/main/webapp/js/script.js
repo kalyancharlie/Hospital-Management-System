@@ -101,6 +101,7 @@ var PATIENTID = /^[1-9][\d]{8}$/;
 var PATIENTAGE = /^[1-9][\d]{0,2}$/;
 var PATINETDATE = /^[\d]{1,4}((-|:)([\d]{1,2})){2}$/;
 var ALPHABETS = /^[A-Za-z ]+$/;
+var PAGENUMBER = /^[1-9][1-9]*$/;
 
 // LOGIN PAGE
 function validateLogin() {
@@ -295,3 +296,37 @@ function confirmDiagnostics() {
         }
     }
 }
+
+// SEARCH PAGE VALIDATION & ALERTS
+
+function validateSearchPageNumber() {
+    console.log(searchpage.customPageNumber.value);
+    if(!searchpage.customPageNumber.value.trim().match(PAGENUMBER)) {
+        alert("Enter valid page number");
+        searchpage.customPageNumber.focus();
+        return false;
+    }
+    return true;
+}
+
+function disablePrev() {
+    var para = document.getElementById("currentNumber").textContent;
+    var current = parseInt(para[6]);
+    console.log(para);
+    console.log(current);
+    if(current == 1) {
+        document.getElementById("prev").disabled = true;
+    }
+}
+
+document.getElementById("prev").onload = disablePrev();
+
+function disableNext() {
+    var total = parseInt(nextpage.total.value);
+    var current = parseInt(nextpage.pageNo.value);
+    if(current-1 == total) {
+        document.getElementById("next").disabled = true;
+    }
+}
+
+document.getElementById("next").onload = disableNext();

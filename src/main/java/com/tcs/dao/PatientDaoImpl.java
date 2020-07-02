@@ -165,17 +165,18 @@ public class PatientDaoImpl implements PatientDao{
 			rs = ps.executeQuery();
 			while(rs.next()) {
 				Patient patient = new Patient();
-				patient.setId(rs.getLong(2));
-				patient.setName(rs.getString(3));
-				patient.setAge(rs.getInt(4));
-				patient.setDoj(rs.getDate(5));
-				patient.setTypeOfBed(rs.getString(6));
-				patient.setAddress(rs.getString(7));
-				patient.setCity(rs.getString(8));
-				patient.setState(rs.getString(9));
-				patient.setState(rs.getString(10));
-				if(rs.getString(10).equalsIgnoreCase("ACTIVE"))
+				if(rs.getString(10).equalsIgnoreCase("ACTIVE")) {
+					patient.setId(rs.getLong(2));
+					patient.setName(rs.getString(3));
+					patient.setAge(rs.getInt(4));
+					patient.setDoj(rs.getDate(5));
+					patient.setTypeOfBed(rs.getString(6));
+					patient.setAddress(rs.getString(7));
+					patient.setCity(rs.getString(8));
+					patient.setState(rs.getString(9));
+					patient.setStatus(rs.getString(10));
 					patients.add(patient);
+				}
 			}
 			if(patients != null && patients.size() > 0) {
 				System.out.println(new java.util.Date()+" || "+"Got All Patient Details");

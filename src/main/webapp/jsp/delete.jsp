@@ -15,7 +15,7 @@
 		response.setDateHeader("Expires",0);
 		if(session.getAttribute("userId")==null)
 			{
-			response.sendRedirect("${pageContext.request.contextPath}/jsp/index.jsp");
+				request.getRequestDispatcher("/jsp/index.jsp").forward(request, response);
 			}
 	%>
 	<div class="heading">
@@ -75,6 +75,9 @@
     		msg = "";
     	}
     %>
+    <div class="logout">
+    	<a href="${pageContext.request.contextPath}/jsp/index.jsp">Logout</a>
+	</div>
     <div class="registration-form">
     	<h2 class="center">Delete Patient</h2>
     	<p id="message"><%= msg %></p>
