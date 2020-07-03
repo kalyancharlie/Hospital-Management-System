@@ -22,6 +22,8 @@ public class PatientDaoImpl implements PatientDao{
 	private static final String BED1= "General Ward";
 	private static final String BED2= "Semi Sharing";
 	private static final String BED3= "Single Room";
+
+	/* Method to Validate User Credentials */
 	@Override
 	public String validateLogin(User user) {
 		String role = null;
@@ -40,6 +42,7 @@ public class PatientDaoImpl implements PatientDao{
 		}
 	}
 	
+	/* Method to Get number of patients registered from Database*/ 
 	@Override
 	public long patientCount() {
 		long count = 0;
@@ -56,6 +59,7 @@ public class PatientDaoImpl implements PatientDao{
 		}
 	}
 
+	/* Method to register a patient in the Database */
 	@Override
 	public boolean patientRegistration(Patient patient) {
 		boolean flag = false;
@@ -83,6 +87,7 @@ public class PatientDaoImpl implements PatientDao{
 		}
 	}
 
+	/* Method to update patient details in the Database using patient Id*/
 	@Override
 	public boolean updatePatient(Patient patient) {
 		int i =0;
@@ -109,6 +114,7 @@ public class PatientDaoImpl implements PatientDao{
 		return false;
 	}
 
+	/* Method to delete a patient record from Database using patient Id */
 	@Override
 	public boolean deletePatient(long id) {
 		boolean flag = false;
@@ -126,6 +132,10 @@ public class PatientDaoImpl implements PatientDao{
 		return flag;
 	}
 
+	/* Method to get Patient's details
+	 * Using Patient Id
+	 * From Database
+	 */	
 	@Override
 	public Patient searchPatient(long id) {
 		Patient patient = new Patient();
@@ -155,6 +165,10 @@ public class PatientDaoImpl implements PatientDao{
 		return null;
 	}
 
+	/* Method to get all patients record, Those who are still active
+	 * Using patient Id
+	 * From Database
+	 */
 	@Override
 	public List<Patient> viewAllPatients(long start, long end) {
 		List<Patient> patients = new ArrayList<Patient>();
@@ -189,6 +203,10 @@ public class PatientDaoImpl implements PatientDao{
 		return null;
 	}
 
+	/* Method to get previously purchased medicines by Patient
+	 * Using Patient Id
+	 * from Database 
+	 */
 	@Override
 	public List<Medicine> viewPatientMedcines(long id) {
 		List<Medicine> medicines = new ArrayList<Medicine>();
@@ -224,7 +242,8 @@ public class PatientDaoImpl implements PatientDao{
 		}
 		return null;
 	}
-	
+
+	/* Method to get Medicine details using Medicine Id from Database */
 	@Override
 	public Medicine viewMedicineById(long mid, int qty) {
 		Medicine medicine = new Medicine();
@@ -249,7 +268,8 @@ public class PatientDaoImpl implements PatientDao{
 		}
 		return null;
 	}
-	
+
+	/* Method to get all medicines from database */
 	@Override
 	public List<Medicine> viewMedicines() {
 		List<Medicine> medicines = new ArrayList<Medicine>();
@@ -274,7 +294,8 @@ public class PatientDaoImpl implements PatientDao{
 		}
 		return null;
 	} 
-	
+
+	/* Method to get all diagnostics from database */
 	@Override
 	public List<Diagnostic> viewDiagnostics() {
 		List<Diagnostic> diagnostics = new ArrayList<Diagnostic>();
@@ -299,7 +320,9 @@ public class PatientDaoImpl implements PatientDao{
 		return null;
 	}
 
-	@Override
+	/*
+	 * Method to get previous diagnostic check up's done to the patient
+	 */	@Override
 	public List<Diagnostic> viewPatientDiagnostics(long id) {
 		long did = 0;
 		List<Diagnostic> diagnostics = new ArrayList<Diagnostic>();
@@ -330,7 +353,8 @@ public class PatientDaoImpl implements PatientDao{
 		}
 		return null;
 	}
-	
+
+	/* Method to issue medicine to the patient */
 	@Override
 	public boolean addPatientMedicines(long id, ArrayList<Medicine> medicines) {
 		int count = 0;
@@ -356,7 +380,8 @@ public class PatientDaoImpl implements PatientDao{
 		}
 		return false;
 	}
-	
+
+	/* Method to get Diagnostic test details by using diagnostic id from database */
 	@Override
 	public Diagnostic viewDiagnosticById(long did) {
 		Diagnostic diagnostic = new Diagnostic();
@@ -379,7 +404,8 @@ public class PatientDaoImpl implements PatientDao{
 		}
 		return null;
 	}
-	
+
+	/* Method to add diagnostics to patient in the database */
 	@Override
 	public boolean addPatientDiagnostics(long id, ArrayList<Diagnostic> diagnostics) {
 		int count = 0;
@@ -405,6 +431,7 @@ public class PatientDaoImpl implements PatientDao{
 		return false;
 	}
 
+	/* Method to generate bill for medicine, diagnostic and Room */
 	@Override
 	public double[] generateBill(long id) {
 		double diagnostic_amount = 0;
@@ -457,6 +484,7 @@ public class PatientDaoImpl implements PatientDao{
 		return bill;
 	}
 
+	/* Method to discharge a patient from hospital in the database */
 	@Override
 	public boolean dischargePatient(long id) {
 		int i = 0;
@@ -476,7 +504,9 @@ public class PatientDaoImpl implements PatientDao{
 		return false;
 	}
 
-	@Override
+	/*
+	 * Method to update hospital's Medicine data after issuing medicine to patient
+	 */	@Override
 	public boolean updateMasterMedicines(ArrayList<Medicine> newMedicines) {
 		int count = 0;
 		try {
@@ -501,6 +531,7 @@ public class PatientDaoImpl implements PatientDao{
 		return false;
 	}
 
+	/* Method to get maximum id from the patient data table in the database */
 	@Override
 	public long viewMaxId() {
 		long id = 0;
@@ -518,6 +549,7 @@ public class PatientDaoImpl implements PatientDao{
 		return 0;
 	}
 
+	/* Method to get active patient details from the database */
 	@Override
 	public Patient viewActivePatient(long id) {
 		Patient patient = new Patient();
