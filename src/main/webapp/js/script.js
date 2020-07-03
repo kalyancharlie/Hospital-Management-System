@@ -100,6 +100,7 @@ var PATIENTSSNID = /^[\d]{1,9}$/;
 var PATIENTID = /^[1-9][\d]{8}$/;
 var PATIENTAGE = /^[1-9][\d]{0,2}$/;
 var PATINETDATE = /^[\d]{1,4}((-|:)([\d]{1,2})){2}$/;
+var PATIENTADDRESS = /^[a-zA-Z0-9 :_,.-]{10,}$/;
 var ALPHABETS = /^[A-Za-z ]+$/;
 var PAGENUMBER = /^[1-9][1-9]*$/;
 
@@ -143,6 +144,11 @@ function validateRegistration() {
     else if(register.typeOfBed.selectedIndex == 0) {
         alert("Please Select the Bed");
         register.typeOfBed.focus();
+        return false;
+    }
+    else if(!register.address.value.trim().match(PATIENTADDRESS)) {
+        alert("Enter complete address");
+        register.address.focus();
         return false;
     }
     else if(register.state.selectedIndex == 0) {

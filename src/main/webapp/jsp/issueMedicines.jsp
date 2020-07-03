@@ -21,7 +21,7 @@
 	<div class="heading">
         <h1>ABC Hospital Management System</h1>
         <div class="ad-functions dropdown">
-            <button class="admission dropbtn"><span>Patient</span></button>
+            <button class="admission dropbtn" title="Admission Desk Functions"><span>Patient</span></button>
             <div class="admission-functions dropdown-content">
                 <a id="link" href="${pageContext.request.contextPath}/jsp/registration.jsp">Register Patient</a><br/>
                 <a id="link" href="${pageContext.request.contextPath}/jsp/update.jsp">Update Patient</a><br/>
@@ -32,14 +32,14 @@
             </div>
         </div>
         <div class="ph-functions dropdown">
-            <button class="pharmacist dropbtn"><span>Pharmacy</span></button>
+            <button class="pharmacist dropbtn" title="Pharmacy Functions"><span>Pharmacy</span></button>
             <div class="pharmacist-functions dropdown-content">
                 <a id="link" href="${pageContext.request.contextPath}/jsp/viewPatient.jsp">Search Patient</a><br/>
                 <a id="link" href="${pageContext.request.contextPath}/jsp/issueMedicines.jsp">Issue Medicines</a><br/>
             </div>
         </div>
         <div class="di-functions dropdown">
-            <button class="diagnostic dropbtn"><span>Diagnostics</span></button>
+            <button class="diagnostic dropbtn" title="Diagnostic Functions"><span>Diagnostics</span></button>
             <div class="diagnostic-functions dropdown-content">
                 <a id="link" href="${pageContext.request.contextPath}/jsp/viewPatient.jsp">Search Patient</a><br/>
                 <a id="link" href="${pageContext.request.contextPath}/jsp/addDiagnostic.jsp">Add Diagnostics</a><br/>
@@ -87,7 +87,7 @@
     		newMedicine = (ArrayList<Medicine>)session.getAttribute("newMedicine");
     %>
     <div class="logout">
-    	<a href="${pageContext.request.contextPath}/jsp/index.jsp">Logout</a>
+    	<a href="${pageContext.request.contextPath}/jsp/index.jsp" title="Click here to logout">Logout</a>
 	</div>
     <div class="form-search-action" style="margin-top: 6%;margin-top: 80px">
     	<form action="${pageContext.request.contextPath}/Controller" name="search" method="POST" onsubmit="return validateDelete()">
@@ -95,16 +95,16 @@
     		<input type="text" name="operation" value="getAllObjects" hidden>
     		<input type="text" name="id" placeholder="Enter patient id" autofocus required value="<%= patientId %>">
         	<% session.setAttribute("sid", request.getParameter("id")); %>
-        	<button type="submit">Search</button>
+        	<button type="submit" title="Click here to search">Search</button>
     	</form>
     </div>
     <p id="message"><%= msg %></p>
     <p id="message"><%= success %></p>
-    <% 
-    	if(patient != null) { 
-    %>
     <div class="view-patients-form" style="margin-top:0px">
         <h2 class="center">Pharmacy</h2>
+        <% 
+    	if(patient != null) { 
+    	%>
         <table>
             <thead>
                 <tr>
@@ -163,7 +163,7 @@
     	<input type="text" name="operation" value="showMedicine" hidden>
     	<input type="text" name="id" value="<%= patientId %>" hidden required>
     	<div>
-    		<p id="btn"><button type="submit">Issue Medicines</button></p>
+    		<p id="btn"><button type="submit" title="Click here to issue medicines">Issue Medicines</button></p>
     	</div>
     </form>
     <% } %>
@@ -235,7 +235,7 @@
         	<input type="text" name="medicineId" id="injectMedicineId" hidden>
         	<input type="text" name="qty" id="injectMedicineQuantity" hidden>
         	<% request.setAttribute("newMedicine", newMedicine); %>
-            <button id="btnnew" type="submit" onclick="getMedicineByName2()">Add</button>
+            <button id="btnnew" type="submit" onclick="getMedicineByName2()" title="Click here to add medicines">Add</button>
         </div>
         </form>
     </div>
@@ -244,7 +244,7 @@
         	<input type="text" name="option" value="getPatientForMedicine" hidden>
         	<input type="text" name="operation" value="addMedicineToPatient" hidden>
         	<input type="text" name="id" value="<%= patient.getId() %>" hidden>
-            <button type="submit" id="diagnosticSubmit">Update</button>
+            <button type="submit" id="diagnosticSubmit" title="Click here to update medicines">Update</button>
         </form>
     </div>
     <% } %>

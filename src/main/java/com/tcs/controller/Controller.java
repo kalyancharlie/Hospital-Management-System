@@ -104,7 +104,7 @@ public class Controller extends HttpServlet {
 			
 			// PATIENT REGISTRATION SUCCESS
 			if(service.register(patient)) {
-				request.setAttribute("msg", "Patient Registration Success");
+				request.setAttribute("msg", "Patient Registration Success with Id:"+patient.getId());
 				request.getRequestDispatcher("/jsp/registration.jsp").include(request, response);
 			}
 			
@@ -170,7 +170,7 @@ public class Controller extends HttpServlet {
 			
 			// UPDATE PATIENT SUCCESS
 			if(service.update(patient)) {
-				request.setAttribute("msg", "Patient Details Updated Successfully");
+				request.setAttribute("msg", "Patient with Id:"+patient.getId()+" Details Updated Successfully");
 				request.getRequestDispatcher("/jsp/update.jsp").include(request, response);
 			} 
 			
@@ -187,7 +187,7 @@ public class Controller extends HttpServlet {
 			
 			// DELETE PATIENT SUCCESSFUL
 			if(service.delete(id)) {
-				request.setAttribute("msg", "Patient Deleted Successfully");
+				request.setAttribute("msg", "Patient with Id:"+id+" Deleted Successfully");
 				request.getRequestDispatcher("/jsp/delete.jsp").include(request, response);
 			}
 			
@@ -267,11 +267,11 @@ public class Controller extends HttpServlet {
 				@SuppressWarnings("unchecked")
 				ArrayList<Diagnostic> allObjects = (ArrayList<Diagnostic>)session.getAttribute("newDiagnostic");
 				if(service.addDiagnostics(id, allObjects)) {
-					request.setAttribute("success", "Patient Diagnostics Added Succcessfully");
+					request.setAttribute("success", "Added Diagnostics to Patient with id:"+id);
 					session.setAttribute("newDiagnostic", new ArrayList<Diagnostic>());
 					request.getRequestDispatcher("/jsp/addDiagnostic.jsp").include(request, response);
 				} else {
-					request.setAttribute("success", "Patient Diagnostics Added Succcessfully");
+					request.setAttribute("success", "Failed to Add Diagnostics to Patient with Id:"+id);
 					session.setAttribute("newDiagnostic", new ArrayList<Diagnostic>());
 					request.getRequestDispatcher("/jsp/addDiagnostic.jsp").include(request, response);
 				}
@@ -345,11 +345,11 @@ public class Controller extends HttpServlet {
 				ArrayList<Medicine> allObjects = (ArrayList<Medicine>)session.getAttribute("newMedicine");
 				if(service.addMedicines(id, allObjects)) {
 					service.updateMedicines(allObjects);
-					request.setAttribute("success", "Patient Medicines Added Succcessfully");
+					request.setAttribute("success", "Added Medicines to Patient with id:"+id);
 					session.setAttribute("newMedicine", new ArrayList<Medicine>());
 					request.getRequestDispatcher("/jsp/issueMedicines.jsp").include(request, response);
 				} else {
-					request.setAttribute("success", "Patient Medicines Added Succcessfully");
+					request.setAttribute("success", "Failed to Add Medicines to Patient with id:"+id);
 					session.setAttribute("newMedicine", new ArrayList<Medicine>());
 					request.getRequestDispatcher("/jsp/issueMedicines.jsp").include(request, response);
 				}

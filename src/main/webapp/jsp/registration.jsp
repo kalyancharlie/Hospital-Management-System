@@ -22,7 +22,7 @@
 	<div class="heading">
         <h1>ABC Hospital Management System</h1>
         <div class="ad-functions dropdown">
-            <button class="admission dropbtn"><span>Patient</span></button>
+            <button class="admission dropbtn" title="Admission Desk Functions"><span>Patient</span></button>
             <div class="admission-functions dropdown-content">
                 <a id="link" href="${pageContext.request.contextPath}/jsp/registration.jsp">Register Patient</a><br/>
                 <a id="link" href="${pageContext.request.contextPath}/jsp/update.jsp">Update Patient</a><br/>
@@ -33,14 +33,14 @@
             </div>
         </div>
         <div class="ph-functions dropdown">
-            <button class="pharmacist dropbtn"><span>Pharmacy</span></button>
+            <button class="pharmacist dropbtn" title="Pharmacy Functions"><span>Pharmacy</span></button>
             <div class="pharmacist-functions dropdown-content">
                 <a id="link" href="${pageContext.request.contextPath}/jsp/viewPatient.jsp">Search Patient</a><br/>
                 <a id="link" href="${pageContext.request.contextPath}/jsp/issueMedicines.jsp">Issue Medicines</a><br/>
             </div>
         </div>
         <div class="di-functions dropdown">
-            <button class="diagnostic dropbtn"><span>Diagnostics</span></button>
+            <button class="diagnostic dropbtn" title="Diagnostic Functions"><span>Diagnostics</span></button>
             <div class="diagnostic-functions dropdown-content">
                 <a id="link" href="${pageContext.request.contextPath}/jsp/viewPatient.jsp">Search Patient</a><br/>
                 <a id="link" href="${pageContext.request.contextPath}/jsp/addDiagnostic.jsp">Add Diagnostics</a><br/>
@@ -48,7 +48,7 @@
         </div>
     </div>
     <div class="logout">
-    	<a href="${pageContext.request.contextPath}/jsp/index.jsp">Logout</a>
+    	<a href="${pageContext.request.contextPath}/jsp/index.jsp" title="Click here to logout">Logout</a>
 	</div>
     <%
     	String msg = (String)request.getAttribute("msg");
@@ -103,8 +103,8 @@
                     <p>* Fields are mandatory</p>
                 </div>
                 <div class="form-controls">
-                    <button type="submit">Submit</button>
-                    <button type="reset">Reset</button>
+                    <button type="submit" title="Click here to register">Submit</button>
+                    <button type="reset" title="Click here to reset form">Reset</button>
                 </div>
             </div>
         </form>

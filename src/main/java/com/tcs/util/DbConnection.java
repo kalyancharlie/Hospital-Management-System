@@ -8,7 +8,7 @@ import java.sql.SQLException;
 public class DbConnection {
 	private static final String URL = "jdbc:mysql://localhost:3306/hms";
 	private static final String USERNAME = "root";
-	private static final String PASSWORD = "root";
+	private static final String PASSWORD = "!9492234713@";
 	private static final String DRIVER = "com.mysql.jdbc.Driver";
 	public static Connection getConnection() {
 		Connection con = null;
@@ -26,27 +26,6 @@ public class DbConnection {
 			e.printStackTrace();
 		}
 		return null;
-	}
-	
-	public static void closeConnection(Connection con) {
-		if(con!=null) {
-			try {
-				con.close();
-			}catch(SQLException e) {
-				e.printStackTrace();
-			}
-		}
-		
-	}
-	
-	public static void closeStatement(PreparedStatement ps) {
-		if(ps!=null) {
-			try {
-				ps.close();
-			}catch(SQLException e) {
-				e.printStackTrace();
-			}
-		}
 	}
 }
 

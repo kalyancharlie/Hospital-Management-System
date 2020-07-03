@@ -32,8 +32,8 @@
                 </div>
                 <p id="message"><%= msg %></p>
                 <div class="form-controls">
-                    <input type="submit" value="Login">
-                    <input type="reset" value="Reset">
+                    <input type="submit" value="Login" title="Click here to login">
+                    <input type="reset" value="Reset" title="Click here to reset form">
                 </div>
             </div>
         </form>

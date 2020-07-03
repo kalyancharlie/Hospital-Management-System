@@ -21,7 +21,7 @@
 	<div class="heading">
         <h1>ABC Hospital Management System</h1>
         <div class="ad-functions dropdown">
-            <button class="admission dropbtn"><span>Patient</span></button>
+            <button class="admission dropbtn" title="Admission Functions"><span>Patient</span></button>
             <div class="admission-functions dropdown-content">
                 <a id="link" href="${pageContext.request.contextPath}/jsp/registration.jsp">Register Patient</a><br/>
                 <a id="link" href="${pageContext.request.contextPath}/jsp/update.jsp">Update Patient</a><br/>
@@ -32,14 +32,14 @@
             </div>
         </div>
         <div class="ph-functions dropdown">
-            <button class="pharmacist dropbtn"><span>Pharmacy</span></button>
+            <button class="pharmacist dropbtn" title="Pharmacy Functions"><span>Pharmacy</span></button>
             <div class="pharmacist-functions dropdown-content">
                 <a id="link" href="${pageContext.request.contextPath}/jsp/viewPatient.jsp">Search Patient</a><br/>
                 <a id="link" href="${pageContext.request.contextPath}/jsp/issueMedicines.jsp">Issue Medicines</a><br/>
             </div>
         </div>
         <div class="di-functions dropdown">
-            <button class="diagnostic dropbtn"><span>Diagnostics</span></button>
+            <button class="diagnostic dropbtn" title="Diagnostic Functions"><span>Diagnostics</span></button>
             <div class="diagnostic-functions dropdown-content">
                 <a id="link" href="${pageContext.request.contextPath}/jsp/viewPatient.jsp">Search Patient</a><br/>
                 <a id="link" href="${pageContext.request.contextPath}/jsp/addDiagnostic.jsp">Add Diagnostics</a><br/>
@@ -76,7 +76,7 @@
     	}
     %>
     <div class="logout">
-    	<a href="${pageContext.request.contextPath}/jsp/index.jsp">Logout</a>
+    	<a href="${pageContext.request.contextPath}/jsp/index.jsp" title="Click here to logout">Logout</a>
 	</div>
     <div class="registration-form">
     	<h2 class="center">Update Patient</h2>
@@ -98,7 +98,7 @@
                 <form action="${pageContext.request.contextPath}/Controller" name="update" onsubmit="return validateUpdate()" method="POST">                	
                 	<input type="text" name="option" value="getPatient" hidden>
                 	<input type="text" name="page" value="update" hidden>
-                    <input type="text" placeholder="" id="id" name="id" autofocus required value="<%= selectedId %>"><button type="submit">Get</button><br/>
+                    <input type="text" placeholder="" id="id" name="id" autofocus required value="<%= selectedId %>"><button type="submit" title="Click here to search">Get</button><br/>
                 </form>
                 <form action="${pageContext.request.contextPath}/Controller" method="POST" name="updates" onsubmit="return confirmUpdate()">
                 	<input type="text" name="operation" value="updatePatient" hidden>
@@ -128,7 +128,7 @@
                     	<p>* Fields are mandatory</p>
                 	</div>
                     <div class="form-controls-action">
-                    	<button type="submit">Update</button>
+                    	<button type="submit" title="Click here to update patient">Update</button>
                 	</div>
         		</form>
                 </div>

@@ -21,7 +21,7 @@
 	<div class="heading">
         <h1>ABC Hospital Management System</h1>
         <div class="ad-functions dropdown">
-            <button class="admission dropbtn"><span>Patient</span></button>
+            <button class="admission dropbtn" title="Admission Functions"><span>Patient</span></button>
             <div class="admission-functions dropdown-content">
                 <a id="link" href="${pageContext.request.contextPath}/jsp/registration.jsp">Register Patient</a><br/>
                 <a id="link" href="${pageContext.request.contextPath}/jsp/update.jsp">Update Patient</a><br/>
@@ -32,14 +32,14 @@
             </div>
         </div>
         <div class="ph-functions dropdown">
-            <button class="pharmacist dropbtn"><span>Pharmacy</span></button>
+            <button class="pharmacist dropbtn" title="Pharmacy Functions"><span>Pharmacy</span></button>
             <div class="pharmacist-functions dropdown-content">
                 <a id="link" href="${pageContext.request.contextPath}/jsp/viewPatient.jsp">Search Patient</a><br/>
                 <a id="link" href="${pageContext.request.contextPath}/jsp/issueMedicines.jsp">Issue Medicines</a><br/>
             </div>
         </div>
         <div class="di-functions dropdown">
-            <button class="diagnostic dropbtn"><span>Diagnostics</span></button>
+            <button class="diagnostic dropbtn" title="Diagnostic Functions"><span>Diagnostics</span></button>
             <div class="diagnostic-functions dropdown-content">
                 <a id="link" href="${pageContext.request.contextPath}/jsp/viewPatient.jsp">Search Patient</a><br/>
                 <a id="link" href="${pageContext.request.contextPath}/jsp/addDiagnostic.jsp">Add Diagnostics</a><br/>
@@ -66,7 +66,7 @@
     	}
     %>
     <div class="logout">
-    	<a href="${pageContext.request.contextPath}/jsp/index.jsp">Logout</a>
+    	<a href="${pageContext.request.contextPath}/jsp/index.jsp" title="Click here to logout">Logout</a>
 	</div>
     <div class="view-patients-form">
     	<% if(patients == null || patients.size() == 0) { %>
@@ -85,7 +85,7 @@
                 <form class="page-search-form" action="${pageContext.request.contextPath}/Controller" name="searchpage" method="POST" onsubmit="return validateSearchPageNumber()">
                     <input type="text" name="operation" value="navigation" hidden>
                     <input type="text" name="customPageNumber" placeholder="Enter page number">
-                    <button type="submit" style="cursor: pointer;">Search Page</button>
+                    <button type="submit" style="cursor: pointer;" title="Click here to search">Search Page</button>
              </form>
         </div>
         </div>
@@ -124,7 +124,7 @@
 	    		<% } else { %>
 	    		<input type="text" name="pageNo" value="<%= Integer.parseInt(pageNo)-1 %>" hidden>
 	    		<% } %>
-	    		<button type="submit" id="prev" style="cursor: pointer;">Prev</button>
+	    		<button type="submit" id="prev" style="cursor: pointer;" title="Click here to goto previous page">Prev</button>
     		</form>
     	</div>
     	<div class="next-page">
@@ -136,7 +136,7 @@
 	    		<input type="text" name="pageNo" value="<%= Integer.parseInt(pageNo)+1 %>" hidden>
 	    		<% } %>
 	    		<input type="text" value="<%= totalPages %>" name="total" hidden> 
-	    		<button type="submit" id="next" style="cursor: pointer;">Next</button>
+	    		<button type="submit" id="next" style="cursor: pointer;" title="Click here to goto next page">Next</button>
 	    	</form>
     	</div>
     </div>
