@@ -64,13 +64,13 @@ public class Controller extends HttpServlet {
 			// PHARMACIST ROUTE
 			else if(role.equalsIgnoreCase("P")) {
 				System.out.println(new java.util.Date()+" || "+"Pharmacist Logged In. Role: "+role);
-				request.getRequestDispatcher("/jsp/patientMedicineIssue.jsp");
+				request.getRequestDispatcher("/jsp/issueMedicines.jsp").forward(request, response);
 			} 
 			
 			// DIAGNOSTIC ROUTE
 			else if(role.equalsIgnoreCase("D")) {
 				System.out.println(new java.util.Date()+" || "+"Diagnostic Executive Logged In. Role: "+role);
-				request.getRequestDispatcher("/jsp/patientDiagnosticIssue.jsp");
+				request.getRequestDispatcher("/jsp/addDiagnostic.jsp").forward(request, response);
 			} 
 			
 			// LOGIN FAILED

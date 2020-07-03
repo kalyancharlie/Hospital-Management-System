@@ -123,6 +123,9 @@
                         <option value="none" selected disabled hidden></option>
                     	<option value="Visakhapatnam" <%= citySelected = city.equalsIgnoreCase("Visakhapatnam") ? "Selected" : "" %>>Visakhapatnam</option>
                     	<option value="Vijayawada" <%= citySelected = city.equalsIgnoreCase("Vijayawada") ? "Selected" : "" %>>Vijayawada</option>
+                    	<option value="Warangal" <%= citySelected = city.equalsIgnoreCase("Warangal") ? "Selected" : "" %>>Warangal</option>
+                    	<option value="Hyderabad" <%= citySelected = city.equalsIgnoreCase("Hyderabad") ? "Selected" : "" %>>Hyderabad</option>
+                    	<option value="Bhubaneswar" <%= citySelected = city.equalsIgnoreCase("Bhubaneswar") ? "Selected" : "" %>>Bhubaneswar</option>
                     </select><br/>
                     <div class="note">
                     	<p>* Fields are mandatory</p>
