@@ -224,7 +224,7 @@
                         		<% } %>
                         	</select>
                         </td>
-                        <td width="10%"><input type="text" name="qty" id="qty" onblur="getMedicineByName2()"></td>
+                        <td width="10%"><input type="text" name="qtyy" id="qty" onblur="getMedicineByName2()"></td>
                         <td id="injectMedicineRate"></td>
                         <td width="20%" id="injectMedicineAmount"></td>
                     </tr>

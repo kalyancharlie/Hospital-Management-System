@@ -85,7 +85,6 @@ function getMedicineByName2() {
         document.getElementById("injectMedicineAmount").innerHTML = total;
     } else {
         alert("Selected Quantity is not Available. Please choose Less Amount");
-        addMedicines.qty.focus();
         return false;
     }
 }

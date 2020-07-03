@@ -318,7 +318,12 @@ public class Controller extends HttpServlet {
 			// ADD NEW MEDICINES TO PAGE
 			else if(operation.equalsIgnoreCase("ADDMEDICINE")) {
 				long mid = Long.parseLong(request.getParameter("medicineId"));
-				int qty = Integer.parseInt(request.getParameter("qty"));
+				int qty = 0;
+				if(request.getParameter("qty") == null || request.getParameter("qty").equals("")) {
+					qty = 0;
+				} else {
+					qty = Integer.parseInt(request.getParameter("qty"));
+				}
 				Medicine medicine = (Medicine)service.getMedicineById(mid, qty);
 				System.out.println(medicine.getName());
 				ArrayList<Medicine> new3 = (ArrayList<Medicine>)session.getAttribute("newMedicine");
